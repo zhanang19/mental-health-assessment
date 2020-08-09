@@ -1,12 +1,12 @@
 <template>
-  <v-main class="primary" app>
+  <v-main class="grey lighten-4 bg-wave-7" app>
     <v-container fill-height>
       <v-row justify="center" align="center">
         <v-col>
           <v-card-text>
             <div class="text-center">
               <img
-                src="/illustrations/upgrade.svg"
+                src="/illustrations/reading-book.svg"
                 class="mb-5"
                 style="height: 80vh; z-index: 999;"
                 width="95%"
@@ -17,17 +17,18 @@
       </v-row>
     </v-container>
     <v-navigation-drawer
+      :color="regularScreen ? 'transparent' : ''"
       :value="true"
-      :right="true"
+      :right="false"
       :touchless="true"
       :width="width"
       floating
       permanent
       :class="{
-        'rounded-l-xl': regularScreen && false, 
-        'bg-wave-inverse-3': !regularScreen && false, 
-        'elevation-10': true,
-        'grey lighten-5': true,
+        'rounded-l-xl': regularScreen && false,
+        'bg-wave-inverse-3': !regularScreen && false,
+        'elevation-10': false,
+        'grey lighten-5': false,
       }"
       :style="{
         'border-radius': regularScreen && false ? '30px 0px 0px 30px' : '0px'}"

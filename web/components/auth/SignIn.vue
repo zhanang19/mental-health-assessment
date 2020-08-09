@@ -2,11 +2,11 @@
   <v-form ref="form" @submit.prevent="login()">
     <v-card-text>
       <v-row class="mb-10">
-        <div class="d-flex justify-center align-center">
-          <v-avatar class="rounded-lg mx-1" tile size="125">
+        <div class="text-center ">
+          <v-avatar class="rounded-lg mb-5" tile size="125">
             <v-img height="125" width="125" src="/icon.png"></v-img>
           </v-avatar>
-          <h1 class="display-2 mx-1">iDEYA Tracker</h1>
+          <h1 class="display-1 mx-1">Mental Health Assessment</h1>
         </div>
       </v-row>
       <div class="title text-center mb-10">
@@ -16,7 +16,7 @@
 
       <v-slide-x-transition hide-on-leave>
         <section>
-          <v-text-field
+          <!-- <v-text-field
             v-show="type === 'username'"
             append-icon="mdi-account-outline"
             :disabled="loggingIn"
@@ -27,9 +27,9 @@
             hint="Required"
             persistent-hint
             label="Username"
-            solo
-          ></v-text-field>
-          <!-- <v-text-field
+            outlined
+          ></v-text-field>-->
+          <v-text-field
             v-show="type === 'email'"
             append-icon="mdi-email-outline"
             :disabled="loggingIn"
@@ -38,8 +38,8 @@
             :error="!!errors['email']"
             :error-messages="errors['email']"
             label="Email"
-            solo
-          ></v-text-field>-->
+            outlined
+          ></v-text-field>
           <v-text-field
             label="Password"
             append-icon="mdi-lock-outline"
@@ -48,92 +48,29 @@
             :error-messages="errors['password']"
             v-model="credentials.password"
             :rules="rules.password"
-            hint="Required"
-            persistent-hint
             type="password"
-            solo
+            outlined
           ></v-text-field>
-          <div class="text-center mt-10">
+          <div class="text-center mt-1">
             <div
               v-if="false"
               @click="$router.push({ name: 'register' })"
               class="mb-5 primary--text"
               style="cursor: pointer"
             >Forgot your password?</div>
-            <div class="mb-2">
-              <v-btn type="submit" color="primary" block :loading="loggingIn" x-large rounded>
+            <div class="mb-1">
+              <v-btn class="mb-1" type="submit" color="light" block :loading="loggingIn" x-large rounded>
                 Sign In
+                <v-icon right>mdi-chevron-right</v-icon>
+              </v-btn>
+              <v-btn class="mb-1" color="secondary" block x-large rounded>
+                Register
                 <v-icon right>mdi-chevron-right</v-icon>
               </v-btn>
             </div>
           </div>
         </section>
       </v-slide-x-transition>
-    </v-card-text>
-    <v-card-text>
-      <div class="d-flex justify-space-around">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              href="https://www.facebook.com/ideya.cit/"
-              target="_blank"
-              fab
-            >
-              <v-icon color="blue darken-4" x-large>mdi-facebook</v-icon>
-            </v-btn>
-          </template>
-          <span>Facebook Page</span>
-        </v-tooltip>
-
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              href="https://twitter.com/ideya_cit"
-              target="_blank"
-              fab
-            >
-              <v-icon color="blue darken-1" x-large>mdi-twitter</v-icon>
-            </v-btn>
-          </template>
-          <span>Twitter Handle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              href="https://www.youtube.com/channel/UCuPGbD61oRhPDtO_v6BOh4g/featured?view_as=subscriber"
-              target="_blank"
-              fab
-            >
-              <v-icon color="red darken-2" x-large>mdi-youtube</v-icon>
-            </v-btn>
-          </template>
-          <span>YouTube Channel</span>
-        </v-tooltip>
-
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" href="mailto:ideya@g.msuiit.edu.ph" target="_blank" fab>
-              <v-icon x-large>mdi-email</v-icon>
-            </v-btn>
-          </template>
-          <span>Email Us</span>
-        </v-tooltip>
-
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" href="https://ideya.msuiit.edu.ph/" target="_blank" fab>
-              <v-icon x-large>mdi-web</v-icon>
-            </v-btn>
-          </template>
-          <span>Website</span>
-        </v-tooltip>
-      </div>
     </v-card-text>
   </v-form>
 </template>
@@ -142,11 +79,11 @@
 export default {
   data: () => ({
     loggingIn: false,
-    type: "username",
+    type: "email",
     errors: {},
     credentials: {
-      username: "carlomigueldy",
-      // email: "",
+      // username: "carlomigueldy",
+      email: "admin@admin.com",
       password: "password",
     },
     rules: {

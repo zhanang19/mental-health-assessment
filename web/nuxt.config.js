@@ -1,7 +1,7 @@
 import colors from "vuetify/es5/util/colors";
 
 // your app title
-const title = "CMS";
+const title = "MHA";
 
 // your API baseURL
 const baseURL = false
@@ -144,7 +144,8 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: "#912225"
+          primary: "#912225",
+          accent: "#f3d558"
         },
         dark: {
           primary: colors.blue
@@ -170,6 +171,6 @@ export default {
   build: {},
 
   env: {
-    appName: "iDeya Tracker"
+    appName: "MHA"
   }
 };
