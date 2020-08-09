@@ -1,0 +1,316 @@
+.font-noto-sans {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.truncate-rem-12 {
+  width: 13rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bg-wave-1 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-1.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-2 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-2.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-3 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-3.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-4 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-4.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-5 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-5.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-6 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-6.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-7 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-7.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-8 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-8.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-9 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-9.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-10 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-10.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-11 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-11.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-12 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-12.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-13 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-13.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-14 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-14.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-15 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/default/wave-15.svg") no-repeat center center;
+  background-size: cover;
+}
+
+/* WAVE INVERSE */
+.bg-wave-inverse-1 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-1.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-2 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-2.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-3 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-3.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-4 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-4.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-5 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-5.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-6 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-6.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-7 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-7.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-8 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-8.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-9 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-9.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-10 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-10.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-11 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-11.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-12 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-12.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-13 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-13.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-14 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-14.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-wave-inverse-15 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("/waves/inverse/wave-15.svg") no-repeat center center;
+  background-size: cover;
+}
