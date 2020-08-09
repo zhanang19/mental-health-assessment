@@ -1,16 +1,8 @@
 <template>
-  <v-main :class="{
-    'bg-wave-inverse-3': true,
-    'grey darken-4': $vuetify.theme.dark
-  }" app>
-    <app-navbar 
-      title="Home"
-      :elevate-on-scroll="true"
-      :show-avatar="true"
-      color="primary"
-      dark
-    >
-    </app-navbar>
+  <v-main app>
+    <v-container>
+      <h1 class="primary--text">Reports</h1>
+    </v-container>
     <v-container fill-height>
       <v-row justify="center" align="center">
         <v-col>
@@ -34,6 +26,12 @@
 import AppNavbar from '@/components/layouts/AppNavbar'
 
 export default {
+  head () {
+    return {
+      title: `${process.env.appName} | Reports`,
+    }
+  },
+
   components: {
     AppNavbar
   },
@@ -60,12 +58,6 @@ export default {
       },
     ]
   }),
-  
-  head () {
-    return {
-      title: `App | Home`,
-    }
-  },
 
   methods: {
     customEvent(event, type) {

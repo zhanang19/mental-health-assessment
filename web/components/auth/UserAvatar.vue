@@ -15,8 +15,8 @@
         </template>
       </v-img>
     </v-avatar>
-    <h2 class="mt-3" v-text="$auth.user.full_name"></h2>
+    <div class="headline mt-5 primary--text" v-text="$auth.user.full_name"></div>
     <div v-text="$auth.user.email"></div>
-    <div v-text="$auth.user.username"></div>
+    <!-- <div v-text="$auth.user.username"></div> -->
   </v-card-text>
 </template>

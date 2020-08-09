@@ -1,20 +1,11 @@
 <template>
   <v-main app>
-    <app-navbar 
-      title="Users"
-      :elevate-on-scroll="true"
-      :show-avatar="true"
-    >
-      <template v-slot:actions>
-        <v-btn large rounded depressed color="primary">
-          <v-icon left>mdi-plus</v-icon>
-          ADD USER
-        </v-btn>
-      </template>
-    </app-navbar>
     <v-container>
-      <v-row 
-        justify="center" 
+      <h1 class="primary--text">People Profiles</h1>
+    </v-container>
+    <v-container>
+      <v-row
+        justify="center"
         align="center">
         <v-col>
           <v-card flat>
@@ -79,6 +70,11 @@
       </v-row>
     </v-container>
 
+    <v-btn color="primary" app bottom right fixed rounded x-large>
+      <v-icon left>mdi-account-plus-outline</v-icon>
+      <span>New Person</span>
+    </v-btn>
+
     <app-confirmation-dialog
       v-model="controller.dialog"
       @confirmed="controller.dialog = !controller.dialog"
@@ -88,14 +84,14 @@
 
 <script>
 export default {
-  async fetch({ store }) {
-    await store.dispatch('users/FETCH_ALL')
-  },
-  
   head () {
     return {
-      title: `App | Users`,
+      title: `${process.env.appName} | People Profiles`,
     }
+  },
+
+  async fetch({ store }) {
+    await store.dispatch('users/FETCH_ALL')
   },
 
   data: () => ({

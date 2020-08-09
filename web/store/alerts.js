@@ -6,10 +6,11 @@ export const state = () => ({
   message: null,
   vertical: false,
   transition: null,
-  elevation: '8',
+  elevation: '5',
   timeout: 6000,
   color: 'light',
   absolute: false,
+  centered: false,
   position: {
     top: false,
     bottom: true,
@@ -29,6 +30,7 @@ export const mutations = {
     state.message = payload.message || 'No message.'
     state.transition = payload.transition || 'slide-x-transition'
     state.color = payload.color || 'white'
+    state.centered = payload.centered
     state.position = {
       top: payload.position.top,
       bottom: payload.position.bottom,

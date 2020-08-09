@@ -1,19 +1,12 @@
 <template>
   <v-main app>
-    <app-navbar title="Settings" :elevate-on-scroll="true">
-      <template v-slot:leading>
-        <v-btn @click="$router.go(-1)" icon>
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </template>
-      <template v-slot:search>
-        <span></span>
-      </template>
-    </app-navbar>
+    <v-container>
+      <h1 class="primary--text">Settings</h1>
+    </v-container>
 
     <v-container>
         <v-card flat>
-          <v-row 
+          <v-row
             justify="center"
             align="center">
             <v-col
@@ -39,13 +32,13 @@ import { mapFields } from 'vuex-map-fields'
 import { mapState } from 'vuex'
 
 export default {
-  loading: false,
-  
   head () {
     return {
-      title: `App | Settings`,
+      title: `${process.env.appName} | Settings`,
     }
   },
+
+  loading: false,
 
   components: {
     AppNavbar,

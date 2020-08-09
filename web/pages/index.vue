@@ -1,81 +1,109 @@
 <template>
-  <v-main :class="$vuetify.theme.dark ? 'bg' : 'bg grey lighten-5'" app>
+  <v-main class="primary" app>
     <v-container fill-height>
-      <v-row 
-        :class="{
-          'mr-16': !$vuetify.breakpoint.sm 
-            && !$vuetify.breakpoint.xs
-            && !$vuetify.breakpoint.md,
-          'pr-16': $vuetify.breakpoint.xl,
-        }"
-        justify="center" 
-        align="center">
-        <v-col 
-          class="d-none d-lg-flex d-md-flex"
-          xl="8"
-          lg="7" 
-          md="6" 
-          sm="12"
-          cols="12">
-          <v-container fill-height fluid>
-            <v-row align="center"
-              justify="center">
-              <v-col>
-                <div class="d-flex justify-start">
-                  <img 
-                    src="/illustrations/login.svg" 
-                    :height="$vuetify.breakpoint.xl ? '800' 
-                      : $vuetify.breakpoint.lg ? '450' 
-                      : $vuetify.breakpoint.md ? '450'
-                      : '450'" 
-                    width="100%">
-                </div>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-col>
-        <v-col 
-          xl="4"
-          lg="5"
-          md="6"
-          sm="10"
-          cols="12">
-          <SignIn />
+      <v-row justify="center" align="center">
+        <v-col>
+          <v-card-text>
+            <div class="text-center">
+              <img
+                src="/illustrations/upgrade.svg"
+                class="mb-5"
+                style="height: 80vh; z-index: 999;"
+                width="95%"
+              />
+            </div>
+          </v-card-text>
         </v-col>
       </v-row>
     </v-container>
+    <v-navigation-drawer
+      :value="true"
+      :right="true"
+      :touchless="true"
+      :width="width"
+      floating
+      permanent
+      :class="{
+        'rounded-l-xl': regularScreen && false, 
+        'bg-wave-inverse-3': !regularScreen && false, 
+        'elevation-10': true,
+        'grey lighten-5': true,
+      }"
+      :style="{
+        'border-radius': regularScreen && false ? '30px 0px 0px 30px' : '0px'}"
+      app
+    >
+      <v-container fill-height>
+        <v-row justify="center" align="center">
+          <v-col>
+            <SignIn :class="{'px-10 mx-10': regularScreen}" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-navigation-drawer>
   </v-main>
 </template>
 
 <script>
-import SignIn from '@/components/auth/SignIn'
+import SignIn from "@/components/auth/SignIn";
 
 export default {
-  auth: 'guest',
-
-  head () {
+  head() {
     return {
-      title: 'App | Login',
-    }
+      title: `${process.env.appName} | Login`,
+    };
   },
-  
-  layout: 'empty',
-  
+
+  auth: "guest",
+
+  layout: "empty",
+
   components: {
     SignIn,
   },
-}
+
+  computed: {
+    width() {
+      const breakpoint = this.$vuetify.breakpoint;
+
+      if (breakpoint.xl) return "40%";
+      if (breakpoint.lg) return "50%";
+      if (breakpoint.md) return "100%";
+      if (breakpoint.sm) return "100%";
+      if (breakpoint.xs) return "100%";
+    },
+
+    regularScreen() {
+      const breakpoint = this.$vuetify.breakpoint;
+
+      return !breakpoint.sm && !breakpoint.xs;
+    },
+  },
+};
 </script>
 
 <style scoped>
+.login-form-bg {
+  width: 100%;
+  position: absolute;
+  height: 100;
+  background: url("/waves/wave.svg");
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
 .bg {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: url("/waves/default/wave-7.svg") no-repeat center center;
-  /* background: url("https://images.pexels.com/photos/935756/pexels-photo-935756.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center center; */
+  right: 0;
+  bottom: 0;
+  background-repeat: no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+    url("/images/ideya.jpeg");
+  background-position: center center;
   background-size: cover;
 }
 </style>

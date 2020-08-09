@@ -1,46 +1,49 @@
 export default ({ app, store }, inject) => {
-  inject('helpers', {
+  inject("helpers", {
     /**
      * Displays a snackbar alert.
-     * 
+     *
      * message: String e.g. 'You have logged in.'
      * type: String [success, info, error]
-     * 
-     * @param { Object } 
+     *
+     * @param { Object }
      * @returns { Void }
      */
-    notify ({ 
-      message = null, 
+    notify({
+      message = null,
       type = null,
-      transition = null,
+      transition = "slide-y-reverse-transition",
       position = {
         top: false,
         bottom: true,
-        left: true,
+        left: false,
         right: false
-      } }) {
-      store.dispatch('alerts/execute', { 
-        message, 
-        type, 
+      },
+      centered = false
+    }) {
+      store.dispatch("alerts/execute", {
+        message,
+        type,
         transition,
         position,
-      })
+        centered
+      });
     },
 
     /**
      * Displays a snackbar alert.
-     * 
+     *
      * message: String e.g. 'You have logged in.'
      * type: String [success, info, error]
-     * 
-     * @param { Object } 
+     *
+     * @param { Object }
      * @returns { Void }
      */
-    loader () {
-      store.commit('TOGGLE_LOADER', {
-        field: 'loading',
-      })
-    },
+    loader() {
+      store.commit("TOGGLE_LOADER", {
+        field: "loading"
+      });
+    }
     // Add more ...
-  })
-}
+  });
+};

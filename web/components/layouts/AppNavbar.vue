@@ -1,27 +1,27 @@
 <template>
   <div>
-    <v-app-bar 
-      v-bind="$attrs" 
+    <v-app-bar
+      v-bind="$attrs"
       :flat="flat"
       :elevate-on-scroll="elevateOnScroll"
       :absolute="absolute"
-      :color="!!color 
-        ? color 
-        : $vuetify.theme.dark 
-        ? '' 
-        : 'white'" 
+      :color="!!color
+        ? color
+        : $vuetify.theme.dark
+        ? ''
+        : 'white'"
       :app="app">
       <slot name="leading">
         <v-app-bar-nav-icon @click="$store.commit('TOGGLE_DRAWER')"></v-app-bar-nav-icon>
       </slot>
-      <v-toolbar-title 
+      <v-toolbar-title
         v-text="title"
         :class="{
           'white--text': titleTextWhite
         }"
       ></v-toolbar-title>
       <v-spacer></v-spacer>
-      <slot v-if="false" name="search"> 
+      <slot v-if="false" name="search">
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
@@ -38,9 +38,9 @@
             </v-btn>
             <v-btn style="margin-right: 0.15px" v-else v-on="on" icon>
               <v-avatar size="45">
-                <v-img 
-                  height="45" 
-                  width="45" 
+                <v-img
+                  height="45"
+                  width="45"
                   :src="$auth.user.avatar || '/icon.png'"
                 ></v-img>
               </v-avatar>
@@ -50,10 +50,7 @@
             <user-avatar></user-avatar>
             <v-divider></v-divider>
             <v-list>
-              <v-list-item @click="toggleTheme()">
-                {{ `Toggle ${$vuetify.theme.dark ? 'light' : 'dark'} theme` }}
-              </v-list-item>
-              <v-list-item 
+              <v-list-item
                 :to="{ name: 'settings' }">
                 Settings
               </v-list-item>
@@ -66,10 +63,10 @@
       </slot>
     </v-app-bar>
 
-    <v-dialog 
-      ref="logoutDialog" 
-      :value="false" 
-      scrollable 
+    <v-dialog
+      ref="logoutDialog"
+      :value="false"
+      scrollable
       transition="slide-y-transition"
       max-width="450">
       <v-card>
@@ -86,16 +83,16 @@
         </v-card-text>
         <v-card-actions class="rounded-b-xl">
           <v-spacer></v-spacer>
-          <v-btn 
-            @click="$refs.logoutDialog.value = false" 
+          <v-btn
+            @click="$refs.logoutDialog.value = false"
             width="125"
             large
             depressed>
             CANCEL
           </v-btn>
-          <v-btn 
-            @click="logout()" 
-            depressed 
+          <v-btn
+            @click="logout()"
+            depressed
             width="125"
             large
             color="primary">
@@ -114,7 +111,7 @@ export default {
   components: {
     UserAvatar
   },
-  
+
   props: {
     title: {
       type: String,
