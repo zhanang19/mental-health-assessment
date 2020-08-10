@@ -1,10 +1,31 @@
 <template>
   <v-main class="primary" app>
-    <v-app-bar app>
-      <v-toolbar-title>MHA</v-toolbar-title>
+    <v-app-bar app extended>
+      <v-toolbar-title>Untitled Form</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn class="primary--text">Save Changes</v-btn>
+
+      <template #extension>
+        <v-tabs centered>
+          <v-tab>Questions</v-tab>
+          <v-tab>Responses</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
     <v-container style="padding-left: 15rem; padding-right: 15rem;">
+      <v-card class="rounded-lg mb-3">
+        <v-card-title>
+          <span class="display-1">Untitled Form</span>
+        </v-card-title>
+        <v-card-subtitle>
+          Form subtitle
+        </v-card-subtitle>
+        <v-card-text>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure earum veniam laboriosam deleniti alias. Asperiores aliquid, excepturi sed vel suscipit eum voluptate delectus necessitatibus dolorum nesciunt commodi, consectetur alias quod ab harum provident voluptates. Ea architecto odit deserunt beatae exercitationem incidunt, ab error, repellendus mollitia nulla quaerat saepe. Ratione, iusto.
+        </v-card-text>
+      </v-card>
+
       <v-card class="rounded-lg mb-3">
         <v-card-title class="headline">
           Are you human?
