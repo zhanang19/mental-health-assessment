@@ -54,6 +54,11 @@ export default {
     continuous: true
   },
 
+  layoutTransition: {
+    name: 'layout',
+    mode: 'out-in'
+  },
+
   loadingIndicator: "~/loading/app.html",
   // loadingIndicator: {
   //   name: 'cube-grid',

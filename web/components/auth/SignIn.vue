@@ -121,7 +121,7 @@ export default {
           });
 
           this.$router.push({
-            name: "dashboard",
+            name: "app-dashboard",
           });
         } catch (error) {
           console.log(error);
