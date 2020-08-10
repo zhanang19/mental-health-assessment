@@ -7,6 +7,7 @@
     <v-tooltip v-if="!$store.state.drawer" bottom>
       <template #activator="{ on, attrs }">
         <v-btn
+          style="z-index: 999"
           v-on="on"
           v-bind="attrs"
           @click="$store.commit('TOGGLE_DRAWER')"

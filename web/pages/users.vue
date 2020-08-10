@@ -4,14 +4,12 @@
       <h1 class="primary--text">Users</h1>
     </v-container>
     <v-container>
-      <v-row
-        justify="center"
-        align="center">
+      <v-row justify="center" align="center">
         <v-col>
           <v-card flat>
-            <v-toolbar class="mb-10" color="transparent" flat extended>
+            <v-toolbar color="transparent" flat>
               <v-text-field
-                label="Start typing"
+                label="Search"
                 v-model="datatable.search"
                 append-icon="mdi-magnify"
                 single-line
@@ -21,39 +19,7 @@
               ></v-text-field>
               <v-toolbar-title></v-toolbar-title>
               <v-spacer></v-spacer>
-              <section>
-                <v-btn text large class="primary--text">
-                  <v-icon left>mdi-filter-variant</v-icon>
-                  MORE ACTIONS
-                </v-btn>
-              </section>
-
-              <template v-slot:extension>
-                <v-row class="mt-5">
-                  <v-col>
-                    <v-text-field
-                      background-color="transparent"
-                      type="date"
-                      hint="From"
-                      persistent-hint
-                      clearable
-                      solo
-                      flat
-                    ></v-text-field>
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      background-color="transparent"
-                      type="date"
-                      hint="To"
-                      persistent-hint
-                      clearable
-                      solo
-                      flat
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </template>
+              <v-btn large color="primary">Create User</v-btn>
             </v-toolbar>
 
             <v-divider></v-divider>
@@ -64,13 +30,63 @@
               item-class="pa-16"
               multi-sort
               fixed-header
-            ></v-data-table>
+            >
+              <template #item.actions="{ item }">
+                <app-base-action-buttons
+                  type="non-archive"
+                  @click-view="customEvent('view')"
+                  @click-edit="customEvent('edit')"
+                  @click-delete="customEvent('delete')"
+                  @click-restore="customEvent('restore')"
+                  @click-delete-permanently="customEvent('deletePermanently')"
+                ></app-base-action-buttons>
+              </template>
+            </v-data-table>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-btn color="primary" app bottom right fixed rounded x-large>
+    <!-- navigation drawer right -->
+    <v-navigation-drawer color="grey lighten-5" width="25%" permanent floating right app>
+      <v-toolbar color="transparent" flat>
+        <v-toolbar-title class="primary--text">Filter Control</v-toolbar-title>
+      </v-toolbar>
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-text-field
+              background-color="transparent"
+              type="date"
+              hint="From"
+              persistent-hint
+              clearable
+              outlined
+            ></v-text-field>
+            <v-text-field
+              background-color="transparent"
+              type="date"
+              hint="To"
+              persistent-hint
+              clearable
+              outlined
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-navigation-drawer>
+
+    <v-btn
+      v-if="false"
+      style="z-index: 9999"
+      color="primary"
+      app
+      bottom
+      right
+      fixed
+      rounded
+      x-large
+    >
       <v-icon left>mdi-account-plus-outline</v-icon>
       <span>New Person</span>
     </v-btn>
@@ -84,41 +100,44 @@
 
 <script>
 export default {
-  head () {
+  head() {
     return {
-      title: `${process.env.appName} | Students`,
-    }
+      title: `${process.env.appName} | Users`,
+    };
   },
 
   async fetch({ store }) {
-    await store.dispatch('users/FETCH_ALL')
+    await store.dispatch("users/FETCH_ALL");
   },
 
   data: () => ({
     controller: {
-      dialog: false
+      dialog: false,
     },
     datatable: {
-      search: '',
+      search: "",
       headers: [
         {
-          text: 'Name',
-          value: 'full_name'
+          text: "Name",
+          value: "full_name",
         },
         {
-          text: 'Email',
-          value: 'email'
+          text: "Email",
+          value: "email",
         },
         {
-          text: 'Phone',
-          value: 'phone_number'
+          text: "Actions",
+          value: "actions",
+          sortable: false,
         },
-        {
-          text: 'Actions',
-          value: 'actions'
-        },
-      ]
-    }
-  })
-}
+      ],
+    },
+  }),
+
+  methods: {
+    customEvent(type) {
+      console.log(type);
+    },
+  },
+};
 </script>
