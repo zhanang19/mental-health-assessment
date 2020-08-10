@@ -31,7 +31,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn color="primary">Save Changes</v-btn>
+        <v-btn @click="save()" color="primary">Save Changes</v-btn>
       </div>
 
       <template #extension>
@@ -43,107 +43,170 @@
     </v-app-bar>
 
     <v-container class="survey-form-body">
-      <v-card class="rounded-lg" style="margin-bottom: 5rem">
-        <v-card-title>
-          <span class="display-1">
-            <v-text-field label="Form Title" v-model="form.title"></v-text-field>
-          </span>
-        </v-card-title>
-        <v-card-subtitle>
-          <v-text-field label="Subtitle" v-model="form.subtitle"></v-text-field>
-        </v-card-subtitle>
-        <v-card-text>
-          <v-textarea label="Description" hint="Optional" persistent-hint></v-textarea>
-        </v-card-text>
-      </v-card>
-
-      <!-- question groups v-for loop -->
-      <v-container class="pa-0 mb-10" v-for="(group, groupIndex) in form.groups" :key="groupIndex">
-        <!-- survey question group header -->
-        <v-card class="rounded-lg mb-3">
-          <v-card-title class="headline">
-            <v-text-field label="Group Label" v-model="group.label"></v-text-field>
-            <v-spacer></v-spacer>
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="deleteSurveyQuestionGroup(groupIndex)"
-                  elevation="0"
-                  small
-                  fab
-                >
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-              </template>
-              <span>Delete this question group</span>
-            </v-tooltip>
+      <v-form ref="form" @submit.prevent="save()">
+        <v-card class="rounded-lg" style="margin-bottom: 5rem">
+          <v-card-title>
+            <span class="display-1">
+              <v-text-field
+                hint="Required"
+                persistent-hint
+                label="Form Title"
+                v-model="form.title"
+                :rules="rules.survey.title"
+              ></v-text-field>
+            </span>
           </v-card-title>
+          <v-card-subtitle>
+            <v-text-field hint="Optional" persistent-hint label="Subtitle" v-model="form.subtitle"></v-text-field>
+          </v-card-subtitle>
           <v-card-text>
-            <v-textarea
-              label="Instructions"
-              v-model="group.instructions"
-              hint="Optional"
-              persistent-hint
-            ></v-textarea>
+            <v-textarea label="Description" hint="Optional" persistent-hint></v-textarea>
           </v-card-text>
         </v-card>
 
-        <!-- survey question group v-for questions -->
-        <v-card
-          class="rounded-lg ml-5 mb-3"
-          v-for="(question, questionIndex) in group.questions"
-          :key="questionIndex"
+        <!-- question groups v-for loop -->
+        <v-container
+          class="pa-0 mb-10"
+          v-for="(group, groupIndex) in form.groups"
+          :key="groupIndex"
         >
-          <v-card-title class="headline">
-            <span>Are you human?</span>
-            <span class="ml-1 red--text">*</span>
-            <v-spacer></v-spacer>
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="deleteSurveyQuestion(groupIndex, questionIndex)"
-                  elevation="0"
-                  small
-                  fab
-                >
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-              </template>
-              <span>Delete this question</span>
-            </v-tooltip>
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col>
-                <v-text-field style="width: 60%" label="Your answer"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+          <!-- survey question group header -->
+          <v-card class="rounded-lg mb-3">
+            <v-card-title class="headline">
+              <v-text-field
+                hint="Required"
+                persistent-hint
+                label="Group Label"
+                v-model="group.label"
+                :rules="rules.group.label"
+              ></v-text-field>
+              <v-spacer></v-spacer>
+              <div>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      v-on="on"
+                      v-bind="attrs"
+                      @click="duplicateSurveyQuestionGroup(groupIndex)"
+                      elevation="0"
+                      small
+                      fab
+                    >
+                      <v-icon>mdi-content-copy</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Duplicate this question group</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      v-on="on"
+                      v-bind="attrs"
+                      @click="deleteSurveyQuestionGroup(groupIndex)"
+                      elevation="0"
+                      small
+                      fab
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Delete this question group</span>
+                </v-tooltip>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <v-textarea
+                label="Instructions"
+                v-model="group.instructions"
+                hint="Optional"
+                persistent-hint
+              ></v-textarea>
+            </v-card-text>
+          </v-card>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="addSurveyQuestion(groupIndex)">Add Question</v-btn>
-        </v-card-actions>
-      </v-container>
-      <div class="text-center">
-        <v-btn class="primary--text" rounded x-large @click="addSurveyQuestionGroup()">
-          <span>Add Question Group</span>
-          <v-icon right>mdi-plus</v-icon>
-        </v-btn>
-      </div>
+          <!-- survey question group v-for questions -->
+          <v-card
+            class="rounded-lg ml-5 mb-3"
+            v-for="(questionItem, questionIndex) in group.questions"
+            :key="questionIndex"
+          >
+            <v-card-title class="headline">
+              <v-text-field
+                label="Question"
+                hint="Required"
+                persistent-hint
+                v-model="questionItem.question"
+                :rules="rules.question.question"
+              ></v-text-field>
+              <v-spacer></v-spacer>
+              <div>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      v-on="on"
+                      v-bind="attrs"
+                      @click="duplicateSurveyQuestion(groupIndex, questionIndex)"
+                      elevation="0"
+                      small
+                      fab
+                    >
+                      <v-icon>mdi-content-copy</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Duplicate this question</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      v-on="on"
+                      v-bind="attrs"
+                      @click="deleteSurveyQuestion(groupIndex, questionIndex)"
+                      elevation="0"
+                      small
+                      fab
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Delete this question</span>
+                </v-tooltip>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  <v-text-field style="width: 60%" label="Your answer"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="addSurveyQuestion(groupIndex)">Add Question</v-btn>
+          </v-card-actions>
+        </v-container>
+        <div class="text-center">
+          <v-btn class="primary--text" x-large @click="addSurveyQuestionGroup()">
+            <span>Add Question Group</span>
+            <v-icon right>mdi-plus</v-icon>
+          </v-btn>
+        </div>
+      </v-form>
     </v-container>
   </v-main>
 </template>
 
 <script>
-import { Survey, colorThemes } from "../../../models/Survey";
-import { SurveyQuestionGroup } from "../../../models/SurveyQuestionGroup";
-import { SurveyQuestion } from "../../../models/SurveyQuestion";
+import { Survey, colorThemes, surveyValidations } from "../../../models/Survey";
+import {
+  SurveyQuestionGroup,
+  surveyQuestionGroupValidations,
+} from "../../../models/SurveyQuestionGroup";
+import {
+  SurveyQuestion,
+  surveyQuestionValidations,
+} from "../../../models/SurveyQuestion";
 
 export default {
   head() {
@@ -159,10 +222,29 @@ export default {
       survey: new Survey(),
       groups: [new SurveyQuestionGroup()],
     },
+    rules: {
+      survey: surveyValidations,
+      group: surveyQuestionGroupValidations,
+      question: surveyQuestionValidations,
+    },
     colorThemes,
   }),
 
   methods: {
+    save() {
+      if (this.$refs.form.validate()) {
+        console.log("saved");
+      } else {
+        return this.$helpers.notify({
+          type: "error",
+          message: "Please fill in the required fields.",
+        });
+      }
+    },
+
+    /**
+     * @param color string
+     */
     selectColorTheme(color) {
       this.form.survey.color_theme = color;
     },
@@ -176,6 +258,13 @@ export default {
      */
     deleteSurveyQuestionGroup(index) {
       this.form.groups.splice(index, 1);
+    },
+
+    /**
+     * @param index
+     */
+    duplicateSurveyQuestionGroup(index) {
+      this.form.groups.push({ ...this.form.groups[index] });
     },
 
     /**
@@ -196,6 +285,16 @@ export default {
         questionIndex,
         1
       );
+    },
+
+    /**
+     * @param surveyQuestionGroupIndex survey question group index
+     * @param questionIndex question index
+     */
+    duplicateSurveyQuestion(surveyQuestionGroupIndex, questionIndex) {
+      this.form.groups[surveyQuestionGroupIndex].questions.push({
+        ...this.form.groups[surveyQuestionGroupIndex].questions[questionIndex],
+      });
     },
   },
 };
