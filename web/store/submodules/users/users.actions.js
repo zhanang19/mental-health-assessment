@@ -1,10 +1,10 @@
 export const actions = {
   /**
    * Fetch all resources from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/FETCH_ALL')
    */
   'FETCH_ALL': async ({ dispatch, state, commit }, payload) => {
@@ -12,7 +12,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$get('/api/users')
-      
+
       await commit('SET_STATE', {
         field: 'users',
         data: response.data
@@ -24,7 +24,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -33,10 +33,10 @@ export const actions = {
 
   /**
    * Fetch a single resource from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/FETCH', {
    *  id: item.id | $route.params.id
    * })
@@ -45,8 +45,8 @@ export const actions = {
     console.log('[Users] fetch user', payload)
 
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -56,7 +56,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -65,10 +65,10 @@ export const actions = {
 
   /**
    * Request to create a new record in API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/ADD', {
    *  data: this.form
    * })
@@ -77,8 +77,8 @@ export const actions = {
     console.log('[Users] add user', payload)
 
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -88,7 +88,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -97,10 +97,10 @@ export const actions = {
 
   /**
    * Request to update an existing record from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/UPDATE', {
    *  data: this.form
    * })
@@ -109,8 +109,8 @@ export const actions = {
     console.log('[Users] update user', payload)
 
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -120,7 +120,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -129,20 +129,20 @@ export const actions = {
 
   /**
    * Delete a resource from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/DELETE', {
    *  id: item.id | $route.params.id
    * })
    */
   'DELETE': async ({ dispatch, state, commit }, payload) => {
     console.log('[Users] delete user', payload)
-    
+
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -152,7 +152,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -161,10 +161,10 @@ export const actions = {
 
   /**
    * Restore a deleted resource from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/RESTORE', {
    *  id: item.id | $route.params.id
    * })
@@ -173,8 +173,8 @@ export const actions = {
     console.log('[Users] restore user', payload)
 
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -184,7 +184,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
@@ -193,10 +193,10 @@ export const actions = {
 
   /**
    * Permanently delete a resource from an API.
-   * 
+   *
    * @param { Object } context
    * @param { Object } payload
-   * 
+   *
    * @usage this.$store.dispatch('users/PERMANENTLY_DELETE', {
    *  id: item.id | $route.params.id
    * })
@@ -205,8 +205,8 @@ export const actions = {
     console.log('[Users] permanently user', payload)
 
     try {
-      
-      await this.$helpers.notify({
+
+      await $nuxt.$helpers.notify({
         type: 'success',
         message: response.message || 'No message.'
       })
@@ -216,7 +216,7 @@ export const actions = {
         message = error.response.data.message
       }
 
-      await this.$helpers.notify({
+      await $nuxt.$helpers.notify({
         type: 'error',
         message: message || 'Unknown error.'
       })
