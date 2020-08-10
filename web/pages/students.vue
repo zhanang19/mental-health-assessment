@@ -1,7 +1,7 @@
 <template>
   <v-main app>
     <v-container>
-      <h1 class="primary--text">Activities</h1>
+      <h1 class="primary--text">Students</h1>
     </v-container>
     <v-container>
       <v-row
@@ -70,6 +70,11 @@
       </v-row>
     </v-container>
 
+    <v-btn color="primary" app bottom right fixed rounded x-large>
+      <v-icon left>mdi-account-plus-outline</v-icon>
+      <span>New Person</span>
+    </v-btn>
+
     <app-confirmation-dialog
       v-model="controller.dialog"
       @confirmed="controller.dialog = !controller.dialog"
@@ -81,7 +86,7 @@
 export default {
   head () {
     return {
-      title: `${process.env.appName} | Activities`,
+      title: `${process.env.appName} | Students`,
     }
   },
 

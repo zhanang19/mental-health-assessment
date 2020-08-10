@@ -1,7 +1,7 @@
 <template>
   <v-main app>
     <v-container>
-      <h1 class="primary--text">People Profiles</h1>
+      <h1 class="primary--text">Users</h1>
     </v-container>
     <v-container>
       <v-row
@@ -86,7 +86,7 @@
 export default {
   head () {
     return {
-      title: `${process.env.appName} | People Profiles`,
+      title: `${process.env.appName} | Students`,
     }
   },
 
