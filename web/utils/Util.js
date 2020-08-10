@@ -1,29 +1,33 @@
 import { ExportToCsv } from 'export-to-csv';
 
+export const validations = {
+  required: [value => !!value || "This field is required."]
+};
+
 /**
  * Checks if object is empty.
- * 
- * @param { Object } obj 
- * @return { Boolean } 
+ *
+ * @param { Object } obj
+ * @return { Boolean }
  */
 export const isObjectEmpty = (obj) => {
-  return Object.keys(obj).length === 0 
+  return Object.keys(obj).length === 0
     && obj.constructor === Object
 }
 
 /**
  * usage: years(2019-20) return array
- * 
+ *
  * ref: https://stackoverflow.com/questions/1575271/range-of-years-in-javascript-for-a-select-box
- * @param { String } startYear 
+ * @param { String } startYear
  * @return { Array }
  */
 export const getYearList = (startYear) => {
   const currentYear = new Date().getFullYear(), years = [];
-  startYear = startYear || 1980;  
+  startYear = startYear || 1980;
   while ( startYear <= currentYear ) {
       years.push(startYear++);
-  }   
+  }
 
   return years;
 }
@@ -31,8 +35,8 @@ export const getYearList = (startYear) => {
 /**
  * Converts file into base64 encoded string.
  * Reference: https://stackoverflow.com/questions/36280818/how-to-convert-file-to-base64-in-javascript
- * 
- * @param { FileObject } file 
+ *
+ * @param { FileObject } file
  */
 export const toBase64 = file => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -43,8 +47,8 @@ export const toBase64 = file => new Promise((resolve, reject) => {
 
 /**
  * Converts integer into money format in USD.
- * 
- * @param { Integer } number 
+ *
+ * @param { Integer } number
  * @returns { String } e.g. $50.00
  */
 export const moneyFormat = (number) => {
@@ -57,16 +61,16 @@ export const moneyFormat = (number) => {
 
 /**
  * Maps date to UTC in ISO string format.
- * 
- * @param { String } date 
+ *
+ * @param { String } date
  * @return { String }
  */
 export const dateFormatUTC = (date) => dateFormat(mapUTCDate(date))
 
 /**
  * Formats date readable for Vuetify components.
- * 
- * @param { String } date 
+ *
+ * @param { String } date
  * @returns { String } e.g. 2020-04-28
  */
 export const dateFormat = (date) => {
@@ -77,9 +81,9 @@ export const dateFormat = (date) => {
 
 /**
  * Converts date into UTC timezone.
- * This solves timezone issues. 
- * 
- * @param { String } date 
+ * This solves timezone issues.
+ *
+ * @param { String } date
  * @returns { String } e.g. 2020 04 28
  */
 export const mapUTCDate = (date) => {
@@ -89,8 +93,8 @@ export const mapUTCDate = (date) => {
 
 /**
  * Checks if user is administrator.
- * 
- * @param { Object } user 
+ *
+ * @param { Object } user
  * @returns { Boolean }
  */
 export const isAdmin = (user) => (
@@ -99,7 +103,7 @@ export const isAdmin = (user) => (
 
 /**
  * Capitalizes first letters of words in string.
- * 
+ *
  * Reference: https://stackoverflow.com/questions/2332811/capitalize-words-in-string
  * @param {string} str String to be modified
  * @param {boolean=false} lower Whether all other letters should be lowercased
@@ -114,18 +118,18 @@ export const capitalize = (str, lower = false) =>
 
 /**
  * Export data into CSV.
- * 
+ *
  * @param { Array } data array of obj
- * @param { String } title title file 
+ * @param { String } title title file
  */
 export const exportToCSV = (data, title = 'Data List', filename = 'generated') => {
-  const options = { 
+  const options = {
     title,
     filename,
     fieldSeparator: ',',
     quoteStrings: '"',
     decimalSeparator: '.',
-    showLabels: true, 
+    showLabels: true,
     showTitle: true,
     useTextFile: false,
     useBom: true,
