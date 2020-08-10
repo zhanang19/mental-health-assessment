@@ -47,14 +47,14 @@ export default {
     // redirect to their facility page if user
     // is not an administrator, since route middleware
     // doesn't work the way it should...
-    if (
-      !this.$auth.user.is_admin &&
-      !this.$route.name.includes("daycare-facilities-id")
-    ) {
-      await this.$router.push({
-        name: "redirect",
-      });
-    }
+    // if (
+    //   !this.$auth.user.is_admin &&
+    //   !this.$route.name.includes("daycare-facilities-id")
+    // ) {
+    //   await this.$router.push({
+    //     name: "redirect",
+    //   });
+    // }
   },
 };
 </script>
@@ -67,5 +67,14 @@ html {
 .router-container {
   height: 100%;
   display: flex;
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.5s;
+}
+.layout-enter,
+.layout-leave-active {
+  opacity: 0;
 }
 </style>
