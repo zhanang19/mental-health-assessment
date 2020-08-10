@@ -3,8 +3,6 @@
 namespace App;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +19,18 @@ class User extends Authenticatable implements HasMedia
         SoftDeletes,
         SoftCascadeTrait,
         InteractsWithMedia;
+
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
     /**
      * The relationships that should always be loaded.
@@ -41,18 +51,6 @@ class User extends Authenticatable implements HasMedia
         'remember_token',
         'roles',
         'media'
-    ];
-
-    /**
-     * The attributes that are not mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-        'deleted_at'
     ];
 
     /**
