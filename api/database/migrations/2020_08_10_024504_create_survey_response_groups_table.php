@@ -21,6 +21,7 @@ class CreateSurveyResponseGroupsTable extends Migration
             $table->integer('questions_answered')->default(0);
             $table->integer('total_questions')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('survey_response_groups', function (Blueprint $table) {

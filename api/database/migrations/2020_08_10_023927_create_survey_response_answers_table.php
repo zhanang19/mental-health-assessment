@@ -20,6 +20,7 @@ class CreateSurveyResponseAnswersTable extends Migration
             $table->string('answer_a')->nullable();
             $table->string('answer_b')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('survey_response_answers', function (Blueprint $table) {

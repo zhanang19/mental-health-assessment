@@ -20,6 +20,7 @@ class CreateSurveyQuestionGroupsTable extends Migration
             $table->string('label');
             $table->mediumText('instructions')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('survey_question_groups', function (Blueprint $table) {

@@ -24,6 +24,7 @@ class CreateGuardiansTable extends Migration
             $table->boolean('is_ofw')->default(false);
             $table->string('away_from_home')->nullable()->comment('e.g., away for 10 months, or more, etc.');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('guardians', function (Blueprint $table) {

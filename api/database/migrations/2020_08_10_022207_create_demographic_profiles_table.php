@@ -36,6 +36,7 @@ class CreateDemographicProfilesTable extends Migration
             $table->string('school_last_attended')->nullable();
             $table->string('school_address')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('demographic_profiles', function (Blueprint $table) {

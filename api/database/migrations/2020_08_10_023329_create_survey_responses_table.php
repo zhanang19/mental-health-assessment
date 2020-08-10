@@ -19,6 +19,7 @@ class CreateSurveyResponsesTable extends Migration
             $table->unsignedBigInteger('survey_id');
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('survey_responses', function (Blueprint $table) {

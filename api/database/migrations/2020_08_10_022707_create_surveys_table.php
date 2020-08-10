@@ -18,6 +18,7 @@ class CreateSurveysTable extends Migration
             $table->string('name');
             $table->mediumText('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

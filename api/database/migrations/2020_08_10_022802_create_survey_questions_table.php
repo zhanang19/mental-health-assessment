@@ -22,6 +22,7 @@ class CreateSurveyQuestionsTable extends Migration
             $table->json('choices_a')->nullable();
             $table->json('choices_b')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('survey_questions', function (Blueprint $table) {
