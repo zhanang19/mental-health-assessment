@@ -16,8 +16,10 @@ class CreateSurveyQuestionsTable extends Migration
         Schema::create('survey_questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('survey_id');
+            $table->string('identifier')->comment('can be 1. or 1A, or anything');
             $table->string('input_type');
             $table->string('question');
+            $table->string('hint')->nullable();
             $table->json('validations')->nullable();
             $table->json('choices_a')->nullable();
             $table->json('choices_b')->nullable();
