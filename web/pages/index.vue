@@ -20,9 +20,9 @@ export default {
     };
   },
 
-  auth: "guest",
-
   layout: "empty",
+
+  auth: "guest",
 
   components: {
     SignIn,

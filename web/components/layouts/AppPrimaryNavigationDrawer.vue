@@ -38,7 +38,7 @@
               </template>
               <v-card width="400">
                 <v-list>
-                  <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
+                  <v-list-item :to="{ name: 'app-settings' }">Settings</v-list-item>
                   <v-list-item @click="controller.logout = true">Logout</v-list-item>
                 </v-list>
               </v-card>
