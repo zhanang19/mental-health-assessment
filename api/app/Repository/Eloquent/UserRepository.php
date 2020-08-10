@@ -23,6 +23,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function all(): Collection
     {
-        return User::limit(5)->get();
+        return User::get();
     }
 }

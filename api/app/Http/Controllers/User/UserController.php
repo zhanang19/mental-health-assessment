@@ -4,19 +4,19 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
-use App\Repositories\UserRepository;
+use App\Repository\Eloquent\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     protected $repository;
-    
+
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        validator(request()->all(), 
+        validator(request()->all(),
             [
                 'daycare_id' => 'required',
                 'username' => 'required',
@@ -47,15 +47,15 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users',
                 'time_zone' => 'required',
                 'password' => 'required|confirmed|min:8',
-            ], 
+            ],
             [
                 'daycare_id' => 'daycare',
-                'first_name' => 'first name', 
-                'last_name' => 'last name', 
-                'middle_name' => 'middle name', 
-                'time_zone' => 'time zone', 
+                'first_name' => 'first name',
+                'last_name' => 'last name',
+                'middle_name' => 'middle name',
+                'time_zone' => 'time zone',
             ])->validate();
-        
+
         $user = User::create(
             $request->only([
                 'daycare_id',
@@ -115,7 +115,7 @@ class UserController extends Controller
             'time_zone' => $request->get('time_zone'),
         ]);
 
-        if ($request->has('role') 
+        if ($request->has('role')
             && $request->get('role') != 'None') {
             $user->syncRoles($request->get('role'));
         }
@@ -127,7 +127,7 @@ class UserController extends Controller
         }
 
         // avatar
-        if ($request->hasFile('avatar') 
+        if ($request->hasFile('avatar')
             && $request->file('avatar')->isValid()
         ) {
             $user->addMedia(
@@ -155,13 +155,13 @@ class UserController extends Controller
         if ($user->id == auth()->user()->id) {
             abort(403, "You cannot delete yourself.");
         }
-        
+
         if ($user->delete()) {
             return response()->json([
                 'message' => 'A user was deleted.'
             ]);
         }
-        
+
         return response()->json([
             'message' => 'A user was not deleted.'
         ]);
