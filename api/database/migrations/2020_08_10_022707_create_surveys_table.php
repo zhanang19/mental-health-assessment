@@ -19,6 +19,7 @@ class CreateSurveysTable extends Migration
             $table->string('slug')->unique();
             $table->string('subtitle')->nullable();
             $table->longText('description')->nullable();
+            $table->string('color_theme')->default('indigo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
