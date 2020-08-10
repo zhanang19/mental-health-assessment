@@ -15,12 +15,33 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, 
-        HasApiTokens, 
-        HasRoles, 
+    use Notifiable,
+        HasApiTokens,
+        HasRoles,
         SoftDeletes,
         SoftCascadeTrait,
         InteractsWithMedia;
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = [
+        //
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'roles',
+        'media'
+    ];
 
     /**
      * The attributes that are not mass assignable.
@@ -32,27 +53,6 @@ class User extends Authenticatable implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at'
-    ];
-
-    /**
-     * The relationships that should always be loaded.
-     *
-     * @var array
-     */
-    protected $with = [
-        // 
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 
-        'remember_token', 
-        'roles', 
-        'media'
     ];
 
     /**
@@ -97,7 +97,7 @@ class User extends Authenticatable implements HasMedia
         'deleted_at',
         'updated_at'
     ];
-    
+
     /**
      * Get the avatar attribute for the user.
      *
@@ -110,14 +110,14 @@ class User extends Authenticatable implements HasMedia
 
     /**
      * Get the full name attribute of a child.
-     * 
+     *
      * @return string
      */
     public function getFullNameAttribute()
     {
         return "$this->first_name $this->last_name";
     }
-    
+
     /**
      * Get the role flag for the user.
      *
@@ -127,7 +127,7 @@ class User extends Authenticatable implements HasMedia
     {
         return cleanTimeZoneName($this->attributes['time_zone']);
     }
-    
+
     /**
      * Get the role flag for the user.
      *
@@ -170,14 +170,14 @@ class User extends Authenticatable implements HasMedia
 
     /**
      * Checks if user is created today.
-     * 
+     *
      * @return bool
      */
     public function getCreatedTodayAttribute()
     {
         return formatDate( setTimeZone(now()) ) == $this->date_created;
     }
-    
+
     /**
      * Get the formatted created at attribute.
      *
