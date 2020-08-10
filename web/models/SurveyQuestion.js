@@ -17,3 +17,15 @@ export class SurveyQuestion {
     this.choices_b = choices_b;
   }
 }
+
+export const inputTypes = [
+  "text",
+  "textarea",
+  "radio",
+  "checkbox",
+  "paragraph"
+];
+
+export const validations = {
+  required: [value => !!value || "This field is required."]
+};
