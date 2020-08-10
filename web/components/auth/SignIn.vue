@@ -1,14 +1,12 @@
 <template>
   <v-form ref="form" @submit.prevent="login()">
     <v-card-text>
-      <v-row class="mb-10">
-        <div class="text-center ">
-          <v-avatar class="rounded-lg mb-5" tile size="125">
-            <v-img height="125" width="125" src="/icon.png"></v-img>
-          </v-avatar>
-          <h1 class="display-1 mx-1">Mental Health Assessment</h1>
-        </div>
-      </v-row>
+      <div class="text-center mb-3">
+        <v-avatar class="rounded-lg mb-3" tile size="125">
+          <v-img height="125" width="125" src="/icon.png"></v-img>
+        </v-avatar>
+        <h1 class="display-1 mx-1">Mental Health Assessment</h1>
+      </div>
       <div class="title text-center mb-10">
         <div class="headline font-weight-regular">SIGN IN</div>
         <div class="subtitle-1">TO ACCESS THE PORTAL</div>
@@ -27,7 +25,7 @@
             hint="Required"
             persistent-hint
             label="Username"
-            outlined
+            solo
           ></v-text-field>-->
           <v-text-field
             v-show="type === 'email'"
@@ -38,7 +36,7 @@
             :error="!!errors['email']"
             :error-messages="errors['email']"
             label="Email"
-            outlined
+            solo
           ></v-text-field>
           <v-text-field
             label="Password"
@@ -49,7 +47,7 @@
             v-model="credentials.password"
             :rules="rules.password"
             type="password"
-            outlined
+            solo
           ></v-text-field>
           <div class="text-center mt-1">
             <div
@@ -59,13 +57,12 @@
               style="cursor: pointer"
             >Forgot your password?</div>
             <div class="mb-1">
-              <v-btn class="mb-1" type="submit" color="light" block :loading="loggingIn" x-large rounded>
+              <v-btn class="mb-1" type="submit" color="primary" block :loading="loggingIn" x-large rounded>
                 Sign In
                 <v-icon right>mdi-chevron-right</v-icon>
               </v-btn>
-              <v-btn class="mb-1" color="secondary" block x-large rounded>
+              <v-btn class="mb-1" color="light" block x-large rounded>
                 Register
-                <v-icon right>mdi-chevron-right</v-icon>
               </v-btn>
             </div>
           </div>

@@ -1,23 +1,7 @@
 <template>
-  <v-main class="grey lighten-4 bg-wave-7" app>
-    <v-container fill-height>
-      <v-row justify="center" align="center">
-        <v-col>
-          <v-card-text>
-            <div class="text-center">
-              <img
-                src="/illustrations/reading-book.svg"
-                class="mb-5"
-                style="height: 80vh; z-index: 999;"
-                width="95%"
-              />
-            </div>
-          </v-card-text>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-navigation-drawer
-      :color="regularScreen ? 'transparent' : ''"
+  <v-main app>
+    <!-- <v-navigation-drawer
+      :color="regularScreen ? '' : ''"
       :value="true"
       :right="false"
       :touchless="true"
@@ -27,7 +11,7 @@
       :class="{
         'rounded-l-xl': regularScreen && false,
         'bg-wave-inverse-3': !regularScreen && false,
-        'elevation-10': false,
+        'elevation-10': true,
         'grey lighten-5': false,
       }"
       :style="{
@@ -37,11 +21,18 @@
       <v-container fill-height>
         <v-row justify="center" align="center">
           <v-col>
-            <SignIn :class="{'px-10 mx-10': regularScreen}" />
+            <SignIn :class="{'px-10': regularScreen}" />
           </v-col>
         </v-row>
       </v-container>
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
+    <v-container class="bg-wave-7" fill-height fluid>
+      <v-row justify="center" align="stretch" no-gutters>
+        <v-col xl="6" lg="6" md="6" sm="10" xs="12">
+          <SignIn :class="{'px-10': regularScreen}" />
+        </v-col>
+      </v-row>
+    </v-container>
   </v-main>
 </template>
 
