@@ -2,7 +2,7 @@
   <v-main app>
     <v-container class="bg-wave-7" fill-height fluid>
       <v-row justify="center" align="stretch" no-gutters>
-        <v-col xl="6" lg="6" md="6" sm="10" xs="12">
+        <v-col xl="6" lg="6" md="8" sm="10" xs="12">
           <SignIn :class="{'px-10': regularScreen}" />
         </v-col>
       </v-row>
