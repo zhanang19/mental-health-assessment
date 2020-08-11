@@ -8,5 +8,7 @@ interface SurveyRepositoryInterface
 {
     public function all(): Collection;
 
-    public function createNewSurveyForm();
+    public function newSurvey();
+
+    public function updateSurvey(int $surveyId, $payload);
 }
