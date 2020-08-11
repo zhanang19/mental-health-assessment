@@ -5,16 +5,17 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Repository\Eloquent\UserRepository;
+use App\Repository\UserRepositoryInterface;
 use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected $repository;
+    protected $userRepository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->repository = $repository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -25,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         return UserResource::collection(
-            $this->repository->all()
+            $this->userRepository->all()
         );
     }
 
