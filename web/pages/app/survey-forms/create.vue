@@ -44,7 +44,7 @@
 
     <v-container>
       <v-row justify="center" align="center">
-        <v-col lg="8" md="8" sm="10" xs="12">
+        <v-col lg="8" md="10" sm="11" xs="12">
           <v-form ref="form" @submit.prevent="save()">
             <v-card class="rounded-lg" style="margin-bottom: 5rem">
               <v-card-title>
@@ -67,7 +67,13 @@
                 ></v-text-field>
               </v-card-subtitle>
               <v-card-text>
-                <v-textarea label="Description" hint="Optional" persistent-hint></v-textarea>
+                <v-textarea
+                  v-model="form.survey.description"
+                  label="Description"
+                  hint="Optional"
+                  outlined
+                  persistent-hint
+                ></v-textarea>
               </v-card-text>
             </v-card>
 
@@ -127,6 +133,7 @@
                     v-model="group.instructions"
                     hint="Optional"
                     persistent-hint
+                    outlined
                   ></v-textarea>
                 </v-card-text>
               </v-card>
@@ -138,6 +145,16 @@
                 :key="questionIndex"
               >
                 <v-card-title class="headline">
+                  <v-row>
+                    <v-col lg="4" md="6" sm="10" xs="12">
+                      <v-text-field
+                        label="Question Identifer"
+                        v-model="questionItem.identifier"
+                        hint="e.g. #17 or ABC-01"
+                        persistent-hint
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
                   <v-row>
                     <v-col lg="8" md="6" sm="12" xs="12">
                       <v-textarea
@@ -163,8 +180,9 @@
                   </v-row>
                 </v-card-title>
                 <v-card-text>
+                  <!-- form options -->
                   <v-row>
-                    <v-col lg="8" md="8" sm="10" xs="10">
+                    <v-col lg="12" md="12" sm="12" xs="12">
                       <section v-if="inputTypesEnum.shortAnswer === questionItem.input_type">
                         <v-text-field label="Short answer text" disabled></v-text-field>
                       </section>
@@ -174,30 +192,145 @@
                       <section
                         v-else-if="inputTypesEnum.multipleChoice === questionItem.input_type"
                       >
-                        <v-radio-group column>
-                          <v-radio
-                            v-for="(choiceA, choiceAIndex) in questionItem.choices_a"
+                        <v-row>
+                          <!-- option group A -->
+                          <v-col>
+                            <v-text-field
+                              label="Option Group Label"
+                              v-model="questionItem.option_group_a.label"
+                            ></v-text-field>
+                            <v-radio-group column>
+                              <v-radio
+                                v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
+                                :key="choiceAIndex"
+                              >
+                                <template #label>
+                                  <v-text-field
+                                    v-model="choiceA.text"
+                                    :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
+                                    @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                                    append-icon="mdi-close"
+                                  ></v-text-field>
+                                </template>
+                              </v-radio>
+                              <div>
+                                <v-btn
+                                  @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
+                                  class="primary--text"
+                                >Add Option</v-btn>
+                              </div>
+                            </v-radio-group>
+                          </v-col>
+                          <!-- option group B -->
+                          <v-col v-if="!isObjectEmpty(questionItem.option_group_b)">
+                            <v-text-field
+                              label="Option Group Label"
+                              v-model="questionItem.option_group_b.label"
+                            ></v-text-field>
+                            <v-radio-group column>
+                              <v-radio
+                                v-for="(choiceB, choiceBIndex) in questionItem.option_group_b.options"
+                                :key="choiceBIndex"
+                              >
+                                <template #label>
+                                  <v-text-field
+                                    v-model="choiceB.text"
+                                    :label="!!choiceB.text ? choiceB.text : `Option ${choiceBIndex + 1}`"
+                                    @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceBIndex, 'option_group_b')"
+                                    append-icon="mdi-close"
+                                  ></v-text-field>
+                                </template>
+                              </v-radio>
+                              <div>
+                                <v-btn
+                                  @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_b')"
+                                  class="primary--text"
+                                >Add Option</v-btn>
+                                <v-btn
+                                  @click="deleteSurveyQuestionOptionGroup(groupIndex, questionIndex, 'option_group_b')"
+                                >Remove Option Group</v-btn>
+                              </div>
+                            </v-radio-group>
+                          </v-col>
+                        </v-row>
+                      </section>
+                      <section v-else-if="inputTypesEnum.checkboxes === questionItem.input_type">
+                        <v-row>
+                          <!-- checkbox option group A -->
+                          <v-col>
+                            <v-text-field
+                              label="Option Group Label"
+                              v-model="questionItem.option_group_a.label"
+                            ></v-text-field>
+                            <v-checkbox
+                              v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
+                              :key="choiceAIndex"
+                            >
+                              <template #label>
+                                <v-text-field
+                                  v-model="choiceA.text"
+                                  :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
+                                  @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                                  append-icon="mdi-close"
+                                ></v-text-field>
+                              </template>
+                            </v-checkbox>
+                            <div>
+                              <v-btn
+                                @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
+                                class="primary--text"
+                              >Add Option</v-btn>
+                            </div>
+                          </v-col>
+                          <!-- checkbox option group B -->
+                          <v-col v-if="!isObjectEmpty(questionItem.option_group_b)">
+                            <v-text-field
+                              label="Option Group Label"
+                              v-model="questionItem.option_group_b.label"
+                            ></v-text-field>
+                            <v-checkbox
+                              v-for="(choiceA, choiceAIndex) in questionItem.option_group_b.options"
+                              :key="choiceAIndex"
+                            >
+                              <template #label>
+                                <v-text-field
+                                  v-model="choiceA.text"
+                                  :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
+                                  @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_b')"
+                                  append-icon="mdi-close"
+                                ></v-text-field>
+                              </template>
+                            </v-checkbox>
+                            <div>
+                              <v-btn
+                                @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_b')"
+                                class="primary--text"
+                              >Add Option</v-btn>
+                              <v-btn
+                                @click="deleteSurveyQuestionOptionGroup(groupIndex, questionIndex, 'option_group_b')"
+                              >Remove Option Group</v-btn>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </section>
+                      <section v-else-if="inputTypesEnum.dropdown === questionItem.input_type">
+                        <div>
+                          <v-text-field
+                            v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
                             :key="choiceAIndex"
-                          >
-                            <template #label>
-                              <v-text-field
-                                v-model="choiceA.text"
-                                :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
-                                @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'choices_a')"
-                                append-icon="mdi-close"
-                              ></v-text-field>
-                            </template>
-                          </v-radio>
+                            v-model="choiceA.text"
+                            :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
+                            @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                            append-icon="mdi-close"
+                          ></v-text-field>
                           <div>
                             <v-btn
-                              @click="addSurveyQuestionChoice(groupIndex, questionIndex, 'choices_a')"
+                              @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
                               class="primary--text"
                             >Add Option</v-btn>
                           </div>
-                        </v-radio-group>
+                        </div>
                       </section>
-                      <section v-else-if="inputTypesEnum.checkboxes === questionItem.input_type"></section>
-                      <section v-else-if="inputTypesEnum.dropdown === questionItem.input_type"></section>
                       <section class="text-center" v-else>
                         <h4 class="headline red--text">Must select an input type!</h4>
                       </section>
@@ -278,6 +411,7 @@ import {
 import {
   SurveyQuestion,
   surveyQuestionValidations,
+  surveyQuestionOptionValidations,
   inputTypes,
   inputTypesEnum,
   Option,
@@ -296,7 +430,7 @@ export default {
     form: {
       survey: new Survey({
         title: "Untitled Survey Form",
-        color_theme: "white",
+        color_theme: "blue darken-2",
       }),
       groups: [
         new SurveyQuestionGroup({
@@ -317,6 +451,7 @@ export default {
         survey: surveyValidations,
         group: surveyQuestionGroupValidations,
         question: surveyQuestionValidations,
+        option: surveyQuestionOptionValidations,
       };
     },
 
@@ -394,8 +529,11 @@ export default {
      * @param index survey question group index
      */
     addSurveyQuestion(index) {
+      const totalQuestions = this.form.groups[index].questions.length;
+
       this.form.groups[index].questions.push(
         new SurveyQuestion({
+          identifier: (totalQuestions + 1),
           input_type: "short answer",
           required: false,
         })
@@ -429,19 +567,15 @@ export default {
      * @param surveyQuestionGroupIndex survey question group index
      * @param questionIndex question index
      */
-    addSurveyQuestionChoice(
-      surveyQuestionGroupIndex,
-      questionIndex,
-      field
-    ) {
-      if (field === "choices_a") {
+    addSurveyQuestionOption(surveyQuestionGroupIndex, questionIndex, field) {
+      if (field === "option_group_a") {
         this.form.groups[surveyQuestionGroupIndex].questions[
           questionIndex
-        ].choices_a.push(new Option());
+        ].option_group_a.options.push(new Option());
       } else {
         this.form.groups[surveyQuestionGroupIndex].questions[
           questionIndex
-        ].choices_b.push(new Option());
+        ].option_group_b.options.push(new Option());
       }
     },
 
@@ -456,14 +590,36 @@ export default {
       choiceAIndex,
       field
     ) {
-      if (field === "choices_a") {
+      if (field === "option_group_a") {
         this.form.groups[surveyQuestionGroupIndex].questions[
           questionIndex
-        ].choices_a.splice(choiceAIndex, 1);
+        ].option_group_a.options.splice(choiceAIndex, 1);
       } else {
         this.form.groups[surveyQuestionGroupIndex].questions[
           questionIndex
-        ].choices_b.splice(choiceAIndex, 1);
+        ].option_group_b.options.splice(choiceAIndex, 1);
+      }
+    },
+
+    /**
+     * @param surveyQuestionGroupIndex survey question group index
+     * @param questionIndex question index
+     * @param choiceAIndex question index
+     */
+    deleteSurveyQuestionOptionGroup(
+      surveyQuestionGroupIndex,
+      questionIndex,
+      field
+    ) {
+      if (field === "option_group_a") {
+        return this.$helpers.notify({
+          type: "info",
+          message: "Must have a set of options. Cannot delete option set A.",
+        });
+      } else {
+        this.form.groups[surveyQuestionGroupIndex].questions[
+          questionIndex
+        ].option_group_b = {};
       }
     },
   },

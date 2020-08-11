@@ -4,7 +4,7 @@ export class Survey {
     title = null,
     subtitle = null,
     description = null,
-    color_theme = "white"
+    color_theme = "blue darken-2"
   } = {}) {
     this.title = title;
     this.subtitle = subtitle;

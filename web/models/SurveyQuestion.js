@@ -7,16 +7,16 @@ export class SurveyQuestion {
     question = null,
     hint = null,
     required = false,
-    choices_a = [new Option()],
-    choices_b = [new Option()]
+    option_group_a = new OptionGroup(),
+    option_group_b = new OptionGroup()
   } = {}) {
     this.identifier = identifier;
     this.input_type = input_type;
     this.question = question;
     this.hint = hint;
     this.required = required;
-    this.choices_a = choices_a;
-    this.choices_b = choices_b;
+    this.option_group_a = option_group_a;
+    this.option_group_b = option_group_b;
   }
 }
 
@@ -26,14 +26,28 @@ export class Option {
   }
 }
 
+export class OptionGroup {
+  constructor({
+    label = "Untitled Option Group",
+    options = [new Option()]
+  } = {}) {
+    this.label = label;
+    this.options = options;
+  }
+}
+
 export const surveyQuestionValidations = {
   identifier: validations.required,
   input_type: validations.required,
   question: validations.required
   // hint: validations.required,
   // validations: validations.required,
-  // choices_a: validations.required,
-  // choices_b: validations.required
+  // option_group_a: validations.required,
+  // option_group_b: validations.required
+};
+
+export const surveyQuestionOptionValidations = {
+  text: validations.required
 };
 
 export const inputTypesEnum = {

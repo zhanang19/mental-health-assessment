@@ -4,20 +4,23 @@
     <vue-page-transition class="router-container" name="fade-in-down">
       <nuxt></nuxt>
     </vue-page-transition>
-    <v-tooltip v-if="!$store.state.drawer" bottom>
+    <v-tooltip v-if="!$store.state.drawer" top>
       <template #activator="{ on, attrs }">
         <v-btn
           style="z-index: 999"
           v-on="on"
           v-bind="attrs"
           @click="$store.commit('TOGGLE_DRAWER')"
-          color="primary"
-          top
-          right
+          class="primary--text"
+          elevation="10"
+          bottom
+          left
           fixed
-          fab
+          rounded
+          x-large
         >
-          <v-icon>mdi-menu</v-icon>
+          <v-icon left>mdi-arrow-left</v-icon>
+          <span>Toggle Sidebar</span>
         </v-btn>
       </template>
       <span>Toggle sidebar</span>
