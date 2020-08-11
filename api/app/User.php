@@ -191,7 +191,7 @@ class User extends Authenticatable implements HasMedia
      */
     public function getCreatedTodayAttribute()
     {
-        return formatDate( setTimeZone(now()) ) == $this->date_created;
+        return formatDate(setTimeZone(now())) == $this->date_created;
     }
 
     /**
