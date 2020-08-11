@@ -14,12 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Relation::morphMap([
-        //     'family' => 'App\Family',
-        //     'employee' => 'App\Employee',
-        //     'daycare' => 'App\DaycareFacility',
-        //     'parent' => 'App\Guardian',
-        // ]);
+        $this->app->register(RepositoryServiceProvider::class);
     }
 
     /**

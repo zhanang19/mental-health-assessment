@@ -3,6 +3,8 @@
 namespace App;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -95,6 +97,22 @@ class User extends Authenticatable implements HasMedia
         'deleted_at',
         'updated_at'
     ];
+
+    /**
+     * @return HasOne
+     */
+    public function demographicProfile(): HasOne
+    {
+        return $this->hasOne(DemographicProfile::class, 'student_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function guardians(): HasMany
+    {
+        return $this->hasMany(Guardian::class, 'student_id');
+    }
 
     /**
      * Get the avatar attribute for the user.

@@ -16,6 +16,7 @@ class CreateSurveyQuestionsTable extends Migration
         Schema::create('survey_questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('survey_id');
+            $table->unsignedBigInteger('survey_question_group_id');
             $table->string('identifier')->comment('can be 1. or 1A, or anything');
             $table->string('input_type');
             $table->string('question');
@@ -29,6 +30,7 @@ class CreateSurveyQuestionsTable extends Migration
 
         Schema::table('survey_questions', function (Blueprint $table) {
             $table->foreign('survey_id')->references('id')->on('surveys');
+            $table->foreign('survey_question_group_id')->references('id')->on('survey_question_groups');
         });
     }
 

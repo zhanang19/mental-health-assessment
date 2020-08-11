@@ -314,6 +314,7 @@
                         </v-row>
                       </section>
                       <section v-else-if="inputTypesEnum.dropdown === questionItem.input_type">
+                        <!-- dropdown select options -->
                         <div>
                           <v-text-field
                             v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
@@ -424,7 +425,7 @@ export default {
     };
   },
 
-  layout: "empty",
+  // layout: "empty",
 
   data: () => ({
     form: {
