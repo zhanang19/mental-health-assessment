@@ -19,6 +19,6 @@ class SurveySeeder extends Seeder
      */
     public function run()
     {
-        $this->surveyRepository->newSurvey();
+        $this->surveyRepository->createSurvey();
     }
 }

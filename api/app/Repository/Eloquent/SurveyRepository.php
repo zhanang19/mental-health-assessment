@@ -74,7 +74,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      *
      * @return Survey
      */
-    public function newSurvey(): Survey
+    public function createSurvey(): Survey
     {
         $defaultTitle = 'Untitled Form ' . Str::random(16);
 

@@ -38,7 +38,7 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         return new SurveyResource([
-            'data' => $this->surveyRepository->newSurvey(),
+            'data' => $this->surveyRepository->createSurvey(),
             'message' => 'A new survey has been created.'
         ]);
     }

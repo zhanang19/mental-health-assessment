@@ -51,7 +51,7 @@ interface SurveyRepositoryInterface
      *
      * @return Survey
      */
-    public function newSurvey();
+    public function createSurvey();
 
     /**
      * Update existing survey.
