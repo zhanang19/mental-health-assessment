@@ -12,7 +12,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     /**
      * SurveyRepository constructor.
      *
-     * @param Operation $model
+     * @param Survey $model
      */
     public function __construct(Survey $model)
     {
@@ -24,15 +24,39 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function all(): Collection
     {
-        return Survey::get();
+        return Survey::all();
+    }
+
+    /**
+     * @param int $surveyId
+     * @return Survey
+     */
+    public function findById(int $surveyId): ?Survey
+    {
+        return $this->model->with([
+            'questionGroups',
+            'responses'
+        ])->findOrFail($surveyId);
+    }
+
+    /**
+     * @param string $slug
+     * @return Survey
+     */
+    public function findBySlug(string $slug): ?Survey
+    {
+        return $this->model->with([
+            'questionGroups',
+            'responses'
+        ])->firstWhere('slug', $slug);
     }
 
     /**
      * Create a new survey form.
      *
-     * @return array
+     * @return Survey
      */
-    public function newSurvey(): array
+    public function newSurvey(): Survey
     {
         $defaultTitle = 'Untitled Form ' . Str::random(16);
 
@@ -41,27 +65,25 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             'slug' => Str::slug($defaultTitle . ' ' . now()->timestamp),
         ]);
 
-        $groups = $survey->questionGroups()->create([
+        // add 1 question group by default
+        $survey->questionGroups()->create([
             'label' => 'Unlabeled Question Group'
         ]);
 
-        return [
-            'survey' => $survey,
-            'groups' => $groups,
-        ];
+        return $survey;
     }
 
     /**
      * @param int $surveyId
-     * @param array $payload
-     * @return array
+     * @param \Illuminate\Http\Request $payload
+     * @return Survey
      */
-    public function updateSurvey(int $surveyId, $payload)
+    public function updateSurvey(int $surveyId, $payload): Survey
     {
-        $questionGroups = $payload['survey_question_groups'];
+        $questionGroups = $payload->get('survey_question_groups');
 
         $survey = $this->model->find($surveyId)
-            ->update($payload['survey'])
+            ->update($payload->get('survey'))
             ->fresh();
 
         foreach ($questionGroups as $questionGroup) {
@@ -69,9 +91,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 $questionGroup['id']
             );
 
-            $_questionGroup->update($questionGroup);
-
-            $_questionGroup->fresh();
+            $_questionGroup->update($questionGroup)->fresh();
 
             $questions = $questionGroup['questions'];
 
@@ -83,5 +103,45 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 $_question->update($question);
             }
         }
+
+        return $survey;
+    }
+
+    /**
+     * @param int $surveyId
+     * @return boolean
+     */
+    public function deleteById(int $surveyId)
+    {
+        $survey = $this->findById($surveyId);
+
+        foreach ($survey->questionGroups as $questionGroup) {
+            foreach ($questionGroup->questions as $question) {
+                $question->delete();
+            }
+
+            $questionGroup->delete();
+        }
+
+        return $survey->delete();
+    }
+
+    /**
+     * @param string $slug
+     * @return boolean
+     */
+    public function deleteBySlug(string $slug)
+    {
+        $survey = $this->findBySlug($slug);
+
+        foreach ($survey->questionGroups as $questionGroup) {
+            foreach ($questionGroup->questions as $question) {
+                $question->delete();
+            }
+
+            $questionGroup->delete();
+        }
+
+        return $survey->delete();
     }
 }
