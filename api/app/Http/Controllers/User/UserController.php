@@ -25,9 +25,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(
-            $this->userRepository->all()
-        );
+        return UserResource::collection([
+            'data' => $this->userRepository->all()
+        ]);
     }
 
     /**
