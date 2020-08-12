@@ -19,7 +19,7 @@
               ></v-text-field>
               <v-toolbar-title></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn :to="{ name: 'app-survey-forms-create' }" large color="primary">Create Form</v-btn>
+              <v-btn :to="{ name: 'surveys-create' }" large color="primary">Create Form</v-btn>
             </v-toolbar>
 
             <v-divider></v-divider>
@@ -48,7 +48,7 @@
     </v-container>
 
     <!-- navigation drawer right -->
-    <v-navigation-drawer color="grey lighten-5" width="25%" permanent floating right app>
+    <!-- <v-navigation-drawer color="grey lighten-5" width="25%" permanent floating right app>
       <v-toolbar color="transparent" flat>
         <v-toolbar-title class="primary--text">Filter Control</v-toolbar-title>
       </v-toolbar>
@@ -74,7 +74,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
     <app-confirmation-dialog
       v-model="controller.dialog"

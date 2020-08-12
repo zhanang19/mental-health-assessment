@@ -42,7 +42,7 @@
       </template>
     </v-app-bar>
 
-    <v-container>
+    <v-container class="mb-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
           <v-form ref="form" @submit.prevent="save()">
@@ -400,15 +400,23 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-card
+      v-if="false"
+      class="rounded-xl"
+      style="text-align: center; width: 50%; position: fixed; bottom: 0; left: 0; right: 0; margin-left: auto; margin-right: auto; margin-bottom: 1rem;"
+    >
+      <v-card-text>Test</v-card-text>
+    </v-card>
   </v-main>
 </template>
 
 <script>
-import { Survey, colorThemes, surveyValidations } from "../../../models/Survey";
+import { Survey, colorThemes, surveyValidations } from "../../models/Survey";
 import {
   SurveyQuestionGroup,
   surveyQuestionGroupValidations,
-} from "../../../models/SurveyQuestionGroup";
+} from "../../models/SurveyQuestionGroup";
 import {
   SurveyQuestion,
   surveyQuestionValidations,
@@ -416,7 +424,7 @@ import {
   inputTypes,
   inputTypesEnum,
   Option,
-} from "../../../models/SurveyQuestion";
+} from "../../models/SurveyQuestion";
 
 export default {
   head() {
@@ -425,7 +433,7 @@ export default {
     };
   },
 
-  // layout: "empty",
+  layout: "empty",
 
   data: () => ({
     form: {
@@ -534,7 +542,7 @@ export default {
 
       this.form.groups[index].questions.push(
         new SurveyQuestion({
-          identifier: (totalQuestions + 1),
+          identifier: totalQuestions + 1,
           input_type: "short answer",
           required: false,
         })

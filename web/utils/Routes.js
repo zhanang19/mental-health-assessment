@@ -15,8 +15,8 @@ export const pages = [
   },
   {
     icon: "mdi-file-table-box-multiple-outline",
-    title: "Survey Forms",
-    route: "app-survey-forms",
+    title: "Surveys",
+    route: "app-surveys",
     color: "yellow darken-3",
     roles: ["super-admin", "admin"]
   },
