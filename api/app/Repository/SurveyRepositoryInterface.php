@@ -17,10 +17,18 @@ interface SurveyRepositoryInterface
     /**
      * Find survey by id.
      *
-     * @param int $surveyId
+     * @param int $id
      * @return Survey
      */
-    public function findById(int $surveyId): ?Survey;
+    public function findById(int $id): ?Survey;
+
+    /**
+     * Find trashed by id.
+     *
+     * @param int $id
+     * @return Survey
+     */
+    public function findTrashedById(int $id): ?Survey;
 
     /**
      * Get survey by slug.
@@ -29,6 +37,14 @@ interface SurveyRepositoryInterface
      * @return Survey
      */
     public function findBySlug(string $slug): ?Survey;
+
+    /**
+     * Find trashed survey by slug.
+     *
+     * @param string $slug
+     * @return Survey
+     */
+    public function findTrashedBySlug(string $slug): ?Survey;
 
     /**
      * Create new survey.
@@ -40,19 +56,25 @@ interface SurveyRepositoryInterface
     /**
      * Update existing survey.
      *
-     * @param int $surveyId
+     * @param int $id
      * @param array $payload
      * @return Survey
      */
-    public function updateSurvey(int $surveyId, $payload);
+    public function updateSurvey(int $id, $payload);
 
     /**
      * Delete survey by id.
      *
-     * @param int $surveyId
+     * @param int $id
      * @return boolean
      */
-    public function deleteById(int $surveyId);
+    public function deleteById(int $id);
+
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function deletePermanentlyById(int $id);
 
     /**
      * Delete survey by slug.
@@ -61,4 +83,26 @@ interface SurveyRepositoryInterface
      * @return boolean
      */
     public function deleteBySlug(string $slug);
+
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function deletePermanentlyBySlug(string $slug);
+
+    /**
+     * Restore survey by id.
+     *
+     * @param int $id
+     * @return boolean
+     */
+    public function restoreById(int $id);
+
+    /**
+     * Restore survey by slug.
+     *
+     * @param string $slug
+     * @return boolean
+     */
+    public function restoreBySlug(string $slug);
 }
