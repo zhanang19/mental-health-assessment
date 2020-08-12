@@ -35,7 +35,7 @@
                 <app-base-action-buttons
                   type="non-archive"
                   @click-view="$router.push({ name: 'surveys-slug', params: { slug: 'cool-survey' } })"
-                  @click-edit="customEvent('edit')"
+                  @click-edit="onClick()"
                   @click-delete="customEvent('delete')"
                   @click-restore="customEvent('restore')"
                   @click-delete-permanently="customEvent('deletePermanently')"
@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import { surveyService } from '../../../services/survey-service'
+
 export default {
   head() {
     return {
@@ -123,6 +125,12 @@ export default {
     customEvent(type) {
       console.log(type);
     },
+
+    async onClick() {
+      const response = await surveyService.all()
+
+      console.log(response)
+    }
   },
 };
 </script>
