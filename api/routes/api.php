@@ -23,7 +23,7 @@ Route::group([
 ], function () {
     Route::post('login', 'Auth\AuthController@login');
     Route::post('register', 'Auth\AuthController@register');
-  
+
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
@@ -40,7 +40,7 @@ Route::group([
 ], function () {
     /**
      * The admin role can only access these routes.
-     * 
+     *
      * @role admin
      */
     Route::group([
@@ -59,3 +59,5 @@ Route::group([
         });
     });
 });
+
+Route::apiResource('surveys', Survey\SurveyController::class);
