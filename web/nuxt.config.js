@@ -4,7 +4,7 @@ import colors from "vuetify/es5/util/colors";
 const title = "MHA";
 
 // your API baseURL
-const baseURL = false
+const baseURL = true
   ? "http://localhost:8000"
   : "https://api-ideya-tracker-v2.hefesto.site/";
 
