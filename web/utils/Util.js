@@ -1,5 +1,21 @@
 import { ExportToCsv } from 'export-to-csv';
 
+/**
+ * Remove keys from object.
+ *
+ * @param { Object } object
+ * @param { Array } keys
+ * @return { Object }
+ */
+export const removeKeys = (object, keys) => {
+  keys.forEach(key => delete object[key]);
+
+  console.log("[removeKeys] removing keys for object", object);
+  console.log("[removeKeys] keys to remove", keys);
+
+  return object;
+};
+
 export const validations = {
   required: [value => !!value || "This field is required."]
 };
