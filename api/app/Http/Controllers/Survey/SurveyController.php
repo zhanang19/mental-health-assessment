@@ -46,12 +46,12 @@ class SurveyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(string $slug)
     {
-        return new SurveyResource($this->surveyRepository->findById($id));
+        return new SurveyResource($this->surveyRepository->findBySlug($slug));
     }
 
     /**
