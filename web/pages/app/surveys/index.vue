@@ -19,7 +19,7 @@
               ></v-text-field>
               <v-toolbar-title></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn :to="{ name: 'surveys-create' }" large color="primary">Create Form</v-btn>
+              <v-btn @click="createNewSurvey()" large color="primary">Create Form</v-btn>
             </v-toolbar>
 
             <v-divider></v-divider>
@@ -74,7 +74,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>-->
 
     <app-confirmation-dialog
       v-model="controller.dialog"
@@ -84,7 +84,8 @@
 </template>
 
 <script>
-import { surveyService } from '../../../services/survey-service'
+import { surveyService } from "../../../services/survey-service";
+import { SurveyActions } from "../../../utils/StoreTypes";
 
 export default {
   head() {
@@ -122,15 +123,19 @@ export default {
   }),
 
   methods: {
+    createNewSurvey() {
+      this.$store.dispatch(SurveyActions.CREATE, {});
+    },
+
     customEvent(type) {
       console.log(type);
     },
 
     async onClick() {
-      const response = await surveyService.all()
+      // const response = await surveyService.all();
 
-      console.log(response)
-    }
+      console.log(response);
+    },
   },
 };
 </script>
