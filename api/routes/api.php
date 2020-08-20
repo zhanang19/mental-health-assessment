@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RouteGuards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// A listing of all timezones
-Route::get('timezones', 'Util\TimeZoneController@index');
-
 // Authentication module routes
 Route::group([
     'prefix' => 'auth'
@@ -25,7 +23,7 @@ Route::group([
     Route::post('register', 'Auth\AuthController@register');
 
     Route::group([
-      'middleware' => 'auth:api'
+      'middleware' => [RouteGuards::Authenticated]
     ], function() {
         Route::post('update', 'Auth\AuthController@update');
         Route::put('update-password', 'Auth\AuthController@updatePassword');
@@ -36,7 +34,7 @@ Route::group([
 
 // user has to be authenticated to access these routes.
 Route::group([
-    'middleware' => ['auth:api']
+    'middleware' => [RouteGuards::Authenticated]
 ], function () {
     /**
      * The admin role can only access these routes.
@@ -44,7 +42,7 @@ Route::group([
      * @role admin
      */
     Route::group([
-        'middleware' => ['role:admin|super-admin']
+        'middleware' => [RouteGuards::SuperAdminOrAdministrator]
     ], function () {
         // User module
         Route::apiResource('users', 'User\UserController');
