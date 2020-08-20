@@ -16,7 +16,7 @@ class CreateSurveysTable extends Migration
         Schema::create('surveys', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->string('subtitle')->nullable();
             $table->longText('description')->nullable();
             $table->string('color_theme')->default('indigo')->nullable();
