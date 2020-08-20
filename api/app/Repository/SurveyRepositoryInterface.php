@@ -20,15 +20,7 @@ interface SurveyRepositoryInterface
      * @param int $id
      * @return Survey
      */
-    public function findById(int $id): ?Survey;
-
-    /**
-     * Find trashed by id.
-     *
-     * @param int $id
-     * @return Survey
-     */
-    public function findTrashedById(int $id): ?Survey;
+    public function findSurveyById(int $id): ?Survey;
 
     /**
      * Get survey by slug.
@@ -37,14 +29,6 @@ interface SurveyRepositoryInterface
      * @return Survey
      */
     public function findBySlug(string $slug): ?Survey;
-
-    /**
-     * Find trashed survey by slug.
-     *
-     * @param string $slug
-     * @return Survey
-     */
-    public function findTrashedBySlug(string $slug): ?Survey;
 
     /**
      * Create new survey.
@@ -85,24 +69,10 @@ interface SurveyRepositoryInterface
     public function deleteBySlug(string $slug);
 
     /**
-     * @param int $id
-     * @return boolean
-     */
-    public function deletePermanentlyBySlug(string $slug);
-
-    /**
      * Restore survey by id.
      *
      * @param int $id
      * @return boolean
      */
     public function restoreById(int $id);
-
-    /**
-     * Restore survey by slug.
-     *
-     * @param string $slug
-     * @return boolean
-     */
-    public function restoreBySlug(string $slug);
 }

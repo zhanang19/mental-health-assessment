@@ -4,6 +4,7 @@ namespace App\Repository;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Interface EloquentRepositoryInterface
@@ -12,14 +13,75 @@ use Illuminate\Database\Eloquent\Model;
 interface EloquentRepositoryInterface
 {
     /**
-     * @param array $attributes
-     * @return Model
+     * Get all resources.
+     *
+     * @return Collection
      */
-    public function create(array $attributes): Model;
+    public function all(): Collection;
 
     /**
-     * @param $id
+     * Get all trashed resources.
+     *
+     * @return Collection
+     */
+    public function allTrashed(): Collection;
+
+    /**
+     * Find resource by id.
+     *
+     * @param int $modelId
      * @return Model
      */
-    public function findById(int $id): ?Model;
+    public function findById(int $modelId): ?Model;
+
+    /**
+     * Find trashed resource by id.
+     *
+     * @param int $modelId
+     * @return Model
+     */
+    public function findTrashedById(int $modelId): ?Model;
+
+    /**
+     * Create a resource.
+     *
+     * @param array $payload
+     * @return Model
+     */
+    public function create(array $payload): ?Model;
+
+    /**
+     * Update existing resource.
+     *
+     * @param int $modelId
+     * @param array $payload
+     * @return bool
+     */
+    public function update(int $modelId, array $payload): bool;
+
+
+
+    /**
+     * Delete resource by id.
+     *
+     * @param int $modelId
+     * @return bool
+     */
+    public function deleteById(int $modelId): bool;
+
+    /**
+     * Restore resource by id.
+     *
+     * @param int $modelId
+     * @return bool
+     */
+    public function restoreById(int $modelId): bool;
+
+    /**
+     * Permanently delete resource by id.
+     *
+     * @param int $modelId
+     * @return bool
+     */
+    public function permanentlyDeleteById(int $modelId): bool;
 }

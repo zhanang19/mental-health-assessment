@@ -20,32 +20,15 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
-     * @return Collection
-     */
-    public function all(): Collection
-    {
-        return Survey::all();
-    }
-
-    /**
-     * @param int $id
+     * @param int $surveyId
      * @return Survey
      */
-    public function findById(int $id): ?Survey
+    public function findSurveyById(int $surveyId): ?Survey
     {
         return $this->model->with([
             'questionGroups',
             'responses'
-        ])->findOrFail($id);
-    }
-
-    /**
-     * @param int $id
-     * @return Survey
-     */
-    public function findTrashedById(int $id): ?Survey
-    {
-        return $this->model->onlyTrashed()->findOrFail($id);
+        ])->findOrFail($surveyId);
     }
 
     /**
@@ -61,15 +44,6 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
-     * @param string $slug
-     * @return Survey
-     */
-    public function findTrashedBySlug(string $slug): ?Survey
-    {
-        return $this->model->onlyTrashed()->firstWhere('slug', $slug);
-    }
-
-    /**
      * Create a new survey form.
      *
      * @return Survey
@@ -80,7 +54,10 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
 
         $survey = $this->model->create([
             'title' => $defaultTitle,
-            'slug' => Str::slug($defaultTitle . ' ' . now()->timestamp),
+
+            // must have else mutator will not trigger
+            'slug' => null,
+            // 'slug' => Str::slug($defaultTitle . ' ' . now()->timestamp),
         ]);
 
         // add 1 question group by default
@@ -88,19 +65,19 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             'label' => 'Unlabeled Question Group'
         ]);
 
-        return $survey;
+        return $survey->fresh();
     }
 
     /**
-     * @param int $id
+     * @param int $surveyId
      * @param \Illuminate\Http\Request $payload
      * @return Survey
      */
-    public function updateSurvey(int $id, $payload): Survey
+    public function updateSurvey(int $surveyId, $payload): Survey
     {
         $questionGroups = $payload->get('survey_question_groups');
 
-        $survey = $this->model->find($id)
+        $survey = $this->model->find($surveyId)
             ->update($payload->get('survey'))
             ->fresh();
 
@@ -126,12 +103,12 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
-     * @param int $id
+     * @param int $surveyId
      * @return boolean
      */
-    public function deleteById(int $id)
+    public function deleteById(int $surveyId): bool
     {
-        $survey = $this->findById($id);
+        $survey = $this->findById($surveyId);
 
         foreach ($survey->questionGroups as $questionGroup) {
             foreach ($questionGroup->questions as $question) {
@@ -145,12 +122,12 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
-     * @param int $id
+     * @param int $surveyId
      * @return boolean
      */
-    public function deletePermanentlyById(int $id)
+    public function deletePermanentlyById(int $surveyId)
     {
-        $survey = $this->findTrashedById($id);
+        $survey = $this->findTrashedById($surveyId);
 
         foreach ($survey->questionGroups as $questionGroup) {
             foreach ($questionGroup->questions as $question) {
@@ -183,50 +160,12 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
-     * @param string $slug
+     * @param int $surveyId
      * @return boolean
      */
-    public function deletePermanentlyBySlug(string $slug)
+    public function restoreById(int $surveyId): bool
     {
-        $survey = $this->findTrashedBySlug($slug);
-
-        foreach ($survey->questionGroups as $questionGroup) {
-            foreach ($questionGroup->questions as $question) {
-                $question->forceDelete();
-            }
-
-            $questionGroup->forceDelete();
-        }
-
-        return $survey->forceDelete();
-    }
-
-    /**
-     * @param int $id
-     * @return boolean
-     */
-    public function restoreById(int $id)
-    {
-        $survey = $this->findTrashedById($id);
-
-        foreach ($survey->questionGroups as $questionGroup) {
-            foreach ($questionGroup->questions as $question) {
-                $question->restore();
-            }
-
-            $questionGroup->restore();
-        }
-
-        return $survey->restore();
-    }
-
-    /**
-     * @param string $slug
-     * @return boolean
-     */
-    public function restoreBySlug(string $slug)
-    {
-        $survey = $this->findTrashedBySlug($slug);
+        $survey = $this->findTrashedById($surveyId);
 
         foreach ($survey->questionGroups as $questionGroup) {
             foreach ($questionGroup->questions as $question) {
