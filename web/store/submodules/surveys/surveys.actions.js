@@ -29,7 +29,7 @@ export const actions = {
     try {
       const response = await $nuxt.$axios.$get("/api/surveys");
 
-      await commit("SET_STATE", {
+      await await commit("SET_STATE", {
         field: "surveys",
         data: response.data
       });
@@ -56,10 +56,12 @@ export const actions = {
         `/api/surveys/${payload.surveyId}`
       );
 
-      commit("SET_STATE", {
+      await commit("SET_STATE", {
         field: "survey",
         data: response.data
       });
+
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
@@ -82,10 +84,12 @@ export const actions = {
         `/api/surveys/${payload.slug}/slug`
       );
 
-      commit("SET_STATE", {
+      await commit("SET_STATE", {
         field: "survey",
         data: response.data
       });
+
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
@@ -107,7 +111,7 @@ export const actions = {
       $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$post("/api/surveys", {});
 
-      // commit("RESET_FORM");
+      // await commit("RESET_FORM");
 
       $nuxt.$router.push({
         name: "surveys-edit-slug",
@@ -144,17 +148,12 @@ export const actions = {
         {}
       );
 
-      // commit("RESET_FORM");
-
-      $nuxt.$router.push({
-        name: "surveys-edit-slug",
-        params: { slug: response.data.slug }
-      });
-
       await $nuxt.$helpers.notify({
         type: "success",
         message: response?.message || "No message."
       });
+
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
@@ -181,17 +180,12 @@ export const actions = {
         {}
       );
 
-      // commit("RESET_FORM");
-
-      $nuxt.$router.push({
-        name: "surveys-edit-slug",
-        params: { slug: response.data.slug }
-      });
-
       await $nuxt.$helpers.notify({
         type: "success",
         message: response?.message || "No message."
       });
+
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
