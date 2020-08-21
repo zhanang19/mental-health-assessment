@@ -1,69 +1,40 @@
 <template>
   <v-main app>
-    <v-container>
-      <h1 class="primary--text">Dashboard</h1>
-    </v-container>
-    <v-container fill-height>
-      <v-row justify="center" align="center">
-        <v-col>
-          <div class="text-center">
-            <app-data-table
-              @click-create="customEvent($event, 'create')"
-              @click-view="customEvent($event, 'view')"
-              @click-edit="customEvent($event, 'edit')"
-              @click-delete="customEvent($event, 'delete')"
-              @click-restore="customEvent($event, 'restore')"
-              @click-delete-permanently="customEvent($event, 'deletePermanently')"
-            >
-            </app-data-table>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <app-base-app-bar color="blue darken-4"></app-base-app-bar>
+
+    <span id="main">
+      <span  v-if="!$store.getters['isMobileScreen']" class="app-illustration-header">
+        <img v-show="false" src="/illustrations/forms.svg" height="300" width="500" alt />
+      </span>
+      <nuxt-child style="margin-top: 12rem"></nuxt-child>
+    </span>
   </v-main>
 </template>
 
 <script>
-import AppNavbar from "@/components/layouts/AppNavbar";
+import AppBaseAppBar from "@/components/AppBaseAppBar";
 
 export default {
-  components: {
-    AppNavbar,
-  },
-
-  data: () => ({
-    menus: [
-      {
-        title: "FACILITIES",
-        route: "facilities",
-        illustration: "/facilities.svg",
-        elevation: 2,
-      },
-      {
-        title: "USERS",
-        route: "users-active",
-        illustration: "/users.svg",
-        elevation: 2,
-      },
-      {
-        title: "MAP",
-        route: "map",
-        illustration: "/map_alt.svg",
-        elevation: 2,
-      },
-    ],
-  }),
-
   head() {
     return {
-      title: `${process.env.appName} | Dashboard`,
+      title: `${process.env.appName} | Reports`,
     };
   },
 
-  methods: {
-    customEvent(event, type) {
-      console.log(event, type);
-    },
+  components: {
+    AppBaseAppBar,
   },
 };
 </script>
+
+<style scoped>
+#main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #0d47a1;
+}
+</style>

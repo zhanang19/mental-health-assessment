@@ -17,7 +17,7 @@ import AppBaseAppBar from "@/components/AppBaseAppBar";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Students`,
+      title: `${process.env.appName} | Survey Forms`,
     };
   },
 

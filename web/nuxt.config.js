@@ -49,14 +49,15 @@ export default {
   // loading: '~/components/loading.vue',
   loading: {
     height: "3px",
-    color: colors.blue.darken2,
+    // color: colors.blue.darken2,
+    color: colors.teal.accent3,
     throttle: 0,
     continuous: true
   },
 
   layoutTransition: {
-    name: 'layout',
-    mode: 'out-in'
+    name: "layout",
+    mode: "out-in"
   },
 
   loadingIndicator: "~/loading/app.html",
@@ -149,8 +150,9 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: "#912225",
-          accent: "#f3d558"
+          primary: colors.blue.darken4
+          // primary: "#912225",
+          // accent: "#f3d558"
         },
         dark: {
           primary: colors.blue

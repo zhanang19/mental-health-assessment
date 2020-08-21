@@ -2,7 +2,7 @@
   <v-container>
     <v-container>
       <h1 class="white--text">
-        <span>Survey Forms</span>
+        <span>Users</span>
       </h1>
     </v-container>
     <v-row justify="center" align="center">
@@ -52,7 +52,7 @@
             <v-divider></v-divider>
             <v-data-table
               :search="datatable.search"
-              :items="surveys"
+              :items="users"
               :headers="datatable.headers"
               item-class="pa-16"
               multi-sort
@@ -60,7 +60,7 @@
             >
               <template #item.actions="{ item }">
                 <app-base-action-buttons
-                  @click-view="$router.push({ name: 'surveys-edit-slug', params: { slug: item.slug } })"
+                  @click-view="$router.push({ name: 'users-edit-slug', params: { slug: item.slug } })"
                   :except="['edit']"
                   type="non-archive"
                   class="py-2"
@@ -77,13 +77,13 @@
 <script>
 import AppBaseActionButtons from "@/components/AppBaseActionButtons";
 import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
-import { SurveyActions } from "../../../utils/StoreTypes";
+import { UserActions } from "../../../utils/StoreTypes";
 import { mapState } from "vuex";
 
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Survey Forms`,
+      title: `${process.env.appName} | Users`,
     };
   },
 
@@ -93,7 +93,7 @@ export default {
   },
 
   async fetch({ store }) {
-    await store.dispatch(SurveyActions.FETCH_ALL);
+    await store.dispatch(UserActions.FETCH_ALL);
   },
 
   data: () => ({
@@ -104,7 +104,7 @@ export default {
       search: "",
       headers: [
         { text: "ID", value: "id" },
-        { text: "Title", value: "title" },
+        { text: "Name", value: "full_name" },
         { text: "Date Created", value: "date_created" },
         {
           text: "Actions",
@@ -117,14 +117,14 @@ export default {
   }),
 
   computed: {
-    ...mapState("surveys", {
-      surveys: (state) => state.surveys,
+    ...mapState("users", {
+      users: (state) => state.users,
     }),
   },
 
   methods: {
     createNewSurvey() {
-      this.$store.dispatch(SurveyActions.CREATE, {});
+      this.$store.dispatch(UserActions.CREATE, {});
     },
 
     customEvent(type) {
@@ -132,7 +132,7 @@ export default {
     },
 
     async onClick() {
-      // const response = await surveyService.all();
+      // const response = await userservice.all();
 
       console.log(response);
     },

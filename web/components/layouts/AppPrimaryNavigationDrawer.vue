@@ -8,10 +8,13 @@
       :dark="$vuetify.theme.dark"
       :floating="true"
       :clipped="false"
-      :class="{'drawer-bg': false}"
+      :class="{
+        'drawer-bg': false,
+        'elevation-5': true
+      }"
       app
     >
-      <template v-slot:prepend>
+      <template v-if="false" v-slot:prepend>
         <v-card
           color="transparent"
           min-height="15rem"
@@ -56,9 +59,7 @@
           link
         >
           <v-list-item-icon>
-            <v-sheet :color="item.color" class="text-center pa-2 rounded-lg">
-              <v-icon color="white" v-text="item.icon"></v-icon>
-            </v-sheet>
+            <v-icon v-text="item.icon"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />

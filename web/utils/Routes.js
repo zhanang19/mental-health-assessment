@@ -17,7 +17,7 @@ export const pages = [
     icon: "mdi-file-table-box-multiple-outline",
     title: "Surveys",
     route: "app-surveys",
-    color: "yellow darken-3",
+    color: "blue darken-4",
     roles: ["super-admin", "admin"]
   },
   {
@@ -31,7 +31,7 @@ export const pages = [
     icon: "mdi-chart-bar",
     title: "Reports",
     route: "app-reports",
-    color: "blue darken-2",
+    color: "teal darken-2",
     roles: ["super-admin", "admin"]
   }
 ];
