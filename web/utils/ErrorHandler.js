@@ -9,14 +9,14 @@ import { isObjectEmpty } from "./Util";
 export const handleError = error => {
   const defaultErrorMessage = "Oops! Something went wrong.";
 
-  if (isObjectEmpty(error)) {
-    return defaultErrorMessage;
-  }
-
   let errorMessage = error?.response?.data?.message;
 
   if (!!errorMessage) {
     switch (error.response.status) {
+      case 401:
+        errorMessage = "You are not authenticated.";
+        // $nuxt.$router.push({ name: "index" });
+        break;
       case 403:
         errorMessage = "You are not authorized.";
         break;
@@ -30,6 +30,10 @@ export const handleError = error => {
         errorMessage = defaultErrorMessage;
         break;
     }
+  }
+
+  if (isObjectEmpty(error)) {
+    return defaultErrorMessage;
   }
 
   return errorMessage;

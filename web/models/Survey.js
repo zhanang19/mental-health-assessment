@@ -4,12 +4,16 @@ export class Survey {
     title = null,
     subtitle = null,
     description = null,
-    color_theme = "blue darken-2"
+    color_theme = "blue darken-2",
+    question_groups = [],
+    responses = []
   } = {}) {
     this.title = title;
     this.subtitle = subtitle;
     this.description = description;
     this.color_theme = color_theme;
+    this.question_groups = question_groups;
+    this.responses = responses;
   }
 }
 
@@ -31,5 +35,5 @@ export const colorThemes = [
   "teal",
   "lime",
   "green",
-  "orange",
+  "orange"
 ];
