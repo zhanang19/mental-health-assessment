@@ -55,6 +55,15 @@ class BaseModel extends Model
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = [
+        //
+    ];
+
+    /**
      * Checks if user is created today.
      *
      * @return bool
