@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class SurveyController extends Controller
 {
+    /**
+     * @var SurveyRepositoryInterface
+     */
     protected $surveyRepository;
 
     /**
@@ -38,9 +41,20 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         return new SurveyResource([
-            'data' => $this->surveyRepository->createSurvey(),
-            'message' => 'A new survey has been created.'
+            "data" => $this->surveyRepository->createSurvey(),
+            "message" => "A new survey has been created."
         ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+        return new SurveyResource($this->surveyRepository->findSurveyById($id));
     }
 
     /**
@@ -49,7 +63,7 @@ class SurveyController extends Controller
      * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show(string $slug)
+    public function findBySlug(string $slug)
     {
         return new SurveyResource($this->surveyRepository->findBySlug($slug));
     }
@@ -64,8 +78,8 @@ class SurveyController extends Controller
     public function update(Request $request, $id)
     {
         return new SurveyResource([
-            'data' => $this->surveyRepository->updateSurvey($id, $request),
-            'message' => 'A survey has been updated.'
+            "data" => $this->surveyRepository->updateSurvey($id, $request),
+            "message" => "A survey has been updated."
         ]);
     }
 
@@ -78,8 +92,8 @@ class SurveyController extends Controller
     public function destroy($id)
     {
         return new SurveyResource([
-            'data' => $this->surveyRepository->deleteById($id),
-            'message' => 'A survey has been trashed.'
+            "data" => $this->surveyRepository->deleteById($id),
+            "message" => "A survey has been trashed."
         ]);
     }
 }

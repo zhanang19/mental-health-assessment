@@ -56,6 +56,33 @@ Route::group([
             Route::get('users/{id}/restore', 'User\ArchiveUserController@restore');
         });
     });
+
+    // Surveys Module
+    Route::group([
+        'middleware' => [RouteGuards::SuperAdminOrAdministrator]
+    ], function () {
+        // Survey
+        Route::apiResource('surveys', 'Survey\SurveyController');
+        Route::get('surveys/{slug}/slug', 'Survey\SurveyController@findBySlug');
+
+        // Survey Question Group
+        Route::post('surveys/{surveyId}/question-groups', 'Survey\SurveyQuestionGroupController@store');
+        Route::get('surveys/{surveyId}/question-groups/{questionGroupId}/duplicate', 'Survey\SurveyQuestionGroupController@duplicate');
+        Route::delete('surveys/{surveyId}/question-groups/{questionGroupId}', 'Survey\SurveyQuestionGroupController@destroy');
+
+        // Survey Question
+        Route::post('surveys/{surveyId}/question-groups/{questionGroupId}', 'Survey\SurveyQuestionController@store');
+        Route::get('surveys/{surveyId}/question-groups/{questionGroupId}/questions/{questionId}/duplicate', 'Survey\SurveyQuestionController@duplicate');
+        Route::delete('surveys/{surveyId}/question-groups/{questionGroupId}/questions/{questionId}', 'Survey\SurveyQuestionController@destroy');
+
+        // not available
+        Route::group([
+            'prefix' => 'archive',
+        ], function () {
+            Route::apiResource('surveys', 'User\ArchiveUserController')
+                ->except([ 'store', 'update', 'show' ]);
+            Route::get('surveys/{id}/restore', 'User\ArchiveUserController@restore');
+        });
+    });
 });
 
-Route::apiResource('surveys', Survey\SurveyController::class);

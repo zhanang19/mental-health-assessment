@@ -425,6 +425,7 @@ import {
   inputTypesEnum,
   Option,
 } from "../../../models/SurveyQuestion";
+import { SurveyActions } from "../../../utils/StoreTypes";
 
 export default {
   head() {
@@ -434,6 +435,12 @@ export default {
   },
 
   layout: "empty",
+
+  async fetch({ store, params }) {
+    await store.dispatch(SurveyActions.FETCH_BY_SLUG, {
+      slug: params.slug,
+    });
+  },
 
   data: () => ({
     form: {
