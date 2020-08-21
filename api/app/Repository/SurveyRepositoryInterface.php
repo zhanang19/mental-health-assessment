@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionGroup;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 interface SurveyRepositoryInterface
@@ -60,10 +61,10 @@ interface SurveyRepositoryInterface
      * Update existing survey.
      *
      * @param int $surveyId
-     * @param array $payload
+     * @param \Illuminate\Http\Request $payload
      * @return Survey
      */
-    public function updateSurvey(int $surveyId, $payload);
+    public function updateSurvey(int $surveyId, Request $payload);
 
     /**
      * Duplicate a question group by id.

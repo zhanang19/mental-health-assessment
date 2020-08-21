@@ -2,10 +2,13 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Enums\SurveyQuestionInputTypes;
 use App\Repository\SurveyRepositoryInterface;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionGroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -28,8 +31,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     public function findSurveyById(int $surveyId): ?Survey
     {
         return $this->model->with([
-            'questionGroups',
-            'responses'
+            "questionGroups",
+            "responses"
         ])->findOrFail($surveyId);
     }
 
@@ -40,9 +43,9 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     public function findBySlug(string $slug): ?Survey
     {
         return $this->model->with([
-            'questionGroups',
-            'responses'
-        ])->firstWhere('slug', $slug);
+            "questionGroups",
+            "responses"
+        ])->firstWhere("slug", $slug);
     }
 
     /**
@@ -52,19 +55,19 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function createSurvey(): ?Survey
     {
-        $defaultTitle = 'Untitled Form ' . Str::random(16);
+        $defaultTitle = "Untitled Form " . Str::random(16);
 
         $survey = $this->model->create([
-            'title' => $defaultTitle,
+            "title" => $defaultTitle,
 
             // must have else mutator will not trigger
-            'slug' => null,
-            // 'slug' => Str::slug($defaultTitle . ' ' . now()->timestamp),
+            "slug" => null,
+            // "slug" => Str::slug($defaultTitle . " " . now()->timestamp),
         ]);
 
         // add 1 question group by default
         $survey->questionGroups()->create([
-            'label' => 'Unlabeled Question Group'
+            "label" => "Unlabeled Question Group"
         ]);
 
         return $survey->fresh();
@@ -78,7 +81,13 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function createQuestionGroup(int $surveyId): ?SurveyQuestionGroup
     {
-        return new SurveyQuestionGroup();
+        $survey = $this->findSurveyById($surveyId);
+
+        $surveyQuestionGroup = $survey->questionGroups()->create([
+            "label" => "Untitled Question Group"
+        ]);
+
+        return $surveyQuestionGroup->fresh();
     }
 
     /**
@@ -90,7 +99,24 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function createQuestion(int $surveyId, int $questionGroupId): ?SurveyQuestion
     {
-        return new SurveyQuestion();
+        $survey = $this->findSurveyById($surveyId);
+
+        $questionsCount = $survey->questionGroups()->findOrFail($questionGroupId)
+            ->questions()->count();
+
+        $question = $survey->questionGroups()
+            ->findOrFail($questionGroupId)
+            ->questions()->create([
+                "identifier" => (string) ($questionsCount + 1),
+                "input_type" => SurveyQuestionInputTypes::ShortAnswer,
+                "question" => "Question Undefined",
+                "hint" => "Question's hint text",
+                "validations" => json_encode([]),
+                "option_group_a" => json_encode([]),
+                "option_group_b" => json_encode([]),
+            ]);
+
+        return $question->fresh();
     }
 
     /**
@@ -98,29 +124,54 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      * @param \Illuminate\Http\Request $payload
      * @return Survey
      */
-    public function updateSurvey(int $surveyId, $payload): Survey
+    public function updateSurvey(int $surveyId, Request $payload): Survey
     {
-        $questionGroups = $payload->get('survey_question_groups');
+        $questionGroups = $payload->get("question_groups");
 
-        $survey = $this->model->find($surveyId)
-            ->update($payload->get('survey'))
-            ->fresh();
+        $survey = $this->findById($surveyId);
+
+        $survey->update(Arr::only($payload->toArray(), [
+                'title',
+                'subtitle',
+                'description',
+                'color_theme',
+            ])
+        );
+
+        $survey->fresh();
 
         foreach ($questionGroups as $questionGroup) {
             $_questionGroup = $survey->questionGroups()->find(
-                $questionGroup['id']
+                $questionGroup["id"]
             );
 
-            $_questionGroup->update($questionGroup)->fresh();
+            $_questionGroup->update(
+                Arr::only($questionGroup, [
+                    'label',
+                    'instructions',
+                ])
+            );
 
-            $questions = $questionGroup['questions'];
+            $_questionGroup->fresh();
+
+            $questions = $questionGroup["questions"];
 
             foreach ($questions as $question) {
                 $_question = $_questionGroup->questions()->find(
-                    $question['id']
+                    $question["id"]
                 );
 
-                $_question->update($question);
+                $_question->update(
+                    Arr::only($question, [
+                        'identifier',
+                        'input_type',
+                        'question',
+                        'hint',
+                        'validations',
+                        'option_group_a',
+                        'option_group_b',
+                    ])
+                );
             }
         }
 
@@ -239,8 +290,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         int $surveyId,
         int $questionGroupId,
         int $questionId
-    ): bool
-    {
+    ): bool {
         return false;
     }
 
