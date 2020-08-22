@@ -36,7 +36,7 @@ import AppSnackbar from "@/components/alerts/Snackbar";
 import AppDialogLoader from "@/components/alerts/AppDialogLoader";
 
 export default {
-  // middleware: ['admin'],
+  middleware: ['admin'],
 
   components: {
     AppAuthNav,
