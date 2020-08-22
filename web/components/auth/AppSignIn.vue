@@ -128,7 +128,7 @@ export default {
           });
 
           this.$router.push({
-            name: "app-dashboard",
+            name: this.$store.getters.isAdmin ? "app-dashboard" : "home",
           });
         } catch (error) {
           console.log(error);

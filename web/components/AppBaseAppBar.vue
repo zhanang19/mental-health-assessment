@@ -29,7 +29,9 @@
             <app-user-avatar></app-user-avatar>
             <v-divider></v-divider>
             <v-list>
-              <v-list-item :to="{ name: 'app-settings' }">Settings</v-list-item>
+              <v-list-item
+                :to="{ name: $store.getters.isAdmin ? 'app-settings' : 'settings' }"
+              >Settings</v-list-item>
               <v-list-item @click="$refs.logoutDialog.value = true">Logout</v-list-item>
             </v-list>
           </v-card>
