@@ -300,17 +300,24 @@ export default {
         })
         .finally(() => {
           setTimeout(() => {
-            this.refreshing = false
-          }, 1000)
+            this.refreshing = false;
+          }, 1000);
         });
     },
 
     async save() {
       if (await this.$refs.form.validate()) {
         console.log("saved");
-        await this.$store.dispatch(SurveyActions.UPDATE, {
+        const response = await this.$store.dispatch(SurveyActions.UPDATE, {
           surveyId: this.survey.id,
         });
+
+        await this.$router.push({
+          name: 'surveys-edit-slug',
+          params: {
+            slug: response.data.slug
+          }
+        })
       } else {
         return await this.$helpers.notify({
           type: "error",
