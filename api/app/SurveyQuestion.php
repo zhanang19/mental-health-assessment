@@ -52,15 +52,15 @@ class SurveyQuestion extends BaseModel
         return json_decode($this->attributes['option_group_a']);
     }
 
-    /**
-     * Set the attribute encoded into json.
-     *
-     * @return void
-     */
-    public function setOptionGroupAAttribute($value)
-    {
-        $this->attributes['option_group_a'] = json_encode($value);
-    }
+    // /**
+    //  * Set the attribute encoded into json.
+    //  *
+    //  * @return void
+    //  */
+    // public function setOptionGroupAAttribute($value)
+    // {
+    //     $this->attributes['option_group_a'] = json_encode($value);
+    // }
 
     /**
      * Get the attribute option_group_b parsed into json.
@@ -72,15 +72,15 @@ class SurveyQuestion extends BaseModel
         return json_decode($this->attributes['option_group_b']);
     }
 
-    /**
-     * Set the attribute encoded into json.
-     *
-     * @return void
-     */
-    public function setOptionGroupBAttribute($value)
-    {
-        $this->attributes['option_group_b'] = json_encode($value);
-    }
+    // /**
+    //  * Set the attribute encoded into json.
+    //  *
+    //  * @return void
+    //  */
+    // public function setOptionGroupBAttribute($value)
+    // {
+    //     $this->attributes['option_group_b'] = json_encode($value);
+    // }
 
     /**
      * Get the attribute validations parsed into json.

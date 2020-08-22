@@ -31,7 +31,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn @click="save()" color="primary">Save Changes</v-btn>
+        <v-btn @click="save({ notify: true })" color="primary">Save Changes</v-btn>
       </div>
 
       <template #extension>
@@ -45,7 +45,7 @@
     <v-container class="mb-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
-          <v-form ref="form" @submit.prevent="save()">
+          <v-form ref="form" @submit.prevent="save({ notify: true })">
             <!-- START: Survey Details -->
             <v-card class="rounded-lg" style="margin-bottom: 5rem">
               <v-card-title>
@@ -89,6 +89,7 @@
                     label="Group Label"
                     v-model="group.label"
                     :rules="rules.group.label"
+                    @blur="save({ notify: false })"
                   ></v-text-field>
                   <v-spacer></v-spacer>
                   <div>
@@ -134,6 +135,7 @@
                     v-model="group.instructions"
                     hint="Optional"
                     persistent-hint
+                    @blur="save({ notify: false })"
                     outlined
                   ></v-textarea>
                 </v-card-text>
@@ -305,19 +307,26 @@ export default {
         });
     },
 
-    async save() {
+    async save({ notify = true }) {
       if (await this.$refs.form.validate()) {
         console.log("saved");
         const response = await this.$store.dispatch(SurveyActions.UPDATE, {
           surveyId: this.survey.id,
         });
 
+        if (notify) {
+          await this.$helpers.notify({
+            type: "success",
+            message: response?.message || "No message.",
+          });
+        }
+
         await this.$router.push({
-          name: 'surveys-edit-slug',
+          name: "surveys-edit-slug",
           params: {
-            slug: response.data.slug
-          }
-        })
+            slug: response.data.slug,
+          },
+        });
       } else {
         return await this.$helpers.notify({
           type: "error",

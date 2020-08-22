@@ -206,16 +206,10 @@ export const actions = {
     console.log("[SurveyStore] Update Survey", payload);
 
     try {
-      $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$put(
         `/api/surveys/${payload.surveyId}`,
         state.survey
       );
-
-      await $nuxt.$helpers.notify({
-        type: "success",
-        message: response?.message || "No message."
-      });
 
       return response;
     } catch (error) {
@@ -223,8 +217,6 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
-    } finally {
-      $nuxt.$helpers.loader();
     }
   },
 

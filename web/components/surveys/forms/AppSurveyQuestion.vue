@@ -96,7 +96,9 @@
                     </v-radio-group>
                   </v-col>
                   <!-- option group B -->
-                  <v-col v-if="!isObjectEmpty(questionItem.option_group_b)">
+                  <v-col
+                    v-if="!isObjectEmpty(questionItem.option_group_b) && !Array.isArray(questionItem.option_group_b)"
+                  >
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_b.label"
@@ -175,7 +177,9 @@
                     </div>
                   </v-col>
                   <!-- checkbox option group B -->
-                  <v-col v-if="!isObjectEmpty(questionItem.option_group_b)">
+                  <v-col
+                    v-if="!isObjectEmpty(questionItem.option_group_b) && !Array.isArray(questionItem.option_group_b)"
+                  >
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_b.label"
@@ -491,17 +495,16 @@ export default {
      */
     addSurveyQuestionOption({ questionIndex, field }) {
       console.log(this.questions[questionIndex][field]);
-      this.questions[questionIndex][field].options.push(new Option());
 
-      // if (field === "option_group_a") {
-      //   this.form.groups[surveyQuestionGroupIndex].questions[
-      //     questionIndex
-      //   ].option_group_a.options.push(new Option());
-      // } else {
-      //   this.form.groups[surveyQuestionGroupIndex].questions[
-      //     questionIndex
-      //   ].option_group_b.options.push(new Option());
-      // }
+      const isString = typeof this.questions[questionIndex][field] === "string";
+
+      if (isString) {
+        this.questions[questionIndex][field] = JSON.parse(
+          this.questions[questionIndex][field].options.push(new Option())
+        );
+      } else {
+        this.questions[questionIndex][field].options.push(new Option());
+      }
     },
 
     /**
@@ -529,8 +532,12 @@ export default {
      * @param choiceAIndex question index
      */
     deleteSurveyQuestionOptionGroup({ questionIndex, field }) {
+      console.log(
+        "deleteSurveyQuestionOptionGroup()",
+        this.questions[questionIndex][field]
+      );
       this.questions[questionIndex][field] = {};
-      // this.setQuestionsState();
+      this.onBlur();
     },
   },
 };
