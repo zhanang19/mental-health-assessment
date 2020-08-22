@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRoles;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -24,14 +25,14 @@ class UserSeeder extends Seeder
         ]);
 
         // $admin->assignRole(Role::where('name', 'admin')->first());
-        $admin->assignRole('super-admin');
+        $admin->assignRole(UserRoles::SuperAdministrator);
 
         factory(User::class, 30)->create();
 
-        $users = User::all()->filter(fn ($data) => !$data->hasRole('admin'));
+        $users = User::all()->filter(fn ($data) => !$data->hasRole(UserRoles::Administrator));
 
         foreach ($users as $user) {
-            $user->assignRole(Arr::random(['user', 'admin']));
+            $user->assignRole(Arr::random([UserRoles::Student, UserRoles::Administrator]));
         }
 
         foreach ($users->random(18) as $user) {
