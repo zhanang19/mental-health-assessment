@@ -1,14 +1,16 @@
 <template>
   <div>
     <v-app-bar :elevate-on-scroll="true" dense :color="color" :dark="dark" app>
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <v-btn v-on="on" v-bind="attrs" @click="$store.commit('TOGGLE_DRAWER')" icon>
-            <v-icon>mdi-menu</v-icon>
-          </v-btn>
-        </template>
-        <span>Toggle sidebar</span>
-      </v-tooltip>
+      <slot name="leading">
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn v-on="on" v-bind="attrs" @click="$store.commit('TOGGLE_DRAWER')" icon>
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <span>Toggle sidebar</span>
+        </v-tooltip>
+      </slot>
       <v-toolbar-title>{{ toolbarTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="mx-1">
@@ -53,7 +55,13 @@
           </v-btn>
         </v-toolbar>
         <v-card-text class="text-center">
-          <img v-if="false" src="/illustrations/logout.svg" height="300" width="70%" alt="logout svg" />
+          <img
+            v-if="false"
+            src="/illustrations/logout.svg"
+            height="300"
+            width="70%"
+            alt="logout svg"
+          />
           <div class="subtitle-1">Are you sure you want to logout?</div>
         </v-card-text>
         <v-card-actions class="rounded-b-xl">

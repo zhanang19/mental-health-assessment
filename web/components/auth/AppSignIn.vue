@@ -16,7 +16,7 @@
           <v-avatar tile size="100">
             <v-img height="100" width="100" src="/icon.png"></v-img>
           </v-avatar>
-        </div> -->
+        </div>-->
         <h1 class="display-1 mb-5">Login to your account</h1>
         <div
           class="subtitle-1"
@@ -64,7 +64,7 @@
       </v-slide-x-transition>
     </v-card-text>
     <v-card-actions>
-      <v-btn class="mb-1" color="light" text large>Register</v-btn>
+      <v-btn :to="{ name: 'register' }" class="mb-1" color="light" text large>Register</v-btn>
       <v-spacer></v-spacer>
       <v-btn
         class="mb-1"
