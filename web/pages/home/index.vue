@@ -1,46 +1,45 @@
 <template>
-  <v-main app>
-    <app-base-app-bar color="blue darken-4">
-      <template #leading>
-        <span></span>
-      </template>
-    </app-base-app-bar>
+  <v-container>
+    <v-container>
+      <h1 class="white--text">
+        <span>Hi there, {{ $auth.user.full_name || 'Anonymous User' }}</span>
+      </h1>
+    </v-container>
+    <v-row justify="center" align="center">
+      <v-col>
+        <v-card class="my-3 rounded-lg" v-for="item in 5" :key="item">
+          <v-card-text>
 
-    <span id="main">
-      <span  v-if="!$store.getters['isMobileScreen']" class="app-illustration-header">
-        <img v-show="false" src="/illustrations/forms.svg" height="300" width="500" alt />
-      </span>
-      <nuxt-child style="margin-top: 12rem"></nuxt-child>
-    </span>
-  </v-main>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="headline mb-3">Survey Number One</v-list-item-title>
+              <div class="subtitle-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat atque quae vel, laborum iure ipsam sint natus at, dolor laudantium non provident nostrum, voluptatibus accusantium in! Deleniti, et sapiente! Perferendis.</div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-card-actions>
+            <v-btn class="rounded-lg" color="primary" width="225" large depressed>Take Survey</v-btn>
+          </v-card-actions>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import AppBaseAppBar from "@/components/AppBaseAppBar";
+import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
+import { mapState } from "vuex";
 
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Users`,
+      title: `${process.env.appName} | Home`,
     };
   },
 
-  layout: "student",
-
   components: {
-    AppBaseAppBar,
+    AppConfirmationDialog,
   },
 };
 </script>
 
-<style scoped>
-#main {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 50%;
-  background-color: #0d47a1;
-}
-</style>

@@ -32,7 +32,7 @@
               <v-list-item
                 :to="{ name: $store.getters.isAdmin ? 'app-settings' : 'settings' }"
               >Settings</v-list-item>
-              <v-list-item @click="$refs.logoutDialog.value = true">Logout</v-list-item>
+              <v-list-item @click="controller.logout = !controller.logout">Logout</v-list-item>
             </v-list>
           </v-card>
         </v-menu>
@@ -52,7 +52,7 @@
         <v-toolbar color="transparent" flat>
           <v-toolbar-title>Logging out</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn @click="controller.logout = false" icon>
+          <v-btn @click="controller.logout = !controller.logout" icon>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -68,7 +68,7 @@
         </v-card-text>
         <v-card-actions class="rounded-b-xl">
           <v-spacer></v-spacer>
-          <v-btn @click="controller.logout = false" width="125" large depressed>CANCEL</v-btn>
+          <v-btn @click="controller.logout = !controller.logout" width="125" large depressed>CANCEL</v-btn>
           <v-btn @click="logout()" depressed width="125" large color="primary">CONFIRM</v-btn>
         </v-card-actions>
       </v-card>
