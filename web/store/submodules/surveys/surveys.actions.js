@@ -216,6 +216,8 @@ export const actions = {
         type: "success",
         message: response?.message || "No message."
       });
+
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",

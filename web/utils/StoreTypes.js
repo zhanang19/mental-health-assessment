@@ -25,3 +25,8 @@ export const SurveyActions = Object.freeze({
   RESTORE: "surveys/RESTORE",
   PERMANENTLY_DELETE: "surveys/PERMANENTLY_DELETE"
 });
+
+export const SurveyMutations = Object.freeze({
+  SET_STATE: "surveys/SET_STATE",
+  SET_QUESTION_GROUP_QUESTIONS: "surveys/SET_QUESTION_GROUP_QUESTIONS"
+});
