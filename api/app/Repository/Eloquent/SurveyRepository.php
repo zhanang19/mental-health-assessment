@@ -112,8 +112,18 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 "question" => "Question Undefined",
                 "hint" => "Question's hint text",
                 "validations" => json_encode([]),
-                "option_group_a" => json_encode([]),
-                "option_group_b" => json_encode([]),
+                "option_group_a" => json_encode([
+                    "label" => "Untitled Option Group",
+                    "options" => [
+                        ["text" => "Undefined Option"],
+                    ]
+                ]),
+                "option_group_b" => json_encode([
+                    "label" => "Untitled Option Group",
+                    "options" => [
+                        ["text" => "Undefined Option"],
+                    ]
+                ]),
             ]);
 
         return $question->fresh();
@@ -138,6 +148,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             ])
         );
 
+        $survey->update(['slug' => $survey->title]);
+
         $survey->fresh();
 
         foreach ($questionGroups as $questionGroup) {
@@ -157,6 +169,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             $questions = $questionGroup["questions"];
 
             foreach ($questions as $question) {
+                info("Survey Question", $question);
+
                 $_question = $_questionGroup->questions()->find(
                     $question["id"]
                 );
