@@ -6,7 +6,7 @@
         class="rounded-lg ml-5 mb-3"
         v-for="(questionItem, questionIndex) in questions"
         :key="questionIndex"
-        >
+      >
         <v-card-title class="headline">
           <v-row>
             <v-col lg="4" md="6" sm="10" xs="12">
@@ -15,6 +15,7 @@
                 v-model="questionItem.identifier"
                 hint="e.g. #17 or ABC-01"
                 persistent-hint
+                @blur="onBlur($event)"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -26,6 +27,7 @@
                 persistent-hint
                 v-model="questionItem.question"
                 :rules="rules.question.question"
+                @blur="onBlur($event)"
                 outlined
               ></v-textarea>
             </v-col>
@@ -37,6 +39,7 @@
                 :rules="rules.question.input_type"
                 hint="Required"
                 persistent-hint
+                @blur="onBlur($event)"
                 outlined
               ></v-select>
             </v-col>
@@ -59,24 +62,34 @@
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_a.label"
+                      @blur="onBlur($event)"
                     ></v-text-field>
                     <v-radio-group column>
                       <v-radio
-                        v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
-                        :key="choiceAIndex"
+                        v-for="(choiceA, choiceIndex) in questionItem.option_group_a.options"
+                        :key="choiceIndex"
                       >
                         <template #label>
                           <v-text-field
                             v-model="choiceA.text"
-                            :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
-                            @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                            :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
+                            @click:append="deleteSurveyQuestionChoice({
+                              questionIndex,
+                              choiceIndex,
+                              field: 'option_group_a'
+                            })"
+                            @blur="onBlur($event)"
                             append-icon="mdi-close"
                           ></v-text-field>
                         </template>
                       </v-radio>
                       <div>
                         <v-btn
-                          @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
+                          @click="addSurveyQuestionOption({
+                            questionIndex,
+                            field: 'option_group_a',
+                          })"
+                          @blur="onBlur($event)"
                           class="primary--text"
                         >Add Option</v-btn>
                       </div>
@@ -87,6 +100,7 @@
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_b.label"
+                      @blur="onBlur($event)"
                     ></v-text-field>
                     <v-radio-group column>
                       <v-radio
@@ -97,18 +111,26 @@
                           <v-text-field
                             v-model="choiceB.text"
                             :label="!!choiceB.text ? choiceB.text : `Option ${choiceBIndex + 1}`"
-                            @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceBIndex, 'option_group_b')"
+                            @click:append="deleteSurveyQuestionChoice({
+                              questionIndex,
+                              choiceIndex,
+                              field: 'option_group_a'
+                            })"
+                            @blur="onBlur($event)"
                             append-icon="mdi-close"
                           ></v-text-field>
                         </template>
                       </v-radio>
                       <div>
                         <v-btn
-                          @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_b')"
+                          @click="addSurveyQuestionOption({
+                            questionIndex,
+                            field: 'option_group_b',
+                          })"
                           class="primary--text"
                         >Add Option</v-btn>
                         <v-btn
-                          @click="deleteSurveyQuestionOptionGroup(groupIndex, questionIndex, 'option_group_b')"
+                          @click="deleteSurveyQuestionOptionGroup({questionIndex, field: 'option_group_b'})"
                         >Remove Option Group</v-btn>
                       </div>
                     </v-radio-group>
@@ -122,23 +144,32 @@
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_a.label"
+                      @blur="onBlur($event)"
                     ></v-text-field>
                     <v-checkbox
-                      v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
-                      :key="choiceAIndex"
+                      v-for="(choiceA, choiceIndex) in questionItem.option_group_a.options"
+                      :key="choiceIndex"
                     >
                       <template #label>
                         <v-text-field
                           v-model="choiceA.text"
-                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
-                          @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
+                          @click:append="deleteSurveyQuestionChoice({
+                              questionIndex,
+                              choiceIndex,
+                              field: 'option_group_a'
+                            })"
+                          @blur="onBlur($event)"
                           append-icon="mdi-close"
                         ></v-text-field>
                       </template>
                     </v-checkbox>
                     <div>
                       <v-btn
-                        @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
+                        @click="addSurveyQuestionOption({
+                            questionIndex,
+                            field: 'option_group_a',
+                          })"
                         class="primary--text"
                       >Add Option</v-btn>
                     </div>
@@ -148,27 +179,36 @@
                     <v-text-field
                       label="Option Group Label"
                       v-model="questionItem.option_group_b.label"
+                      @blur="onBlur($event)"
                     ></v-text-field>
                     <v-checkbox
-                      v-for="(choiceA, choiceAIndex) in questionItem.option_group_b.options"
-                      :key="choiceAIndex"
+                      v-for="(choiceA, choiceIndex) in questionItem.option_group_b.options"
+                      :key="choiceIndex"
                     >
                       <template #label>
                         <v-text-field
                           v-model="choiceA.text"
-                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
-                          @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_b')"
+                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
+                          @click:append="deleteSurveyQuestionChoice({
+                              questionIndex,
+                              choiceIndex,
+                              field: 'option_group_b'
+                            })"
+                          @blur="onBlur($event)"
                           append-icon="mdi-close"
                         ></v-text-field>
                       </template>
                     </v-checkbox>
                     <div>
                       <v-btn
-                        @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_b')"
+                        @click="addSurveyQuestionOption({
+                            questionIndex,
+                            field: 'option_group_b',
+                          })"
                         class="primary--text"
                       >Add Option</v-btn>
                       <v-btn
-                        @click="deleteSurveyQuestionOptionGroup(groupIndex, questionIndex, 'option_group_b')"
+                        @click="deleteSurveyQuestionOptionGroup({questionIndex, field: 'option_group_b'})"
                       >Remove Option Group</v-btn>
                     </div>
                   </v-col>
@@ -178,16 +218,24 @@
                 <!-- dropdown select options -->
                 <div>
                   <v-text-field
-                    v-for="(choiceA, choiceAIndex) in questionItem.option_group_a.options"
-                    :key="choiceAIndex"
+                    v-for="(choiceA, choiceIndex) in questionItem.option_group_a.options"
+                    :key="choiceIndex"
                     v-model="choiceA.text"
-                    :label="!!choiceA.text ? choiceA.text : `Option ${choiceAIndex + 1}`"
-                    @click:append="deleteSurveyQuestionChoice(groupIndex, questionIndex, choiceAIndex, 'option_group_a')"
+                    :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
+                    @click:append="deleteSurveyQuestionChoice({
+                              questionIndex,
+                              choiceIndex,
+                              field: 'option_group_a'
+                            })"
+                    @blur="onBlur($event)"
                     append-icon="mdi-close"
                   ></v-text-field>
                   <div>
                     <v-btn
-                      @click="addSurveyQuestionOption(groupIndex, questionIndex, 'option_group_a')"
+                      @click="addSurveyQuestionOption({
+                            questionIndex,
+                            field: 'option_group_a',
+                          })"
                       class="primary--text"
                     >Add Option</v-btn>
                   </div>
@@ -238,7 +286,12 @@
           <div class="mx-3">
             <v-tooltip bottom>
               <template #activator="{ on }">
-                <v-switch v-on="on" v-model="questionItem.required" label="Required"></v-switch>
+                <v-switch
+                  @blur="onBlur($event)"
+                  v-on="on"
+                  v-model="questionItem.required"
+                  label="Required"
+                ></v-switch>
               </template>
               <span>Make this question mandatory</span>
             </v-tooltip>
@@ -269,18 +322,14 @@ import {
   inputTypesEnum,
   Option,
 } from "../../../models/SurveyQuestion";
-import { SurveyActions } from "../../../utils/StoreTypes";
+import { SurveyActions, SurveyMutations } from "../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
 import { sanitizeObject } from "../../../utils/Util";
 
 export default {
   created() {
-    this.questions = {
-      ...sanitizeObject(
-        this.survey.question_groups[this.questionGroupIndex].questions
-      ),
-    };
+    this.setQuestionsState();
 
     console.log("AppSurveyQuestion Component", this.questions);
   },
@@ -300,6 +349,12 @@ export default {
   data: () => ({
     questions: [],
   }),
+
+  watch: {
+    questions(value) {
+      console.log("watching questions field", value);
+    },
+  },
 
   computed: {
     ...mapState("surveys", {
@@ -339,6 +394,39 @@ export default {
   },
 
   methods: {
+    /**
+     * Set the state data onBlur event.
+     *
+     * @param { Event } even
+     * @return { Void }
+     */
+    async onBlur(event) {
+      await this.$store.commit(SurveyMutations.SET_QUESTION_GROUP_QUESTIONS, {
+        index: this.questionGroupIndex,
+        questions: this.questions,
+      });
+
+      await this.setQuestionsState();
+
+      console.log(
+        "onBlur() have set questions in index ",
+        this.questionGroupIndex
+      );
+    },
+
+    /**
+     * Copy the set of questions based on quetion group.
+     *
+     * @return { Void }
+     */
+    setQuestionsState() {
+      this.questions = {
+        ...sanitizeObject(
+          this.survey.question_groups[this.questionGroupIndex].questions
+        ),
+      };
+    },
+
     /**
      * @todo
      * needs a deep clone so it copies properties and
@@ -401,16 +489,38 @@ export default {
      * @param surveyQuestionGroupIndex survey question group index
      * @param questionIndex question index
      */
-    addSurveyQuestionOption(surveyQuestionGroupIndex, questionIndex, field) {
-      if (field === "option_group_a") {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_a.options.push(new Option());
-      } else {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_b.options.push(new Option());
-      }
+    addSurveyQuestionOption({ questionIndex, field }) {
+      console.log(this.questions[questionIndex][field]);
+      this.questions[questionIndex][field].options.push(new Option());
+
+      // if (field === "option_group_a") {
+      //   this.form.groups[surveyQuestionGroupIndex].questions[
+      //     questionIndex
+      //   ].option_group_a.options.push(new Option());
+      // } else {
+      //   this.form.groups[surveyQuestionGroupIndex].questions[
+      //     questionIndex
+      //   ].option_group_b.options.push(new Option());
+      // }
+    },
+
+    /**
+     * @param surveyQuestionGroupIndex survey question group index
+     * @param questionIndex question index
+     * @param choiceIndex question index
+     */
+    deleteSurveyQuestionChoice({ questionIndex, choiceIndex, field }) {
+      this.questions[questionIndex][field].splice(choiceIndex, 1);
+
+      // if (field === "option_group_a") {
+      //   this.form.groups[surveyQuestionGroupIndex].questions[
+      //     questionIndex
+      //   ].option_group_a.options.splice(choiceIndex, 1);
+      // } else {
+      //   this.form.groups[surveyQuestionGroupIndex].questions[
+      //     questionIndex
+      //   ].option_group_b.options.splice(choiceIndex, 1);
+      // }
     },
 
     /**
@@ -418,21 +528,9 @@ export default {
      * @param questionIndex question index
      * @param choiceAIndex question index
      */
-    deleteSurveyQuestionChoice(
-      surveyQuestionGroupIndex,
-      questionIndex,
-      choiceAIndex,
-      field
-    ) {
-      if (field === "option_group_a") {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_a.options.splice(choiceAIndex, 1);
-      } else {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_b.options.splice(choiceAIndex, 1);
-      }
+    deleteSurveyQuestionOptionGroup({ questionIndex, field }) {
+      this.questions[questionIndex][field] = {};
+      // this.setQuestionsState();
     },
   },
 };
