@@ -105,6 +105,8 @@ export default {
       headers: [
         { text: "ID", value: "id" },
         { text: "Name", value: "full_name" },
+        { text: "Email", value: "email" },
+        { text: "Role", value: "role" },
         { text: "Date Created", value: "date_created" },
         {
           text: "Actions",
