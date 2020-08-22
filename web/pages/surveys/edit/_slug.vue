@@ -1,7 +1,7 @@
 <template>
   <v-main :class="color_theme" app>
     <v-app-bar app extended>
-      <v-btn @click="$router.back()" icon>
+      <v-btn @click="$router.replace({ name: 'app-surveys' })" icon>
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>{{ title || 'Untitled Survey Form' }}</v-toolbar-title>
@@ -82,7 +82,15 @@
             >
               <!-- survey question group header -->
               <v-card class="rounded-lg mb-3">
-                <v-card-title class="headline">
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" fab top right absolute>
+                      <h3>{{ groupIndex + 1 }}</h3>
+                    </v-btn>
+                  </template>
+                  <span>The question group number</span>
+                </v-tooltip>
+                <v-card-title class="headline pt-10">
                   <v-text-field
                     hint="Required"
                     persistent-hint
@@ -91,6 +99,21 @@
                     :rules="rules.group.label"
                     @blur="save({ notify: false })"
                   ></v-text-field>
+                </v-card-title>
+                <v-card-text>
+                  <v-textarea
+                    label="Instructions"
+                    v-model="group.instructions"
+                    hint="Optional"
+                    persistent-hint
+                    @blur="save({ notify: false })"
+                    outlined
+                  ></v-textarea>
+                </v-card-text>
+                <v-card-text>
+                  <v-divider></v-divider>
+                </v-card-text>
+                <v-card-actions>
                   <v-spacer></v-spacer>
                   <div>
                     <v-tooltip bottom>
@@ -101,7 +124,7 @@
                           @click="duplicateSurveyQuestionGroup({
                             questionGroupId: group.id
                           })"
-                          elevation="0"
+                          elevation="3"
                           small
                           fab
                         >
@@ -118,7 +141,7 @@
                           @click="deleteSurveyQuestionGroup({
                             questionGroupId: group.id
                           })"
-                          elevation="0"
+                          elevation="3"
                           small
                           fab
                         >
@@ -128,17 +151,7 @@
                       <span>Delete this question group</span>
                     </v-tooltip>
                   </div>
-                </v-card-title>
-                <v-card-text>
-                  <v-textarea
-                    label="Instructions"
-                    v-model="group.instructions"
-                    hint="Optional"
-                    persistent-hint
-                    @blur="save({ notify: false })"
-                    outlined
-                  ></v-textarea>
-                </v-card-text>
+                </v-card-actions>
               </v-card>
 
               <!-- START: Survey Question Group v-for questions -->

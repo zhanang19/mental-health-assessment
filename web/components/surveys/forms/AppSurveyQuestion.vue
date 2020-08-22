@@ -412,6 +412,10 @@ export default {
 
       await this.setQuestionsState();
 
+      // await this.$store.dispatch(SurveyActions.UPDATE, {
+      //   surveyId: this.survey.id,
+      // });
+
       console.log(
         "onBlur() have set questions in index ",
         this.questionGroupIndex
