@@ -27,7 +27,7 @@
           :error="!!errors['username']"
           :error-messages="errors['username']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-text-field
           label="Email"
@@ -36,7 +36,7 @@
           :error="!!errors['email']"
           :error-messages="errors['email']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-text-field
           label="First Name"
@@ -45,7 +45,7 @@
           :error="!!errors['first_name']"
           :error-messages="errors['first_name']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-text-field
           label="Middle Name"
@@ -53,7 +53,7 @@
           :error="!!errors['middle_name']"
           :error-messages="errors['middle_name']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-text-field
           label="Last Name"
@@ -62,7 +62,7 @@
           :error="!!errors['last_name']"
           :error-messages="errors['last_name']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-autocomplete
           v-if="false"
@@ -73,7 +73,7 @@
           item-value="raw"
           :error="!!errors['time_zone']"
           :error-messages="errors['time_zone']"
-          filled
+          outlined
         ></v-autocomplete>
       </v-card-text>
 

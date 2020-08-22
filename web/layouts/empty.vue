@@ -37,7 +37,7 @@ html {
 
 .layout-enter-active,
 .layout-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.25s;
 }
 .layout-enter,
 .layout-leave-active {

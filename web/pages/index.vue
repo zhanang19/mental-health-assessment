@@ -1,9 +1,11 @@
 <template>
-  <v-main class="grey lighten-5" app>
-    <v-container fill-height fluid>
+  <v-main class="bg-wave-inverse-5" app>
+    <v-container fill-height fluid style="z-index: 9999">
       <v-row justify="center" align="stretch" no-gutters>
-        <v-col xl="6" lg="6" md="8" sm="10" xs="12">
-          <SignIn :class="{'px-10': regularScreen}" />
+        <v-col xl="5" lg="5" md="10" sm="10" xs="12">
+          <v-card class="py-5 rounded-lg" elevation="10">
+            <app-sign-in :class="{'px-10': regularScreen}"></app-sign-in>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -11,7 +13,7 @@
 </template>
 
 <script>
-import SignIn from "@/components/auth/SignIn";
+import AppSignIn from "@/components/auth/AppSignIn";
 
 export default {
   head() {
@@ -25,7 +27,7 @@ export default {
   auth: "guest",
 
   components: {
-    SignIn,
+    AppSignIn,
   },
 
   computed: {
@@ -59,7 +61,7 @@ export default {
 }
 
 .bg {
-  width: 100%;
+  width: 50%;
   height: 100%;
   position: absolute;
   top: 0;
@@ -71,5 +73,16 @@ export default {
     url("/images/ideya.jpeg");
   background-position: center center;
   background-size: cover;
+}
+
+#main {
+  position: absolute;
+  /* top: 0; */
+  left: 0;
+  /* right: 0; */
+  z-index: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #0d47a1;
 }
 </style>

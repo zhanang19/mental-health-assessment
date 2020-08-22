@@ -110,12 +110,10 @@
                     outlined
                   ></v-textarea>
                 </v-card-text>
-                <v-card-text>
-                  <v-divider></v-divider>
-                </v-card-text>
+                  <v-divider class="mx-5"></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <div>
+                  <div class="mx-3 py-3">
                     <v-tooltip bottom>
                       <template #activator="{ on, attrs }">
                         <v-btn

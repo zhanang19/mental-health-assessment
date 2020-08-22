@@ -14,7 +14,7 @@
           :error="!!errors['password']"
           :error-messages="errors['password']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
         <v-text-field
           label="Confirmation"
@@ -24,16 +24,16 @@
           :error="!!errors['password_confirmation']"
           :error-messages="errors['password_confirmation']"
           persistent-hint
-          filled
+          outlined
         ></v-text-field>
       </v-card-text>
-      
+
       <v-card-actions class="justify-center">
-        <v-btn 
-          type="submit" 
-          color="primary" 
-          depressed 
-          large 
+        <v-btn
+          type="submit"
+          color="primary"
+          depressed
+          large
           width="225">
           UPDATE PASSWORD
         </v-btn>
@@ -60,13 +60,13 @@ export default {
       ],
     },
   }),
-  
+
   computed: {
     ...mapFields([
       'errors'
     ])
   },
-  
+
   methods: {
     submit () {
       if (this.$refs.form.validate()) {

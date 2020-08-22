@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" @submit.prevent="login()">
     <v-card-text>
-      <div class="text-center mb-3">
+      <!-- <div class="text-center mb-3">
         <v-avatar class="rounded-lg mb-3" tile size="125">
           <v-img height="125" width="125" src="/icon.png"></v-img>
         </v-avatar>
@@ -10,6 +10,17 @@
       <div class="title text-center mb-10">
         <div class="headline font-weight-regular">SIGN IN</div>
         <div class="subtitle-1">TO ACCESS THE PORTAL</div>
+      </div>-->
+      <div class="text-left mb-10">
+        <!-- <div class="mb-3 text-center">
+          <v-avatar tile size="100">
+            <v-img height="100" width="100" src="/icon.png"></v-img>
+          </v-avatar>
+        </div> -->
+        <h1 class="display-1 mb-5">Login to your account</h1>
+        <div
+          class="subtitle-1"
+        >Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla excepturi sunt corrupti necessitatibus repellat cum in a eius commodi modi!</div>
       </div>
 
       <v-slide-x-transition hide-on-leave>
@@ -36,7 +47,7 @@
             :error="!!errors['email']"
             :error-messages="errors['email']"
             label="Email"
-            solo
+            outlined
           ></v-text-field>
           <v-text-field
             label="Password"
@@ -47,28 +58,24 @@
             v-model="credentials.password"
             :rules="rules.password"
             type="password"
-            solo
+            outlined
           ></v-text-field>
-          <div class="text-center mt-1">
-            <div
-              v-if="false"
-              @click="$router.push({ name: 'register' })"
-              class="mb-5 primary--text"
-              style="cursor: pointer"
-            >Forgot your password?</div>
-            <div class="mb-1">
-              <v-btn class="mb-1" type="submit" color="primary" block :loading="loggingIn" x-large rounded>
-                Sign In
-                <v-icon right>mdi-chevron-right</v-icon>
-              </v-btn>
-              <v-btn class="mb-1" color="light" block x-large rounded>
-                Register
-              </v-btn>
-            </div>
-          </div>
         </section>
       </v-slide-x-transition>
     </v-card-text>
+    <v-card-actions>
+      <v-btn class="mb-1" color="light" text large>Register</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn
+        class="mb-1"
+        type="submit"
+        color="primary"
+        :loading="loggingIn"
+        width="150"
+        depressed
+        large
+      >Sign In</v-btn>
+    </v-card-actions>
   </v-form>
 </template>
 
