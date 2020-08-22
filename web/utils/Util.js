@@ -1,6 +1,15 @@
 import { ExportToCsv } from "export-to-csv";
 
 /**
+ * Checks if variable is an object.
+ *
+ * @param { * } variable
+ */
+export const isObject = variable => {
+  return typeof variable === "object";
+};
+
+/**
  * Sanitize object to remove all reference.
  *
  * @param { Object } object
