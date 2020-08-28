@@ -61,11 +61,21 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function create(array $payload): ?User
     {
+        info('[UserRepository] Create', $payload);
+
         $user = $this->model->create(
             Arr::except($payload, [
                 'role',
-                'avatar'
+                'avatar',
+                'demographic_profile',
+                'password_confirmation',
+                'username'
             ])
+        );
+
+
+        $user->demographicProfile()->create(
+            $payload['demographic_profile']
         );
 
         $avatarBase64 = Arr::get($payload, 'avatar');

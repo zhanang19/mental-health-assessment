@@ -1,3 +1,15 @@
+import { handleError } from "~/utils/ErrorHandler";
+
+/**
+ * @method FETCH_ALL
+ * @method FETCH
+ * @method CREATE
+ * @method UPDATE
+ * @method UPDATE_AVATAR
+ * @method DELETE
+ * @method RESTORE
+ * @method PERMANENTLY_DELETE
+ */
 export const actions = {
   /**
    * Fetch all resources from an API.
@@ -5,29 +17,23 @@ export const actions = {
    * @param { Object } context
    * @param { Object } payload
    *
-   * @usage this.$store.dispatch('users/FETCH_ALL')
    */
-  'FETCH_ALL': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] fetch users', payload)
+  FETCH_ALL: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] fetch users", payload);
 
     try {
-      const response = await $nuxt.$axios.$get('/api/users')
+      const response = await $nuxt.$axios.$get("/api/users");
 
-      await commit('SET_STATE', {
-        field: 'users',
+      await commit("SET_STATE", {
+        field: "users",
         data: response.data
-      })
+      });
     } catch (error) {
-      console.log(error)
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
+      console.log(error);
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
     }
   },
 
@@ -36,30 +42,22 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/FETCH', {
-   *  id: item.id | $route.params.id
-   * })
    */
-  'FETCH': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] fetch user', payload)
+  FETCH: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] fetch user", payload);
 
     try {
+      const response = await $nuxt.$axios.$get(`/api/users/${payload.userId}`);
 
-      await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+      commit("SET_STATE", {
+        field: "user",
+        data: response.data
+      });
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
     }
   },
 
@@ -68,30 +66,27 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/ADD', {
-   *  data: this.form
-   * })
    */
-  'ADD': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] add user', payload)
+  CREATE: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] add user", payload);
 
     try {
+      $nuxt.$helpers.loader();
+      const response = await $nuxt.$axios.$post("/api/users", state.form);
+
+      commit("RESET_FORM");
 
       await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
+    } finally {
+      $nuxt.$helpers.loader();
     }
   },
 
@@ -100,30 +95,58 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/UPDATE', {
-   *  data: this.form
-   * })
    */
-  'UPDATE': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] update user', payload)
+  UPDATE: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] update user", payload);
 
     try {
+      $nuxt.$helpers.loader();
+      const response = await $nuxt.$axios.$put(
+        `/api/users/${payload.userId}`,
+        state.user
+      );
 
       await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    } finally {
+      $nuxt.$helpers.loader();
+    }
+  },
+
+  /**
+   * Request to update user avatar from an API.
+   *
+   * @param { Object } context
+   * @param { Object } payload
+   */
+  UPDATE_AVATAR: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] update user avatar", payload);
+
+    try {
+      $nuxt.$helpers.loader();
+      const response = await $nuxt.$axios.$put(
+        `/api/users/${payload.userId}/avatar`,
+        payload
+      );
 
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    } finally {
+      $nuxt.$helpers.loader();
     }
   },
 
@@ -132,30 +155,26 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/DELETE', {
-   *  id: item.id | $route.params.id
-   * })
    */
-  'DELETE': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] delete user', payload)
+  DELETE: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] delete user", payload);
 
     try {
+      const response = await $nuxt.$axios.$delete(
+        `/api/users/${payload.userId}`
+      );
 
       await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
+
+      dispatch("FETCH_ALL")
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
     }
   },
 
@@ -164,30 +183,24 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/RESTORE', {
-   *  id: item.id | $route.params.id
-   * })
    */
-  'RESTORE': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] restore user', payload)
+  RESTORE: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] restore user", payload);
 
     try {
+      const response = await $nuxt.$axios.$get(
+        `/api/users/${payload.userId}/restore`
+      );
 
       await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
     }
   },
 
@@ -196,30 +209,24 @@ export const actions = {
    *
    * @param { Object } context
    * @param { Object } payload
-   *
-   * @usage this.$store.dispatch('users/PERMANENTLY_DELETE', {
-   *  id: item.id | $route.params.id
-   * })
    */
-  'PERMANENTLY_DELETE': async ({ dispatch, state, commit }, payload) => {
-    console.log('[Users] permanently user', payload)
+  PERMANENTLY_DELETE: async ({ dispatch, state, commit }, payload) => {
+    console.log("[Users] permanently user", payload);
 
     try {
+      const response = await $nuxt.$axios.$delete(
+        `/api/users/${payload.userId}/force-delete`
+      );
 
       await $nuxt.$helpers.notify({
-        type: 'success',
-        message: response.message || 'No message.'
-      })
+        type: "success",
+        message: response?.message || "No message."
+      });
     } catch (error) {
-      let message
-      if (error.response.status >= 403) {
-        message = error.response.data.message
-      }
-
       await $nuxt.$helpers.notify({
-        type: 'error',
-        message: message || 'Unknown error.'
-      })
+        type: "error",
+        message: handleError(error)
+      });
     }
-  },
-}
+  }
+};

@@ -196,8 +196,8 @@
             outlined
           ></v-text-field>
           <v-text-field
-            v-model="parents_martial_status"
-            :rules="rules.moreInformationFormRules.parents_martial_status"
+            v-model="parents_marital_status"
+            :rules="rules.moreInformationFormRules.parents_marital_status"
             label="Parents Marital Status"
             hint="Optional"
             outlined
@@ -253,6 +253,7 @@
 import { mapFields } from "vuex-map-fields";
 import { UserRules, DemographicProfileRules } from "../../utils/Validations";
 import { removeKeys, only } from "../../utils/Util";
+import { UserActions, StoreActions } from "../../utils/StoreTypes";
 
 export default {
   data: () => ({
@@ -299,7 +300,7 @@ export default {
 
         moreInformationFormRules: only({ ...DemographicProfileRules }, [
           "scholarship_grant",
-          "parents_martial_status",
+          "parents_marital_status",
           "family_monthly_income",
           "school_last_attended",
           "school_address",
@@ -335,7 +336,7 @@ export default {
       "form.demographic_profile.is_scholar",
       "form.demographic_profile.is_affected_marawi_siege",
       "form.demographic_profile.scholarship_grant",
-      "form.demographic_profile.parents_martial_status",
+      "form.demographic_profile.parents_marital_status",
       "form.demographic_profile.family_monthly_income",
       "form.demographic_profile.school_last_attended",
       "form.demographic_profile.school_address",
@@ -343,7 +344,7 @@ export default {
   },
 
   methods: {
-    next(currentStep) {
+    async next(currentStep) {
       const forms = Object.freeze({
         AccountInformation: "accountInformationForm",
         PersonalInformation: "personalInformationForm",
@@ -353,7 +354,7 @@ export default {
 
       switch (currentStep) {
         case 1:
-          if (this.$refs[forms.AccountInformation].validate()) {
+          if (await this.$refs[forms.AccountInformation].validate()) {
             console.log("VALIDATED");
             this.step = 2;
             break;
@@ -365,7 +366,7 @@ export default {
           }
 
         case 2:
-          if (this.$refs[forms.PersonalInformation].validate()) {
+          if (await this.$refs[forms.PersonalInformation].validate()) {
             console.log("VALIDATED");
             this.step = 3;
             break;
@@ -377,7 +378,7 @@ export default {
           }
 
         case 3:
-          if (this.$refs[forms.DemographicProfile].validate()) {
+          if (await this.$refs[forms.DemographicProfile].validate()) {
             console.log("VALIDATED");
             this.step = 4;
             break;
@@ -389,8 +390,25 @@ export default {
           }
 
         case 4:
-          if (this.$refs[forms.MoreInformation].validate()) {
-            console.log("FORM SENT");
+          if (await this.$refs[forms.MoreInformation].validate()) {
+            const response = await this.$store.dispatch(
+              StoreActions.REGISTER,
+              this.$store.state.users.form
+            );
+
+            await this.$helpers.notify({
+              type: "success",
+              message: response?.message || "You have created an account.",
+            });
+
+            console.log(response);
+
+            await this.$refs[forms.AccountInformation].reset();
+            await this.$refs[forms.PersonalInformation].reset();
+            await this.$refs[forms.DemographicProfile].reset();
+            await this.$refs[forms.MoreInformation].reset();
+
+            await this.$router.replace({ name: "index" });
           } else {
             return this.$helpers.notify({
               type: "error",

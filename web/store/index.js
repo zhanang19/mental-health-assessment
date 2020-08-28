@@ -1,6 +1,7 @@
 import { getField, updateField } from "vuex-map-fields";
 import { getYearList } from "../utils/Util";
 import { UserRoles } from "~/utils/UserRoles";
+import { handleError } from "~/utils/ErrorHandler";
 import moment from "moment";
 
 export const state = () => ({
@@ -56,6 +57,29 @@ export const mutations = {
 };
 
 export const actions = {
+  async REGISTER({ state, commit, disatch }, payload) {
+    try {
+      $nuxt.$helpers.loader();
+      const response = await $nuxt.$axios.$post("/api/auth/register", payload);
+
+      commit("users/RESET_FORM", {}, { root: true });
+
+      await $nuxt.$helpers.notify({
+        type: "success",
+        message: response?.message || "No message."
+      });
+
+      return response;
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    } finally {
+      $nuxt.$helpers.loader();
+    }
+  },
+
   /**
    * Updates user profile.
    *

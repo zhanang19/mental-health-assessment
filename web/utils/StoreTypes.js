@@ -1,3 +1,7 @@
+export const StoreActions = Object.freeze({
+  REGISTER: "REGISTER"
+});
+
 export const UserActions = Object.freeze({
   FETCH_ALL: "users/FETCH_ALL",
   FETCH: "users/FETCH",

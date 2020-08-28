@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SignUpRequest;
+use App\Repository\UserRepositoryInterface;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,25 +20,16 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function register(Request $request)
+    public function register(SignUpRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
-        ]);
-        
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        $user = $request->persist();
 
         return response()->json([
-            'message' => 'Successfully created user!'
+            'data' => $user,
+            'message' => 'You have successfully registered an account with us!'
         ], 201);
     }
-  
+
     /**
      * Login user and create token
      *
@@ -55,7 +48,7 @@ class AuthController extends Controller
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ])->validate();
-        
+
         $credentials = request(['email', 'password']);
 
         if (request()->has('username')) {
@@ -72,25 +65,25 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Unauthorized.'
             ], 401);
-        } 
-        
+        }
+
         // check if user is active
         // if not active then don't authenticate
         else {
             $user = auth()->user();
-            
+
             if (! $user->is_active) {
                 abort(403, "Your account is suspended.");
-            } 
+            }
         }
-            
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-        
+
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
-        
+
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
@@ -99,7 +92,7 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
-  
+
     /**
      * Logout user (Revoke the token)
      *
@@ -112,7 +105,7 @@ class AuthController extends Controller
             'message' => 'Successfully logged out.'
         ]);
     }
-  
+
     /**
      * Get the authenticated User
      *
@@ -125,14 +118,14 @@ class AuthController extends Controller
 
     /**
      * Update user's information.
-     * 
+     *
      * @return \Illimuniate\Http\Response
      */
     public function update()
     {
         // return response()->json(request('avatar'));
-        
-        validator(request()->all(), 
+
+        validator(request()->all(),
         [
             'username' => 'required',
             'first_name' => 'required',
@@ -140,8 +133,8 @@ class AuthController extends Controller
             'email' => 'required|unique:users,email,'.auth()->user()->id,
             'time_zone' => 'required',
             'password' => 'sometimes|confirmed|min:8'
-        ], 
-        [], 
+        ],
+        [],
         [
             'first_name' => 'first name',
             'last_name' => 'last name',
@@ -184,7 +177,7 @@ class AuthController extends Controller
         $request->validate([
             'password' => 'required|min:8|string|confirmed'
         ]);
-        
+
         auth()->user()->update([
             'password' => $request->input('password'),
         ]);
@@ -196,13 +189,13 @@ class AuthController extends Controller
 
     /**
      * Checks if user's account is active.
-     * 
+     *
      * @return bool
      */
     private function isActive($email)
     {
-        return User::whereEmail($email)->first() 
-            ? User::whereEmail($email)->first()->is_active 
+        return User::whereEmail($email)->first()
+            ? User::whereEmail($email)->first()->is_active
             : false;
     }
 }
