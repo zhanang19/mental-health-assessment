@@ -15,7 +15,7 @@ export class DemographicProfile {
     is_scholar = false,
     is_affected_marawi_siege = false,
     scholarship_grant = null,
-    parents_martial_status = null,
+    parents_marital_status = null,
     family_monthly_income = null,
     school_last_attended = null,
     school_address = null
@@ -35,7 +35,7 @@ export class DemographicProfile {
     this.is_scholar = is_scholar;
     this.is_affected_marawi_siege = is_affected_marawi_siege;
     this.scholarship_grant = scholarship_grant;
-    this.parents_martial_status = parents_martial_status;
+    this.parents_marital_status = parents_marital_status;
     this.family_monthly_income = family_monthly_income;
     this.school_last_attended = school_last_attended;
     this.school_address = school_address;

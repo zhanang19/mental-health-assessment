@@ -73,7 +73,7 @@ class User extends Authenticatable implements HasMedia
     protected $appends = [
         'avatar',
         'full_name',
-        'formatted_time_zone',
+        // 'formatted_time_zone',
         'role',
         'is_admin',
         'is_super',

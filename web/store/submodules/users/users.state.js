@@ -1,4 +1,7 @@
+import { User } from "~/models/User";
+
 export const state = () => ({
   users: [],
-  user: {}
-})
+  user: {},
+  form: new User()
+});

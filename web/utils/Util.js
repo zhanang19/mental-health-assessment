@@ -34,6 +34,27 @@ export const removeKeys = (object, keys) => {
   return object;
 };
 
+/**
+ * Remove keys from object.
+ *
+ * @param { Object } object
+ * @param { Array } keys
+ * @return { Object }
+ */
+export const only = (object, keys) => {
+  console.log("[Only Keys]", keys, object);
+
+  const _keys = Object.keys(object);
+
+  const filteredKeys = _keys.filter(item => !keys.includes(item));
+
+  filteredKeys.forEach(key => delete object[key]);
+
+  console.log(object);
+
+  return object;
+};
+
 export const validations = {
   required: [value => !!value || "This field is required."]
 };

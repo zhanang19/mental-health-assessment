@@ -17,8 +17,9 @@ export const getters = {
   isSuperAdmin: state => state.auth.user.role === UserRoles.SuperAdministrator,
 
   isAdmin: state =>
-    state.auth.user.role === UserRoles.Administrator ||
-    state.auth.user.role === UserRoles.SuperAdministrator,
+    state.auth.loggedIn &&
+    (state.auth.user.role === UserRoles.Administrator ||
+      state.auth.user.role === UserRoles.SuperAdministrator),
 
   isStudent: state => state.auth.user.role === UserRoles.Student,
 

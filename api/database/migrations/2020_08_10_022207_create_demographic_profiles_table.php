@@ -31,7 +31,7 @@ class CreateDemographicProfilesTable extends Migration
             $table->boolean('is_scholar')->default(false);
             $table->boolean('is_affected_marawi_siege')->default(false);
             $table->string('scholarship_grant')->nullable();
-            $table->string('parents_martial_status')->nullable();
+            $table->string('parents_marital_status')->nullable();
             $table->string('family_monthly_income')->nullable();
             $table->string('school_last_attended')->nullable();
             $table->string('school_address')->nullable();
