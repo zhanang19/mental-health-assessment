@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Survey;
 
+use App\Enums\RouteGuards;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Survey\SurveyResource;
 use App\Repository\SurveyRepositoryInterface;
@@ -20,6 +21,10 @@ class SurveyController extends Controller
     public function __construct(SurveyRepositoryInterface $surveyRepository)
     {
         $this->surveyRepository = $surveyRepository;
+
+        $this->middleware([
+            RouteGuards::SuperAdminOrAdministrator,
+        ])->except(['index', 'show', 'findBySlug']);
     }
 
     /**

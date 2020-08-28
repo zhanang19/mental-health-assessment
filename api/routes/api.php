@@ -58,13 +58,12 @@ Route::group([
     });
 
     // Surveys Module
+    Route::apiResource('surveys', 'Survey\SurveyController');
+    Route::get('surveys/{slug}/slug', 'Survey\SurveyController@findBySlug');
+
     Route::group([
         'middleware' => [RouteGuards::SuperAdminOrAdministrator]
     ], function () {
-        // Survey
-        Route::apiResource('surveys', 'Survey\SurveyController');
-        Route::get('surveys/{slug}/slug', 'Survey\SurveyController@findBySlug');
-
         // Survey Question Group
         Route::post('surveys/{surveyId}/question-groups', 'Survey\SurveyQuestionGroupController@store');
         Route::get('surveys/{surveyId}/question-groups/{questionGroupId}/duplicate', 'Survey\SurveyQuestionGroupController@duplicate');
