@@ -417,10 +417,7 @@ export default {
           }
 
         default:
-          return this.$helpers.notify({
-            type: "error",
-            message: "Please fill in the required fields.",
-          });
+          break;
       }
     },
   },

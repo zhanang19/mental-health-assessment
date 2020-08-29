@@ -28,7 +28,7 @@
 
       <v-card class="rounded-lg mb-3">
         <v-card-title class="headline">
-          Are you human?
+          Lorem ipsum dolor sit amet?
           <span class="ml-1 red--text">*</span>
         </v-card-title>
         <v-card-text>
@@ -42,7 +42,7 @@
 
       <v-card class="rounded-lg mb-3">
         <v-card-title class="headline">
-          If not human, what are you?
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit?
           <span class="ml-1 red--text">*</span>
         </v-card-title>
         <v-card-text>
@@ -56,7 +56,7 @@
 
       <v-card class="rounded-lg mb-3">
         <v-card-title class="headline">
-          If you have ate pizza, rate it
+          dolor sit amet consectetur
           <span class="ml-1 red--text">*</span>
         </v-card-title>
         <v-card-text>
