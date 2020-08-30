@@ -5,7 +5,7 @@
         <span>Survey Forms</span>
       </h1>
     </v-container>
-    <v-row v-if="false" justify="center" align="center">
+    <v-row justify="center" align="center">
       <v-col>
         <v-card elevation="10">
           <v-card-text>

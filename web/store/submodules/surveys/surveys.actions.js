@@ -412,5 +412,31 @@ export const actions = {
         message: handleError(error)
       });
     }
+  },
+
+  /**
+   * Request to create take survey to API.
+   *
+   * @param { Object } context
+   * @param { Object } payload
+   */
+  TAKE_SURVEY: async ({ commit }, payload) => {
+    console.log("[SurveyStore] Take Survey", payload);
+
+    try {
+      $nuxt.$helpers.loader();
+      const response = await $nuxt.$axios.$get(
+        `/api/surveys/${payload.slug}/take-survey`
+      );
+
+      return response;
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    } finally {
+      $nuxt.$helpers.loader();
+    }
   }
 };

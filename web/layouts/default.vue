@@ -45,7 +45,7 @@ export default {
   },
 
   async created() {
-    await this.$store.dispatch("loadPreferences");
+    // await this.$store.dispatch("loadPreferences");
 
     // redirect to their facility page if user
     // is not an administrator, since route middleware

@@ -34,6 +34,14 @@ interface SurveyRepositoryInterface
     public function findBySlug(string $slug): ?Survey;
 
     /**
+     * Start the survey.
+     *
+     * @param string $slug
+     * @return Survey
+     */
+    public function takeSurvey(string $slug): ?Survey;
+
+    /**
      * Create new survey.
      *
      * @return Survey

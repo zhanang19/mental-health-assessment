@@ -49,6 +49,17 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
+     * Start the survey.
+     *
+     * @param string $slug
+     * @return Survey
+     */
+    public function takeSurvey(string $slug): ?Survey
+    {
+        return new Survey();
+    }
+
+    /**
      * Create a new survey form.
      *
      * @return Survey

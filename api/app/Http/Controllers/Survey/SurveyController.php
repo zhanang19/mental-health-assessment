@@ -74,6 +74,20 @@ class SurveyController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function takeSurvey(string $slug)
+    {
+        return response()->json([
+            'data' => $this->surveyRepository->takeSurvey($slug),
+            'message' => 'You started to take the survey. Good luck!'
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -27,7 +27,8 @@ export const SurveyActions = Object.freeze({
   DELETE_QUESTION_GROUP_BY_ID: "surveys/DELETE_QUESTION_GROUP_BY_ID",
   DELETE_QUESTION_BY_ID: "surveys/DELETE_QUESTION_BY_ID",
   RESTORE: "surveys/RESTORE",
-  PERMANENTLY_DELETE: "surveys/PERMANENTLY_DELETE"
+  PERMANENTLY_DELETE: "surveys/PERMANENTLY_DELETE",
+  TAKE_SURVEY: "surveys/TAKE_SURVEY"
 });
 
 export const SurveyMutations = Object.freeze({

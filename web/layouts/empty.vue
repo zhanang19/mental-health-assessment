@@ -20,7 +20,7 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('loadPreferences')
+    // this.$store.dispatch('loadPreferences')
   }
 }
 </script>
