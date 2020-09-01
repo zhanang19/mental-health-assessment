@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Passport\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -115,6 +116,14 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
+     * @return HasMany
+     */
+    public function surveys(): HasMany
+    {
+        return $this->hasMany(Survey::class, 'student_id');
+    }
+
+    /**
      * Get the avatar attribute for the user.
      *
      * @return bool
@@ -135,14 +144,34 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Get the role flag for the user.
+     * Get the all unfinished surveys for this user.
      *
-     * @return bool
+     * @return Collection
      */
-    public function getFormattedTimeZoneAttribute()
+    public function getUnfinishedSurveysAttribute(): Collection
     {
-        return cleanTimeZoneName($this->attributes['time_zone']);
+        return $this->surveys()->unfinished()->get();
     }
+
+    /**
+     * Get the all unfinished surveys for this user.
+     *
+     * @return Collection
+     */
+    public function getFinishedSurveysAttribute(): Collection
+    {
+        return $this->surveys()->finished()->get();
+    }
+
+    // /**
+    //  * Get the role flag for the user.
+    //  *
+    //  * @return bool
+    //  */
+    // public function getFormattedTimeZoneAttribute()
+    // {
+    //     return cleanTimeZoneName($this->attributes['time_zone']);
+    // }
 
     /**
      * Get the role flag for the user.
