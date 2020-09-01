@@ -118,9 +118,9 @@ class User extends Authenticatable implements HasMedia
     /**
      * @return HasMany
      */
-    public function surveys(): HasMany
+    public function surveyResponses(): HasMany
     {
-        return $this->hasMany(Survey::class, 'student_id');
+        return $this->hasMany(SurveyResponse::class, 'student_id');
     }
 
     /**
@@ -150,7 +150,7 @@ class User extends Authenticatable implements HasMedia
      */
     public function getUnfinishedSurveysAttribute(): Collection
     {
-        return $this->surveys()->unfinished()->get();
+        return $this->surveyResponses()->unfinished()->get();
     }
 
     /**
@@ -160,7 +160,7 @@ class User extends Authenticatable implements HasMedia
      */
     public function getFinishedSurveysAttribute(): Collection
     {
-        return $this->surveys()->finished()->get();
+        return $this->surveyResponses()->finished()->get();
     }
 
     // /**

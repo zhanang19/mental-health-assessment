@@ -59,6 +59,13 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function takeSurvey(int $surveyId): ?SurveyResponse
     {
+        $surveyResponse = auth()->user()->surveyResponses()
+            ->whereSurveyId($surveyId)->first();
+
+        if($surveyResponse != null) {
+            return $surveyResponse;
+        }
+
         $survey = $this->findSurveyById($surveyId);
 
         $surveyResponse = $survey->responses()
