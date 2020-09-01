@@ -76,13 +76,13 @@ class SurveyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $slug
+     * @param  int $surveyId
      * @return \Illuminate\Http\Response
      */
-    public function takeSurvey(string $slug)
+    public function takeSurvey(int $surveyId)
     {
         return response()->json([
-            'data' => $this->surveyRepository->takeSurvey($slug),
+            'data' => $this->surveyRepository->takeSurvey($surveyId),
             'message' => 'You started to take the survey. Good luck!'
         ]);
     }

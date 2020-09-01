@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionGroup;
+use App\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -36,10 +37,10 @@ interface SurveyRepositoryInterface
     /**
      * Start the survey.
      *
-     * @param string $slug
-     * @return Survey
+     * @param int $surveyId
+     * @return SurveyResponse
      */
-    public function takeSurvey(string $slug): ?Survey;
+    public function takeSurvey(int $surveyId): ?SurveyResponse;
 
     /**
      * Create new survey.

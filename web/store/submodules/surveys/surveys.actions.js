@@ -426,7 +426,7 @@ export const actions = {
     try {
       $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.slug}/take-survey`
+        `/api/surveys/${payload.surveyId}/take-survey`
       );
 
       return response;

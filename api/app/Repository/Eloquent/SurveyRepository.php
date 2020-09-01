@@ -2,15 +2,17 @@
 
 namespace App\Repository\Eloquent;
 
-use App\Enums\SurveyQuestionInputTypes;
-use App\Repository\SurveyRepositoryInterface;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionGroup;
+use App\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use App\Enums\SurveyQuestionInputTypes;
+use App\Enums\SurveyResponseStatuses;
+use App\Repository\SurveyRepositoryInterface;
 
 class SurveyRepository extends BaseRepository implements SurveyRepositoryInterface
 {
@@ -50,13 +52,41 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
 
     /**
      * Start the survey.
+     * It basically just be based on the survey questionnaire form.
      *
-     * @param string $slug
-     * @return Survey
+     * @param int $surveyId
+     * @return SurveyResponse
      */
-    public function takeSurvey(string $slug): ?Survey
+    public function takeSurvey(int $surveyId): ?SurveyResponse
     {
-        return new Survey();
+        $survey = $this->findSurveyById($surveyId);
+
+        $surveyResponse = $survey->responses()
+            ->create([
+                'student_id' => auth()->id(),
+                'status' => SurveyResponseStatuses::InProgress,
+            ]);
+
+        // create survey response groups
+        foreach($survey->questionGroups as $questionGroup) {
+            $responseGroup = $surveyResponse->responseGroups()->create([
+                'status' => SurveyResponseStatuses::InProgress,
+                'questions_answered' => 0,
+                'total_questions' => $questionGroup->count(),
+            ]);
+
+            // create the response answers based on questions
+            foreach($questionGroup->questions as $question) {
+                $responseGroup->answers()->create([
+                    // choices will be taken from the question model
+                    'survey_question_id' => $question->id,
+                    'answer_a' => null,
+                    'answer_b' => null,
+                ]);
+            }
+        }
+
+        return $surveyResponse->fresh();
     }
 
     /**
