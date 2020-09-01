@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SurveyResponse extends BaseModel
 {
@@ -20,5 +21,13 @@ class SurveyResponse extends BaseModel
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function responseGroups(): HasMany
+    {
+        return $this->hasMany(SurveyResponseGroup::class);
     }
 }
