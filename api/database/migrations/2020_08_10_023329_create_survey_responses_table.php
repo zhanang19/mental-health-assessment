@@ -20,6 +20,10 @@ class CreateSurveyResponsesTable extends Migration
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique([
+                'student_id',
+                'survey_id'
+            ]);
         });
 
         Schema::table('survey_responses', function (Blueprint $table) {
