@@ -63,6 +63,9 @@ Route::group([
     Route::get('surveys/{surveyId}/take-survey', 'Survey\SurveyController@takeSurvey')
         ->withoutMiddleware(RouteGuards::SuperAdminOrAdministrator);
 
+    // Survey Response Module
+    Route::apiResource('survey-responses', 'SurveyResponse\SurveyResponseController');
+
     Route::group([
         'middleware' => [RouteGuards::SuperAdminOrAdministrator]
     ], function () {

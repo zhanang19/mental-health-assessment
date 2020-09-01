@@ -59,9 +59,7 @@ class BaseModel extends Model
      *
      * @var array
      */
-    protected $with = [
-        //
-    ];
+    protected $with = [];
 
     /**
      * Checks if user is created today.

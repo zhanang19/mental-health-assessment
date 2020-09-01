@@ -1,189 +1,55 @@
 <template>
   <v-main :class="color_theme" app>
     <v-app-bar app extended>
-      <v-btn @click="$router.replace({ name: 'app-surveys' })" icon>
+      <v-btn @click="$router.replace({ name: 'home-index' })" icon>
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>{{ title || 'Untitled Survey Form' }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <div>
-        <v-menu transition="slide-y-transition" offset-y>
-          <template #activator="{ on: menu, attrs }">
-            <v-tooltip bottom>
-              <template #activator="{ on: tooltip }">
-                <v-btn v-on="{ ...tooltip, ...menu }" v-bind="attrs" icon>
-                  <v-icon>mdi-palette-outline</v-icon>
-                </v-btn>
-              </template>
-              <span>Select a color theme</span>
-            </v-tooltip>
-          </template>
-          <v-list>
-            <v-list-item
-              @click="selectColorTheme(color)"
-              v-for="(color, index) in colorThemes"
-              :key="index"
-            >
-              <v-list-item-action>
-                <v-sheet :class="`${color} pa-3 rounded-lg elevation-3`"></v-sheet>
-              </v-list-item-action>
-              <v-list-item-content>{{ color }}</v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-btn @click="save({ notify: true })" color="primary">Save Changes</v-btn>
-      </div>
 
-      <template #extension>
-        <v-tabs centered>
-          <v-tab>Questions</v-tab>
-          <v-tab>Responses</v-tab>
-        </v-tabs>
-      </template>
+      <template #extension></template>
     </v-app-bar>
 
     <v-container class="mb-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
-          <v-form ref="form" @submit.prevent="save({ notify: true })">
-            <!-- START: Survey Details -->
-            <v-card class="rounded-lg" style="margin-bottom: 5rem">
-              <v-card-title>
-                <span class="display-1">
-                  <v-text-field
-                    hint="Required"
-                    persistent-hint
-                    label="Form Title"
-                    v-model="title"
-                    :rules="rules.survey.title"
-                  ></v-text-field>
-                </span>
-              </v-card-title>
-              <v-card-subtitle>
-                <v-text-field hint="Optional" persistent-hint label="Subtitle" v-model="subtitle"></v-text-field>
-              </v-card-subtitle>
-              <v-card-text>
-                <v-textarea
-                  v-model="description"
-                  label="Description"
-                  hint="Optional"
-                  outlined
-                  persistent-hint
-                ></v-textarea>
-              </v-card-text>
+          <!-- START: Survey Details -->
+          <v-card class="rounded-lg" style="margin-bottom: 5rem">
+            <v-card-title>
+              <span class="display-1" v-text="title"></span>
+            </v-card-title>
+            <v-card-subtitle v-text="subtitle"></v-card-subtitle>
+            <v-card-text v-text="description"></v-card-text>
+          </v-card>
+          <!-- END: Survey Details -->
+
+          <!-- START: Question Groups v-for loop -->
+          <v-container
+            class="pa-0 mb-10"
+            v-for="(group, groupIndex) in question_groups"
+            :key="groupIndex"
+          >
+            <!-- survey question group header -->
+            <v-card class="rounded-lg mb-3">
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" fab top right absolute>
+                    <h3>{{ `G${ groupIndex + 1}` }}</h3>
+                  </v-btn>
+                </template>
+                <span>The question group number</span>
+              </v-tooltip>
+              <v-card-title class="headline pt-10" v-text="group.label"></v-card-title>
+              <v-card-text v-html="group.instructions"></v-card-text>
+              <v-divider class="mx-5"></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+              </v-card-actions>
             </v-card>
-            <!-- END: Survey Details -->
-
-            <!-- START: Question Groups v-for loop -->
-            <v-container
-              class="pa-0 mb-10"
-              v-for="(group, groupIndex) in question_groups"
-              :key="groupIndex"
-            >
-              <!-- survey question group header -->
-              <v-card class="rounded-lg mb-3">
-                <v-tooltip bottom>
-                  <template #activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" fab top right absolute>
-                      <h3>{{ `G${ groupIndex + 1}` }}</h3>
-                    </v-btn>
-                  </template>
-                  <span>The question group number</span>
-                </v-tooltip>
-                <v-card-title class="headline pt-10">
-                  <v-text-field
-                    hint="Required"
-                    persistent-hint
-                    label="Group Label"
-                    v-model="group.label"
-                    :rules="rules.group.label"
-                    @blur="save({ notify: false })"
-                  ></v-text-field>
-                </v-card-title>
-                <v-card-text>
-                  <v-textarea
-                    label="Instructions"
-                    v-model="group.instructions"
-                    hint="Optional"
-                    persistent-hint
-                    @blur="save({ notify: false })"
-                    outlined
-                  ></v-textarea>
-                </v-card-text>
-                  <v-divider class="mx-5"></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <div class="mx-3 py-3">
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
-                        <v-btn
-                          v-on="on"
-                          v-bind="attrs"
-                          @click="duplicateSurveyQuestionGroup({
-                            questionGroupId: group.id
-                          })"
-                          elevation="3"
-                          small
-                          fab
-                        >
-                          <v-icon>mdi-content-copy</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Duplicate this question group</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
-                        <v-btn
-                          v-on="on"
-                          v-bind="attrs"
-                          @click="deleteSurveyQuestionGroup({
-                            questionGroupId: group.id
-                          })"
-                          elevation="3"
-                          small
-                          fab
-                        >
-                          <v-icon>mdi-delete-outline</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Delete this question group</span>
-                    </v-tooltip>
-                  </div>
-                </v-card-actions>
-              </v-card>
-
-              <!-- START: Survey Question Group v-for questions -->
-              <app-survey-question
-                v-if="!refreshing"
-                @added="refresh()"
-                @duplicated="refresh()"
-                :question-group="group"
-                :question-group-index="groupIndex"
-              ></app-survey-question>
-              <div v-else>
-                <app-circular-progress-indicator :color-theme="color_theme"></app-circular-progress-indicator>
-              </div>
-              <!-- END: Survey Question Group v-for questions -->
-            </v-container>
-            <!-- END: Question Groups v-for loop -->
-            <div class="text-center">
-              <v-btn class="primary--text" x-large @click="addSurveyQuestionGroup()">
-                <span>Add Question Group</span>
-                <v-icon right>mdi-plus</v-icon>
-              </v-btn>
-            </div>
-          </v-form>
+          </v-container>
         </v-col>
       </v-row>
     </v-container>
-
-    <v-card
-      v-if="false"
-      class="rounded-xl"
-      style="text-align: center; width: 50%; position: fixed; bottom: 0; left: 0; right: 0; margin-left: auto; margin-right: auto; margin-bottom: 1rem;"
-    >
-      <v-card-text>Test</v-card-text>
-    </v-card>
   </v-main>
 </template>
 

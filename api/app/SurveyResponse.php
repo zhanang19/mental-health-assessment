@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SurveyResponse extends BaseModel
 {
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = [
+        "survey"
+    ];
+
+    /**
      * @return BelongsTo
      */
     public function student(): BelongsTo
