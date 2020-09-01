@@ -31,6 +31,17 @@ export const SurveyActions = Object.freeze({
   TAKE_SURVEY: "surveys/TAKE_SURVEY"
 });
 
+export const SurveyResponseActions = Object.freeze({
+  FETCH_ALL: "survey-responses/FETCH_ALL",
+  FETCH: "survey-responses/FETCH",
+  FETCH_BY_SLUG: "survey-responses/FETCH_BY_SLUG",
+  CREATE: "survey-responses/CREATE",
+  UPDATE: "survey-responses/UPDATE",
+  DELETE: "survey-responses/DELETE",
+  RESTORE: "survey-responses/RESTORE",
+  PERMANENTLY_DELETE: "survey-responses/PERMANENTLY_DELETE",
+});
+
 export const SurveyMutations = Object.freeze({
   SET_STATE: "surveys/SET_STATE",
   SET_QUESTION_GROUP_QUESTIONS: "surveys/SET_QUESTION_GROUP_QUESTIONS"
