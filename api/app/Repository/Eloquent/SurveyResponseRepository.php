@@ -22,22 +22,14 @@ class SurveyResponseRepository implements SurveyResponseRepositoryInterface
     /**
      * Find survey by id.
      *
-     * @param int $surveyResponseId
+     * @param int $surveyId
+     * @param int $responseId
      * @return SurveyResponse
      */
-    public function findSurveyResponseById(int $surveyResponseId): ?SurveyResponse
-    {
-        return null;
-    }
-
-    /**
-     * Get survey by slug.
-     *
-     * @param string $slug
-     * @return SurveyResponse
-     */
-    public function findBySlug(string $slug): ?SurveyResponse
-    {
+    public function findSurveyResponseById(
+        int $surveyId,
+        int $responseId
+    ): ?SurveyResponse {
         return null;
     }
 
@@ -54,11 +46,11 @@ class SurveyResponseRepository implements SurveyResponseRepositoryInterface
     /**
      * Update existing survey response.
      *
-     * @param int $surveyResponseId
+     * @param int $responseId
      * @param \Illuminate\Http\Request $payload
      * @return SurveyResponse
      */
-    public function update(int $surveyResponseId, Request $payload)
+    public function update(int $responseId, Request $payload)
     {
         return null;
     }
@@ -66,30 +58,19 @@ class SurveyResponseRepository implements SurveyResponseRepositoryInterface
     /**
      * Delete survey by id.
      *
-     * @param int $surveyResponseId
+     * @param int $responseId
      * @return bool
      */
-    public function deleteById(int $surveyResponseId)
+    public function deleteById(int $responseId)
     {
         return false;
     }
 
     /**
-     * @param int $surveyResponseId
+     * @param int $responseId
      * @return bool
      */
-    public function deletePermanentlyById(int $surveyResponseId)
-    {
-        return false;
-    }
-
-    /**
-     * Delete survey by slug.
-     *
-     * @param string $slug
-     * @return bool
-     */
-    public function deleteBySlug(string $slug)
+    public function deletePermanentlyById(int $responseId)
     {
         return false;
     }
@@ -97,10 +78,10 @@ class SurveyResponseRepository implements SurveyResponseRepositoryInterface
     /**
      * Restore survey by id.
      *
-     * @param int $surveyResponseId
+     * @param int $responseId
      * @return bool
      */
-    public function restoreById(int $surveyResponseId)
+    public function restoreById(int $responseId)
     {
         return false;
     }

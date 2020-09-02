@@ -18,18 +18,14 @@ interface SurveyResponseRepositoryInterface
     /**
      * Find survey by id.
      *
+     * @param int $surveyId
      * @param int $surveyResponseId
      * @return SurveyResponse
      */
-    public function findSurveyResponseById(int $surveyResponseId): ?SurveyResponse;
-
-    /**
-     * Get survey by slug.
-     *
-     * @param string $slug
-     * @return SurveyResponse
-     */
-    public function findBySlug(string $slug): ?SurveyResponse;
+    public function findSurveyResponseById(
+        int $surveyId,
+        int $surveyResponseId
+    ): ?SurveyResponse;
 
     /**
      * Create new survey response.
@@ -60,14 +56,6 @@ interface SurveyResponseRepositoryInterface
      * @return bool
      */
     public function deletePermanentlyById(int $surveyResponseId);
-
-    /**
-     * Delete survey by slug.
-     *
-     * @param string $slug
-     * @return bool
-     */
-    public function deleteBySlug(string $slug);
 
     /**
      * Restore survey by id.
