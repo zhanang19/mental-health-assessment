@@ -1,16 +1,6 @@
 <template>
   <v-main :class="survey.color_theme" app>
-    <v-app-bar app extended>
-      <v-btn @click="$router.back()" icon>
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{ survey.title || 'Untitled Survey Form' }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-
-      <template #extension></template>
-    </v-app-bar>
-
-    <nuxt-child class="mt-16"></nuxt-child>
+    <nuxt-child class="my-16"></nuxt-child>
 
     <v-tooltip top>
       <template #activator="{ on, attrs }">

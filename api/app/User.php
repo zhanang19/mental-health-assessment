@@ -134,6 +134,16 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
+     * Get the avatar attribute for the user.
+     *
+     * @return bool
+     */
+    public function getResponsesAttribute()
+    {
+        return $this->surveyResponses()->get();
+    }
+
+    /**
      * Get the full name attribute of a child.
      *
      * @return string

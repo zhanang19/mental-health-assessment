@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mb-16">
+  <v-container>
     <v-row justify="center" align="center">
       <v-col lg="8" md="10" sm="11" xs="12">
         <!-- START: Survey Details -->

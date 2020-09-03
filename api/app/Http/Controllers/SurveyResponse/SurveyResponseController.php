@@ -57,40 +57,43 @@ class SurveyResponseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param string $surveySlug
+     * @param int $responseId
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(string $surveySlug, int $responseId)
     {
         return new SurveyResponseResource(
-            $this->surveyResponseRepository->findSurveyResponseById($id)
+            $this->surveyResponseRepository->findSurveyResponseById(
+                $surveySlug, $responseId
+            )
         );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $slug
-     * @return \Illuminate\Http\Response
-     */
-    public function findBySlug(string $slug)
-    {
-        return new SurveyResponseResource(
-            $this->surveyResponseRepository->findBySlug($slug)
-        );
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  string  $slug
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function findBySlug(string $slug)
+    // {
+    //     return new SurveyResponseResource(
+    //         $this->surveyResponseRepository->findBySlug($slug)
+    //     );
+    // }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $responseId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $responseId)
     {
         return new SurveyResponseResource([
-            "data" => $this->surveyResponseRepository->update($id, $request),
+            "data" => $this->surveyResponseRepository->update($responseId, $request),
             "message" => "A survey has been updated."
         ]);
     }
@@ -98,13 +101,13 @@ class SurveyResponseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $responseId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($responseId)
     {
         return new SurveyResponseResource([
-            "data" => $this->surveyResponseRepository->deleteById($id),
+            "data" => $this->surveyResponseRepository->deleteById($responseId),
             "message" => "A survey has been trashed."
         ]);
     }

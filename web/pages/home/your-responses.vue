@@ -1,13 +1,13 @@
 <template>
   <v-container class="px-10">
-    <div v-if="!isLoading && hasfilteredSurveys">
+    <div v-if="!isLoading && hasSurveys">
       <v-card
         :color="item.color_theme"
         :dark="!item.color_theme.includes(['white'])"
         class="my-3"
         outlined
         min-height="150"
-        v-for="(item, index) in filteredSurveys"
+        v-for="(item, index) in surveys"
         :key="index"
       >
         <v-card-text>
@@ -22,31 +22,16 @@
           <v-spacer></v-spacer>
 
           <v-btn class="rounded-lg" @click="takeSurvey(item)" light large bottom right>
-            <span>Start</span>
+            <span>Continue</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </div>
-    <!-- if responses are available but filtered surveys are not -->
-    <div v-else-if="!isLoading && hasSurveys && !hasfilteredSurveys">
-      <v-card-text>
-        <div class="text-center">
-          <div class="py-3">You have already started out the other survey forms. Click the button to proceed.</div>
-          <v-btn
-            :to="{ name: 'home-your-responses' }"
-            class="rounded-lg"
-            color="primary"
-            width="125"
-            large
-            depressed
-          >Proceed</v-btn>
-        </div>
-      </v-card-text>
-    </div>
-
     <!-- if responses are empty -->
     <div v-else-if="!isLoading && !hasSurveys">
-      <v-card-text>There are no survey forms available yet.</v-card-text>
+      <v-card class="my-3 rounded-lg" min-height="260">
+        <v-card-text>There are no survey forms available yet.</v-card-text>
+      </v-card>
     </div>
 
     <!-- loading skeleton placeholder -->
@@ -107,19 +92,6 @@ export default {
   }),
 
   computed: {
-    hasfilteredSurveys() {
-      return this.filteredSurveys.length > 0;
-    },
-
-    filteredSurveys() {
-      return this.surveys.filter(
-        (item) =>
-          !this.$auth.user.responses
-            .map((response) => response.survey_id)
-            .includes(item.id)
-      );
-    },
-
     hasSurveys() {
       return this.surveys.length > 0;
     },

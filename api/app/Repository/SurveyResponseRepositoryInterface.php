@@ -18,12 +18,12 @@ interface SurveyResponseRepositoryInterface
     /**
      * Find survey by id.
      *
-     * @param int $surveyId
+     * @param string $surveySlug
      * @param int $surveyResponseId
      * @return SurveyResponse
      */
     public function findSurveyResponseById(
-        int $surveyId,
+        string $surveySlug,
         int $surveyResponseId
     ): ?SurveyResponse;
 
