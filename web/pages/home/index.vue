@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-10">
-    <div v-if="!isLoading && hasfilteredSurveys">
+    <div v-if="!isLoading && hasFilteredSurveys">
       <v-card
         :color="item.color_theme"
         :dark="!item.color_theme.includes(['white'])"
@@ -27,11 +27,15 @@
         </v-card-actions>
       </v-card>
     </div>
+
     <!-- if responses are available but filtered surveys are not -->
-    <div v-else-if="!isLoading && hasSurveys && !hasfilteredSurveys">
+    <div v-else-if="!isLoading && hasSurveys && !hasFilteredSurveys">
       <v-card-text>
         <div class="text-center">
-          <div class="py-3">You have already started out the other survey forms. Click the button to proceed.</div>
+          <img src="/illustrations/survey.svg" class="mb-3" height="300" alt srcset />
+          <div
+            class="py-3 subtitle-2"
+          >You have already started out the other survey forms. Click the button to proceed.</div>
           <v-btn
             :to="{ name: 'home-your-responses' }"
             class="rounded-lg"
@@ -46,7 +50,12 @@
 
     <!-- if responses are empty -->
     <div v-else-if="!isLoading && !hasSurveys">
-      <v-card-text>There are no survey forms available yet.</v-card-text>
+      <v-card-text>
+        <div class="text-center">
+          <img src="/illustrations/survey-empty.svg" class="mb-3" height="300" alt srcset />
+          <div class="py-3 subtitle-2">There are no survey forms available yet.</div>
+        </div>
+      </v-card-text>
     </div>
 
     <!-- loading skeleton placeholder -->
@@ -68,7 +77,7 @@
           <v-spacer></v-spacer>
 
           <v-btn class="rounded-lg" disabled light large bottom right>
-            <span>Continue</span>
+            <span>Start</span>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -107,7 +116,7 @@ export default {
   }),
 
   computed: {
-    hasfilteredSurveys() {
+    hasFilteredSurveys() {
       return this.filteredSurveys.length > 0;
     },
 

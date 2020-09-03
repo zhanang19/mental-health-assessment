@@ -3,7 +3,7 @@
     <v-row justify="center" align="center">
       <v-col lg="8" md="10" sm="11" xs="12">
         <!-- START: Survey Details -->
-        <v-card class="rounded-lg" style="margin-bottom: 5rem">
+        <v-card class="rounded-lg py-5" style="margin-bottom: 5rem">
           <v-card-title>
             <span class="display-1" v-text="survey.title"></span>
           </v-card-title>

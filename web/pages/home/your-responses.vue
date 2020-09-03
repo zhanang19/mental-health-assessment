@@ -1,37 +1,62 @@
 <template>
   <v-container class="px-10">
-    <div v-if="!isLoading && hasSurveys">
+    <div v-if="!isLoading && hasFilteredSurveys">
       <v-card
-        :color="item.color_theme"
-        :dark="!item.color_theme.includes(['white'])"
+        :color="item.survey.color_theme"
+        :dark="!item.survey.color_theme.includes(['white'])"
         class="my-3"
         outlined
         min-height="150"
-        v-for="(item, index) in surveys"
+        v-for="(item, index) in filteredSurveys"
         :key="index"
       >
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-3" v-text="item.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+              <v-list-item-title class="headline mb-3" v-text="item.survey.title"></v-list-item-title>
+              <v-list-item-subtitle v-text="item.survey.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card-text>
         <v-card-actions class="pa-5">
           <v-spacer></v-spacer>
 
-          <v-btn class="rounded-lg" @click="takeSurvey(item)" light large bottom right>
+          <v-btn class="rounded-lg" @click="continueSurvey(item.survey)" light large bottom right>
             <span>Continue</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </div>
+
+    <!-- if responses are available but filtered surveys are not -->
+    <div v-else-if="!isLoading && hasSurveys && !hasFilteredSurveys">
+      <v-card-text>
+        <div class="text-center">
+          <img src="/illustrations/survey.svg" class="mb-3" height="300" alt srcset />
+          <div
+            class="py-3 subtitle-2"
+          >You have not started any survey forms yet. Click the button to select.</div>
+          <v-btn
+            :to="{ name: 'home' }"
+            replace
+            class="rounded-lg"
+            color="primary"
+            width="125"
+            large
+            depressed
+          >Proceed</v-btn>
+        </div>
+      </v-card-text>
+    </div>
+
     <!-- if responses are empty -->
     <div v-else-if="!isLoading && !hasSurveys">
-      <v-card class="my-3 rounded-lg" min-height="260">
-        <v-card-text>There are no survey forms available yet.</v-card-text>
-      </v-card>
+      <v-card-text>
+        <div class="text-center">
+          <img src="/illustrations/survey-empty.svg" class="mb-3" height="300" alt srcset />
+          <div class="py-3 subtitle-2">You have not started any survey yet.</div>
+        </div>
+      </v-card-text>
     </div>
 
     <!-- loading skeleton placeholder -->
@@ -92,18 +117,29 @@ export default {
   }),
 
   computed: {
-    hasSurveys() {
-      return this.surveys.length > 0;
+    hasFilteredSurveys() {
+      return this.filteredSurveys.length > 0;
     },
 
-    ...mapState("surveys", {
-      surveys: (state) => state.surveys,
-    }),
+    filteredSurveys() {
+      return this.surveys;
+    },
+
+    hasSurveys() {
+      return this.$store.state.surveys.surveys.length > 0;
+    },
+
+    surveys() {
+      return this.$auth.user.responses;
+    },
+    // ...mapState("surveys", {
+    //   surveys: (state) => state.surveys,
+    // }),
   },
 
   methods: {
-    async takeSurvey(item) {
-      const response = await this.$store.dispatch(SurveyActions.TAKE_SURVEY, {
+    async continueSurvey(item) {
+      const response = await this.$store.dispatch(SurveyActions.FETCH_BY_SLUG, {
         surveyId: item.id,
         slug: item.slug,
       });
