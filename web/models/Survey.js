@@ -25,7 +25,7 @@ export const surveyValidations = {
 };
 
 export const colorThemes = [
-  "white",
+  // "white",
   "indigo",
   "purple",
   "deep-purple",

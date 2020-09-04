@@ -5,7 +5,7 @@
         :color="item.survey.color_theme"
         :dark="!item.survey.color_theme.includes(['white'])"
         class="my-3"
-        outlined
+        elevation="1"
         min-height="150"
         v-for="(item, index) in filteredSurveys"
         :key="index"
@@ -61,7 +61,7 @@
 
     <!-- loading skeleton placeholder -->
     <div v-else>
-      <v-card v-for="(item, index) in 5" outlined min-height="150" :key="index" class="my-3">
+      <v-card v-for="(item, index) in 5" elevation="1" min-height="150" :key="index" class="my-3">
         <v-card-text>
           <v-list-item>
             <v-list-item-content>

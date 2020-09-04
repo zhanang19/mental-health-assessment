@@ -13,7 +13,7 @@
       <v-container style="margin-top: 5rem;">
         <v-row justify="center" align="center">
           <v-col xl="8" lg="8" md="10" sm="12" xs="12">
-            <v-card elevation="10" class="rounded-lg">
+            <v-card elevation="10" min-height="100vh" class="rounded-lg">
               <v-card-text>
                 <v-container>
                   <v-toolbar flat color="transparent">
