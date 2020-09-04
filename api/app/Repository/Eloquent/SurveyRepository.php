@@ -100,9 +100,9 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                     'input_type' => $question->input_type,
                     'question' => $question->question,
                     'hint' => $question->hint,
-                    'validations' => $question->validations,
-                    'option_group_a' => $question->option_group_a,
-                    'option_group_b' => $question->option_group_b,
+                    'validations' => json_encode($question->validations),
+                    'option_group_a' => json_encode($question->option_group_a),
+                    'option_group_b' => json_encode($question->option_group_b),
                 ]);
             }
         }

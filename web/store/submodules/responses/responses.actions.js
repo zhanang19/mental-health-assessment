@@ -70,6 +70,34 @@ export const actions = {
    * @param { Object } context
    * @param { Object } payload
    */
+  FETCH_RESPONSE_GROUP_BY_ID: async ({ dispatch, state, commit }, payload) => {
+    console.log("[SurveyResponseStore] Fetch SurveyResponseGroup", payload);
+
+    try {
+      const response = await $nuxt.$axios.$get(
+        `/api/responses/${payload.responseId}/groups/${payload.responseGroupId}`
+      );
+
+      await commit("SET_STATE", {
+        field: "response_group",
+        data: response.data
+      });
+
+      return response;
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    }
+  },
+
+  /**
+   * Fetch a single resource from an API.
+   *
+   * @param { Object } context
+   * @param { Object } payload
+   */
   FETCH_BY_SLUG: async ({ dispatch, state, commit }, payload) => {
     console.log("[SurveyResponseStore] Fetch By Slug", payload);
 

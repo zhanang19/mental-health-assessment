@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use App\Repository\SurveyResponseRepositoryInterface;
 use App\SurveyResponse;
+use App\SurveyResponseGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -30,9 +31,8 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
     // }
 
     /**
-     * Find survey by id.
+     * Find survey response by id.
      *
-     * @param int $surveyId
      * @param int $responseId
      * @return SurveyResponse
      */
@@ -43,6 +43,23 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
     ): ?SurveyResponse {
         return $this->model->with($relations)
             ->findOrFail($responseId)->append($appends);
+    }
+
+    /**
+     * Find survey response group by id.
+     *
+     * @param int $responseId
+     * @param int $responseGroupId
+     * @return SurveyResponseGroup
+     */
+    public function findResponseGroupById(
+        int $responseId,
+        int $responseGroupId,
+        array $relations = ['answers']
+    ): ?SurveyResponseGroup {
+        return $this->model->findOrFail($responseId)
+            ->responseGroups()->with($relations)
+            ->findOrFail($responseGroupId);
     }
 
     // /**

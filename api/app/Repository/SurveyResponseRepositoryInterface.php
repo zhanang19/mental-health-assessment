@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\SurveyResponse;
+use App\SurveyResponseGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -27,6 +28,19 @@ interface SurveyResponseRepositoryInterface
         array $relations = ['survey'],
         array $appends = ['response_groups']
     ): ?SurveyResponse;
+
+    /**
+     * Find survey response group by id.
+     *
+     * @param int $responseId
+     * @param int $responseGroupId
+     * @return SurveyResponseGroup
+     */
+    public function findResponseGroupById(
+        int $responseId,
+        int $responseGroupId,
+        array $relations = ['answers']
+    ): ?SurveyResponseGroup;
 
     // /**
     //  * Create new survey response.

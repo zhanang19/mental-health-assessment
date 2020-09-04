@@ -38,7 +38,8 @@ export const SurveyResponseActions = Object.freeze({
   UPDATE: "responses/UPDATE",
   DELETE: "responses/DELETE",
   RESTORE: "responses/RESTORE",
-  PERMANENTLY_DELETE: "responses/PERMANENTLY_DELETE"
+  PERMANENTLY_DELETE: "responses/PERMANENTLY_DELETE",
+  FETCH_RESPONSE_GROUP_BY_ID: "responses/FETCH_RESPONSE_GROUP_BY_ID"
 });
 
 export const SurveyMutations = Object.freeze({
