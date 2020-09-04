@@ -72,6 +72,11 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             ->create([
                 'student_id' => auth()->id(),
                 'status' => SurveyResponseStatuses::InProgress,
+                'title' => $survey->title,
+                'slug' => $survey->slug,
+                'subtitle' => $survey->subtitle,
+                'description' => $survey->description,
+                'color_theme' => $survey->color_theme,
             ]);
 
         // create survey response groups
@@ -79,6 +84,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             $responseGroup = $surveyResponse->responseGroups()->create([
                 'status' => SurveyResponseStatuses::InProgress,
                 'questions_answered' => 0,
+                'label' => $questionGroup->label,
+                'instructions' => $questionGroup->instructions,
                 'total_questions' => $questionGroup->count(),
             ]);
 
@@ -89,6 +96,13 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                     'survey_question_id' => $question->id,
                     'answer_a' => null,
                     'answer_b' => null,
+                    'identifier' => $question->identifier,
+                    'input_type' => $question->input_type,
+                    'question' => $question->question,
+                    'hint' => $question->hint,
+                    'validations' => $question->validations,
+                    'option_group_a' => $question->option_group_a,
+                    'option_group_b' => $question->option_group_b,
                 ]);
             }
         }

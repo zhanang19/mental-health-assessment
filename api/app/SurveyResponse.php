@@ -14,7 +14,8 @@ class SurveyResponse extends BaseModel
      * @var array
      */
     protected $with = [
-        "survey"
+        // "survey",
+        // "responseGroups"
     ];
 
     /**
@@ -61,5 +62,13 @@ class SurveyResponse extends BaseModel
     public function scopeFinished($query)
     {
         return $query->where('status', SurveyResponseStatuses::Completed);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getResponseGroupsAttribute()
+    {
+        return $this->responseGroups()->get();
     }
 }

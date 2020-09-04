@@ -7,17 +7,27 @@ use App\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class SurveyResponseRepository implements SurveyResponseRepositoryInterface
+class SurveyResponseRepository extends BaseRepository implements SurveyResponseRepositoryInterface
 {
     /**
-     * Get all survey forms.
+     * SurveyRepository constructor.
      *
-     * @return Collection
+     * @param SurveyResponse $model
      */
-    public function all(): Collection
+    public function __construct(SurveyResponse $model)
     {
-        return collect([]);
+        parent::__construct($model);
     }
+
+    // /**
+    //  * Get all survey forms.
+    //  *
+    //  * @return Collection
+    //  */
+    // public function all(): Collection
+    // {
+    //     return collect([]);
+    // }
 
     /**
      * Find survey by id.
@@ -26,63 +36,65 @@ class SurveyResponseRepository implements SurveyResponseRepositoryInterface
      * @param int $responseId
      * @return SurveyResponse
      */
-    public function findSurveyResponseById(
-        int $surveyId,
-        int $responseId
+    public function findById(
+        int $responseId,
+        array $relations = ['survey'],
+        array $appends = ['response_groups']
     ): ?SurveyResponse {
-        return null;
+        return $this->model->with($relations)
+            ->findOrFail($responseId)->append($appends);
     }
 
-    /**
-     * Create new survey response.
-     *
-     * @return SurveyResponse
-     */
-    public function create(): ?SurveyResponse
-    {
-        return null;
-    }
+    // /**
+    //  * Create new survey response.
+    //  *
+    //  * @return SurveyResponse
+    //  */
+    // public function create(): ?SurveyResponse
+    // {
+    //     return null;
+    // }
 
-    /**
-     * Update existing survey response.
-     *
-     * @param int $responseId
-     * @param \Illuminate\Http\Request $payload
-     * @return SurveyResponse
-     */
-    public function update(int $responseId, Request $payload)
-    {
-        return null;
-    }
+    // /**
+    //  * Update existing survey response.
+    //  *
+    //  * @param int $responseId
+    //  * @param \Illuminate\Http\Request $payload
+    //  * @return SurveyResponse
+    //  */
+    // public function update(int $responseId, Request $payload)
+    // {
+    //     return null;
+    // }
 
-    /**
-     * Delete survey by id.
-     *
-     * @param int $responseId
-     * @return bool
-     */
-    public function deleteById(int $responseId)
-    {
-        return false;
-    }
+    // /**
+    //  * Delete survey by id.
+    //  *
+    //  * @param int $responseId
+    //  * @return bool
+    //  */
+    // public function deleteById(int $responseId)
+    // {
+    //     return false;
+    // }
 
-    /**
-     * @param int $responseId
-     * @return bool
-     */
-    public function deletePermanentlyById(int $responseId)
-    {
-        return false;
-    }
+    // /**
+    //  * @param int $responseId
+    //  * @return bool
+    //  */
+    // public function deletePermanentlyById(int $responseId)
+    // {
+    //     return false;
+    // }
 
-    /**
-     * Restore survey by id.
-     *
-     * @param int $responseId
-     * @return bool
-     */
-    public function restoreById(int $responseId)
-    {
-        return false;
-    }
+    // /**
+    //  * Restore survey by id.
+    //  *
+    //  * @param int $responseId
+    //  * @return bool
+    //  */
+    // public function restoreById(int $responseId)
+    // {
+    //     return false;
+    // }
 }

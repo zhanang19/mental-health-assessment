@@ -17,6 +17,11 @@ class CreateSurveyResponsesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('survey_id');
+            $table->string('title')->unique();
+            $table->string('slug')->unique()->nullable();
+            $table->string('subtitle')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('color_theme')->default('indigo')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
