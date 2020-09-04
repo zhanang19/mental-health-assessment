@@ -64,7 +64,7 @@ Route::group([
         ->withoutMiddleware(RouteGuards::SuperAdminOrAdministrator);
 
     // Survey Response Module
-    Route::apiResource('survey-responses', 'SurveyResponse\SurveyResponseController');
+    Route::apiResource('responses', 'SurveyResponse\SurveyResponseController');
 
     Route::group([
         'middleware' => [RouteGuards::SuperAdminOrAdministrator]
