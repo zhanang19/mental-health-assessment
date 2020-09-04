@@ -2,10 +2,10 @@
   <v-container class="px-10">
     <div v-if="!isLoading && hasFilteredSurveys">
       <v-card
-        :color="item.survey.color_theme"
-        :dark="!item.survey.color_theme.includes(['white'])"
+        :color="item.color_theme"
+        :dark="!item.color_theme.includes(['white'])"
         class="my-3"
-        elevation="1"
+        outlined
         min-height="150"
         v-for="(item, index) in filteredSurveys"
         :key="index"
@@ -13,15 +13,15 @@
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-3" v-text="item.survey.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="item.survey.subtitle"></v-list-item-subtitle>
+              <v-list-item-title class="headline mb-3" v-text="item.title"></v-list-item-title>
+              <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card-text>
         <v-card-actions class="pa-5">
           <v-spacer></v-spacer>
 
-          <v-btn class="rounded-lg" @click="continueSurvey(item.survey)" light large bottom right>
+          <v-btn class="rounded-lg" @click="continueSurveyResponse(item)" light large bottom right>
             <span>Continue</span>
           </v-btn>
         </v-card-actions>
@@ -61,7 +61,7 @@
 
     <!-- loading skeleton placeholder -->
     <div v-else>
-      <v-card v-for="(item, index) in 5" elevation="1" min-height="150" :key="index" class="my-3">
+      <v-card v-for="(item, index) in 5" outlined min-height="150" :key="index" class="my-3">
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
@@ -89,7 +89,7 @@
 <script>
 import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
 import { mapState } from "vuex";
-import { SurveyActions } from "../../utils/StoreTypes";
+import { SurveyActions, SurveyResponseActions } from "../../utils/StoreTypes";
 
 export default {
   head() {
@@ -138,15 +138,14 @@ export default {
   },
 
   methods: {
-    async continueSurvey(item) {
-      const response = await this.$store.dispatch(SurveyActions.FETCH_BY_SLUG, {
-        surveyId: item.id,
-        slug: item.slug,
-      });
+    async continueSurveyResponse(item) {
+      // const response = await this.$store.dispatch(SurveyResponseActions.FETCH, {
+      //   responseId: item.id,
+      // });
 
       await this.$router.push({
-        name: "surveys-slug",
-        params: { slug: item.slug },
+        name: "surveys-responses-responseId",
+        params: { responseId: item.id },
       });
     },
   },

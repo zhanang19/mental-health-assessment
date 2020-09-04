@@ -15,7 +15,7 @@
         <!-- START: Question Groups v-for loop -->
         <v-container
           class="pa-0 mb-10"
-          v-for="(group, groupIndex) in survey.question_groups"
+          v-for="(group, groupIndex) in responseGroups"
           :key="groupIndex"
         >
           <!-- survey question group header -->
@@ -35,9 +35,9 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   :to="{
-                      name: 'surveys-slug-response-groups-responseGroupId',
+                      name: 'surveys-responses-responseId-groups-responseGroupId',
                       params: {
-                        slug: $route.params.slug,
+                        responseId: $route.params.responseId,
                         responseGroupId: group.id,
                       }
                     }"
@@ -60,7 +60,7 @@
 <script>
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
-import { SurveyResponseActions } from "../../../utils/StoreTypes";
+import { SurveyResponseActions } from "../../../../utils/StoreTypes";
 
 export default {
   head() {
@@ -71,19 +71,21 @@ export default {
 
   layout: "empty",
 
-  async fetch({ store, params }) {
-    await store.dispatch(SurveyResponseActions.FETCH_BY_SLUG, {
-      slug: params.slug,
-    });
-  },
-
   data: () => ({
     isLoading: false,
   }),
 
   computed: {
-    ...mapState("survey-responses", {
-      survey: (state) => state.survey,
+    survey() {
+      return this.response;
+    },
+
+    responseGroups() {
+      return this.response.response_groups;
+    },
+
+    ...mapState("responses", {
+      response: (state) => state.response,
     }),
   },
 };

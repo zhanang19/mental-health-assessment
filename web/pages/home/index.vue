@@ -5,7 +5,7 @@
         :color="item.color_theme"
         :dark="!item.color_theme.includes(['white'])"
         class="my-3"
-        elevation="1"
+        outlined
         min-height="150"
         v-for="(item, index) in filteredSurveys"
         :key="index"
@@ -60,7 +60,7 @@
 
     <!-- loading skeleton placeholder -->
     <div v-else>
-      <v-card v-for="(item, index) in 5" elevation="1" min-height="150" :key="index" class="my-3">
+      <v-card v-for="(item, index) in 5" outlined min-height="150" :key="index" class="my-3">
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
@@ -145,7 +145,7 @@ export default {
         slug: item.slug,
       });
 
-      await this.$auth.fetchUser()
+      await this.$auth.fetchUser();
 
       await this.$router.push({
         name: "surveys-slug",

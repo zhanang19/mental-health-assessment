@@ -28,8 +28,8 @@
 
 <script>
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
+import { SurveyResponseActions } from "../../../utils/StoreTypes";
 import { mapState } from "vuex";
-import { SurveyResponseActions } from "../../utils/StoreTypes";
 
 export default {
   head() {
@@ -41,14 +41,20 @@ export default {
   layout: "empty",
 
   async fetch({ store, params }) {
-    await store.dispatch(SurveyResponseActions.FETCH_BY_SLUG, {
-      slug: params.slug,
+    console.log(SurveyResponseActions.FETCH)
+
+    await store.dispatch(SurveyResponseActions.FETCH, {
+      responseId: params.responseId,
     });
   },
 
   computed: {
-    ...mapState("survey-responses", {
-      survey: (state) => state.survey,
+    survey() {
+      return this.response;
+    },
+
+    ...mapState("responses", {
+      response: (state) => state.response,
     }),
   },
 };

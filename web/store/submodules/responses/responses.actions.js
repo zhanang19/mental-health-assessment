@@ -1,13 +1,13 @@
 import { handleError } from "~/utils/ErrorHandler";
 /**
  * @method FETCH_ALL
- * @method FETCH -- @param (surveyId)
+ * @method FETCH -- @param (responseId)
  * @method FETCH_BY_SLUG -- @param (slug)
  * @method CREATE
  * @method UPDATE -- @param (slug)
- * @method DELETE -- @param (surveyId)
- * @method RESTORE -- @param (surveyId)
- * @method PERMANENTLY_DELETE -- @param (surveyId)
+ * @method DELETE -- @param (responseId)
+ * @method RESTORE -- @param (responseId)
+ * @method PERMANENTLY_DELETE -- @param (responseId)
  */
 export const actions = {
   /**
@@ -18,13 +18,13 @@ export const actions = {
    *
    */
   FETCH_ALL: async ({ dispatch, state, commit }, payload) => {
-    console.log("[SurveyResponseStore] Fetch All Surveys", payload);
+    console.log("[SurveyResponseStore] Fetch All Responses", payload);
 
     try {
-      const response = await $nuxt.$axios.$get("/api/surveys");
+      const response = await $nuxt.$axios.$get("/api/responses");
 
       await await commit("SET_STATE", {
-        field: "surveys",
+        field: "responses",
         data: response.data
       });
     } catch (error) {
@@ -47,11 +47,11 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.surveyId}`
+        `/api/responses/${payload.responseId}`
       );
 
       await commit("SET_STATE", {
-        field: "survey",
+        field: "response",
         data: response.data
       });
 
@@ -75,11 +75,11 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.slug}/slug`
+        `/api/responses/${payload.slug}/slug`
       );
 
       await commit("SET_STATE", {
-        field: "survey",
+        field: "response",
         data: response.data
       });
 
@@ -109,11 +109,11 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.slug}/responses/${payload.responseId}/groups/${payload.responseGroupId}`
+        `/api/responses/${payload.slug}/responses/${payload.responseId}/groups/${payload.responseGroupId}`
       );
 
       await commit("SET_STATE", {
-        field: "survey",
+        field: "response",
         data: response.data
       });
 
@@ -137,12 +137,12 @@ export const actions = {
 
     try {
       $nuxt.$helpers.loader();
-      const response = await $nuxt.$axios.$post("/api/surveys", {});
+      const response = await $nuxt.$axios.$post("/api/responses", {});
 
       // await commit("RESET_FORM");
 
       $nuxt.$router.push({
-        name: "surveys-edit-slug",
+        name: "responses-edit-slug",
         params: { slug: response.data.slug }
       });
 
@@ -171,7 +171,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$put(
-        `/api/surveys/${payload.surveyId}`,
+        `/api/responses/${payload.responseId}`,
         state.survey
       );
 
@@ -195,7 +195,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$delete(
-        `/api/surveys/${payload.surveyId}`
+        `/api/responses/${payload.responseId}`
       );
 
       await $nuxt.$helpers.notify({
@@ -223,7 +223,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$delete(
-        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}`
+        `/api/responses/${payload.responseId}/question-groups/${payload.questionGroupId}`
       );
 
       await $nuxt.$helpers.notify({
@@ -251,7 +251,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.surveyId}/restore`
+        `/api/responses/${payload.responseId}/restore`
       );
 
       await $nuxt.$helpers.notify({
@@ -277,7 +277,7 @@ export const actions = {
 
     try {
       const response = await $nuxt.$axios.$delete(
-        `/api/surveys/${payload.surveyId}/force-delete`
+        `/api/responses/${payload.responseId}/force-delete`
       );
 
       await $nuxt.$helpers.notify({
