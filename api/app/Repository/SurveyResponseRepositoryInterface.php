@@ -42,6 +42,24 @@ interface SurveyResponseRepositoryInterface
         array $relations = ['answers']
     ): ?SurveyResponseGroup;
 
+    /**
+     * Update a response group by id.
+     *
+     * This will update all of the answers that belongs to
+     * the survey response group. No need to update every single
+     * question.
+     *
+     * @param int $responseId
+     * @param int $responseGroupId
+     * @param Request $payload
+     * @return SurveyResponseGroup
+     */
+    public function updateResponseGroupById(
+        int $responseId,
+        int $responseGroupId,
+        array $payload
+    ): ?SurveyResponseGroup;
+
     // /**
     //  * Create new survey response.
     //  *

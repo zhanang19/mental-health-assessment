@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SurveyResponse;
+namespace App\Http\Controllers\Survey;
 
 use App\Enums\RouteGuards;
 use App\Http\Controllers\Controller;

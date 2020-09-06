@@ -21,58 +21,35 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" xs="12">
                   <section v-if="inputTypesEnum.shortAnswer === answerItem.input_type">
-                    <v-text-field label="Your answer here"></v-text-field>
+                    <v-text-field v-model="answerItem.answer_a" label="Your answer here"></v-text-field>
                   </section>
                   <section v-else-if="inputTypesEnum.paragraph === answerItem.input_type">
-                    <v-textarea label="Your answer here"></v-textarea>
+                    <v-textarea v-model="answerItem.answer_a" label="Your answer here"></v-textarea>
                   </section>
                   <section v-else-if="inputTypesEnum.multipleChoice === answerItem.input_type">
                     <v-row>
                       <!-- option group A -->
                       <v-col>
-                        <v-text-field
-                          label="Option Group Label"
-                          v-model="answerItem.option_group_a.label"
-                        ></v-text-field>
-                        <v-radio-group column>
+                        <div class="headline" v-text="answerItem.option_group_a.label"></div>
+                        <v-radio-group v-model="answerItem.answer_a" column>
                           <v-radio
                             v-for="(choiceA, choiceIndex) in answerItem.option_group_a.options"
+                            :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
                             :key="choiceIndex"
-                          >
-                            <template #label>
-                              <v-text-field
-                                v-model="choiceA.text"
-                                :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
-                                append-icon="mdi-close"
-                              ></v-text-field>
-                            </template>
-                          </v-radio>
-                          <div>
-                            <v-btn class="primary--text">Add Option</v-btn>
-                          </div>
+                          ></v-radio>
                         </v-radio-group>
                       </v-col>
                       <!-- option group B -->
                       <v-col
                         v-if="!isObjectEmpty(answerItem.option_group_b) && !Array.isArray(answerItem.option_group_b)"
                       >
-                        <v-text-field
-                          label="Option Group Label"
-                          v-model="answerItem.option_group_b.label"
-                        ></v-text-field>
-                        <v-radio-group column>
+                        <div v-text="answerItem.option_group_b.label"></div>
+                        <v-radio-group v-model="answerItem.answer_b" column>
                           <v-radio
                             v-for="(choiceB, choiceBIndex) in answerItem.option_group_b.options"
+                            :label="!!choiceB.text ? choiceB.text : `Option ${choiceBIndex + 1}`"
                             :key="choiceBIndex"
-                          >
-                            <template #label>
-                              <v-text-field
-                                v-model="choiceB.text"
-                                :label="!!choiceB.text ? choiceB.text : `Option ${choiceBIndex + 1}`"
-                                append-icon="mdi-close"
-                              ></v-text-field>
-                            </template>
-                          </v-radio>
+                          ></v-radio>
                         </v-radio-group>
                       </v-col>
                     </v-row>
@@ -81,75 +58,52 @@
                     <v-row>
                       <!-- checkbox option group A -->
                       <v-col>
-                        <v-text-field
-                          label="Option Group Label"
-                          v-model="answerItem.option_group_a.label"
-                        ></v-text-field>
+                        <div v-text="answerItem.option_group_a.label"></div>
                         <v-checkbox
+                          v-model="answerItem.answer_a"
                           v-for="(choiceA, choiceIndex) in answerItem.option_group_a.options"
+                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
                           :key="choiceIndex"
-                        >
-                          <template #label>
-                            <v-text-field
-                              v-model="choiceA.text"
-                              :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
-                              append-icon="mdi-close"
-                            ></v-text-field>
-                          </template>
-                        </v-checkbox>
-                        <div>
-                          <v-btn class="primary--text">Add Option</v-btn>
-                        </div>
+                        ></v-checkbox>
                       </v-col>
                       <!-- checkbox option group B -->
                       <v-col
                         v-if="!isObjectEmpty(answerItem.option_group_b) && !Array.isArray(answerItem.option_group_b)"
                       >
-                        <v-text-field
-                          label="Option Group Label"
-                          v-model="answerItem.option_group_b.label"
-                        ></v-text-field>
+                        <div v-text="answerItem.option_group_b.label"></div>
                         <v-checkbox
+                          v-model="answerItem.answer_b"
                           v-for="(choiceA, choiceIndex) in answerItem.option_group_b.options"
+                          :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
                           :key="choiceIndex"
-                        >
-                          <template #label>
-                            <v-text-field
-                              v-model="choiceA.text"
-                              :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
-                              append-icon="mdi-close"
-                            ></v-text-field>
-                          </template>
-                        </v-checkbox>
-                        <div>
-                          <v-btn class="primary--text">Add Option</v-btn>
-                          <v-btn>Remove Option Group</v-btn>
-                        </div>
+                        ></v-checkbox>
                       </v-col>
                     </v-row>
                   </section>
                   <section v-else-if="inputTypesEnum.dropdown === answerItem.input_type">
                     <!-- dropdown select options -->
                     <div>
-                      <v-text-field
-                        v-for="(choiceA, choiceIndex) in answerItem.option_group_a.options"
-                        :key="choiceIndex"
-                        v-model="choiceA.text"
-                        :label="!!choiceA.text ? choiceA.text : `Option ${choiceIndex + 1}`"
-                        append-icon="mdi-close"
-                      ></v-text-field>
-                      <div>
-                        <v-btn class="primary--text">Add Option</v-btn>
-                      </div>
+                      <v-select
+                        :items="answerItem.option_group_a.options"
+                        item-text="text"
+                        item-value="text"
+                        v-model="answerItem.answer_a"
+                        :label="!!answerItem.option_group_a.label ? answerItem.option_group_a.label : `Option ${choiceIndex + 1}`"
+                      ></v-select>
                     </div>
                   </section>
                   <section class="text-center" v-else>
-                    <h4 class="headline red--text">Must select an input type!</h4>
+                    <span class="subtitle-2">Sorry some error occurred.</span>
                   </section>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="next()">Next</v-btn>
+          </v-card-actions>
         </v-form>
       </v-col>
     </v-row>
@@ -205,6 +159,18 @@ export default {
      * @return { Void }
      */
     async onBlur(event) {},
+
+    async next() {
+      const response = await this.$store.dispatch(
+        SurveyResponseActions.UPDATE_RESPONSE_GROUP_BY_ID,
+        {
+          responseId: this.$route.params.responseId,
+          responseGroupId: this.$route.params.responseGroupId,
+        }
+      );
+
+      console.log(response);
+    },
   },
 };
 </script>

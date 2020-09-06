@@ -6,6 +6,7 @@ use App\Repository\SurveyResponseRepositoryInterface;
 use App\SurveyResponse;
 use App\SurveyResponseGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class SurveyResponseRepository extends BaseRepository implements SurveyResponseRepositoryInterface
@@ -57,9 +58,49 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
         int $responseGroupId,
         array $relations = ['answers']
     ): ?SurveyResponseGroup {
-        return $this->model->findOrFail($responseId)
+        return $this->findById($responseId)
             ->responseGroups()->with($relations)
             ->findOrFail($responseGroupId);
+    }
+
+    /**
+     * Update a response group by id.
+     *
+     * This will update all of the answers that belongs to
+     * the survey response group. No need to update every single
+     * question.
+     *
+     * @param int $responseId
+     * @param int $responseGroupId
+     * @param Request $payload
+     * @return SurveyResponseGroup
+     */
+    public function updateResponseGroupById(
+        int $responseId,
+        int $responseGroupId,
+        array $payload
+    ): ?SurveyResponseGroup {
+        $responseGroup = $this->findResponseGroupById($responseId, $responseId);
+        $answers = $payload['answers'];
+
+        // $responseGroup->update(
+        //     Arr::except($payload, ['answers'])
+        // );
+
+        $responseGroup->fresh();
+
+        foreach($answers as $answer) {
+            $responseGroupAnswer = $responseGroup->answers()->findOrFail($answer['id']);
+
+            $responseGroupAnswer->update(
+                Arr::only($answer, [
+                    'answer_a',
+                    'answer_b',
+                ])
+            );
+        }
+
+        return $responseGroup;
     }
 
     // /**

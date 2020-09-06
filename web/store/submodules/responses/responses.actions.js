@@ -120,39 +120,39 @@ export const actions = {
     }
   },
 
-  /**
-   * Fetch a single resource from an API.
-   *
-   * @param { Object } context
-   * @param { Object } payload
-   */
-  FETCH_SURVEY_RESPONSE_GROUP_BY_ID: async (
-    { dispatch, state, commit },
-    payload
-  ) => {
-    console.log(
-      "[SurveyResponseStore] Fetch Survey Respone Group By ID",
-      payload
-    );
+  // /**
+  //  * Fetch a single resource from an API.
+  //  *
+  //  * @param { Object } context
+  //  * @param { Object } payload
+  //  */
+  // FETCH_SURVEY_RESPONSE_GROUP_BY_ID: async (
+  //   { dispatch, state, commit },
+  //   payload
+  // ) => {
+  //   console.log(
+  //     "[SurveyResponseStore] Fetch Survey Respone Group By ID",
+  //     payload
+  //   );
 
-    try {
-      const response = await $nuxt.$axios.$get(
-        `/api/responses/${payload.slug}/responses/${payload.responseId}/groups/${payload.responseGroupId}`
-      );
+  //   try {
+  //     const response = await $nuxt.$axios.$get(
+  //       `/api/responses/${payload.slug}/responses/${payload.responseId}/groups/${payload.responseGroupId}`
+  //     );
 
-      await commit("SET_STATE", {
-        field: "response",
-        data: response.data
-      });
+  //     await commit("SET_STATE", {
+  //       field: "response",
+  //       data: response.data
+  //     });
 
-      return response;
-    } catch (error) {
-      await $nuxt.$helpers.notify({
-        type: "error",
-        message: handleError(error)
-      });
-    }
-  },
+  //     return response;
+  //   } catch (error) {
+  //     await $nuxt.$helpers.notify({
+  //       type: "error",
+  //       message: handleError(error)
+  //     });
+  //   }
+  // },
 
   /**
    * Request to create a new record in API.
@@ -201,6 +201,29 @@ export const actions = {
       const response = await $nuxt.$axios.$put(
         `/api/responses/${payload.responseId}`,
         state.survey
+      );
+
+      return response;
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    }
+  },
+
+  /**
+   * Fetch a single resource from an API.
+   *
+   * @param { Object } context
+   * @param { Object } payload
+   */
+  UPDATE_RESPONSE_GROUP_BY_ID: async ({ dispatch, state, commit }, payload) => {
+    console.log("[SurveyResponseStore] Update SurveyResponseGroup", payload);
+
+    try {
+      const response = await $nuxt.$axios.$put(
+        `/api/responses/${payload.responseId}/groups/${payload.responseGroupId}`, state.response_group
       );
 
       return response;

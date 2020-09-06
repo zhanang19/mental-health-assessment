@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\SurveyResponse;
+namespace App\Http\Controllers\Survey;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Survey\SurveyResponseGroupRequest;
 use App\Repository\SurveyResponseRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SurveyResponseGroupController extends Controller
@@ -36,5 +38,24 @@ class SurveyResponseGroupController extends Controller
                 $responseId, $responseGroupId
             )
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\Survey\SurveyResponseGroupRequest $request
+     * @param int $responseId
+     * @param int $responseGroupId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(
+        SurveyResponseGroupRequest $request,
+        int $responseId,
+        int $responseGroupId
+    ): JsonResponse {
+        return response()->json([
+            'data' => $request->persist($responseId, $responseGroupId),
+            'message' => 'A survey response group has been updated.'
+        ], 204);
     }
 }
