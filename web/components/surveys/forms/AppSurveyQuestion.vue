@@ -428,11 +428,13 @@ export default {
      * @return { Void }
      */
     setQuestionsState() {
-      this.questions = {
-        ...sanitizeObject(
+      this.questions = JSON.parse(
+        JSON.stringify(
           this.survey.question_groups[this.questionGroupIndex].questions
-        ),
-      };
+        )
+      );
+
+      console.log(this.questions);
     },
 
     /**
