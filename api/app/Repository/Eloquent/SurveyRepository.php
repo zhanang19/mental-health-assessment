@@ -100,7 +100,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                     'input_type' => $question->input_type,
                     'question' => $question->question,
                     'hint' => $question->hint,
-                    'validations' => json_encode($question->validations),
+                    'required' => $question->required,
                     'option_group_a' => json_encode($question->option_group_a),
                     'option_group_b' => json_encode($question->option_group_b),
                 ]);
@@ -173,7 +173,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 "input_type" => SurveyQuestionInputTypes::ShortAnswer,
                 "question" => "Question Undefined",
                 "hint" => "Question's hint text",
-                "validations" => json_encode([]),
+                "required" => false,
                 "option_group_a" => json_encode([
                     "label" => "Untitled Option Group",
                     "options" => [
@@ -243,7 +243,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                         'input_type',
                         'question',
                         'hint',
-                        'validations',
+                        'required',
                         'option_group_a',
                         'option_group_b',
                     ])
