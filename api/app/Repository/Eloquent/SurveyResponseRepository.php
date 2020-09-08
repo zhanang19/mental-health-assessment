@@ -80,7 +80,7 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
         int $responseGroupId,
         array $payload
     ): ?SurveyResponseGroup {
-        $responseGroup = $this->findResponseGroupById($responseId, $responseId);
+        $responseGroup = $this->findResponseGroupById($responseId, $responseGroupId);
         $answers = $payload['answers'];
 
         // $responseGroup->update(
