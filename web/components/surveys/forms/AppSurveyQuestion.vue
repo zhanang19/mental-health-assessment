@@ -89,7 +89,6 @@
                             questionIndex,
                             field: 'option_group_a',
                           })"
-                          @blur="onBlur($event)"
                           class="primary--text"
                         >Add Option</v-btn>
                       </div>
@@ -291,7 +290,7 @@
             <v-tooltip bottom>
               <template #activator="{ on }">
                 <v-switch
-                  @blur="onBlur($event)"
+                  @change="onBlur($event)"
                   v-on="on"
                   v-model="questionItem.required"
                   label="Required"
@@ -462,6 +461,10 @@ export default {
      * @param { Object } payload
      */
     async addSurveyQuestion({ questionGroupId }) {
+      await this.$store.dispatch(SurveyActions.UPDATE, {
+        surveyId: this.survey.id,
+      });
+
       const res = await this.$store.dispatch(SurveyActions.CREATE_QUESTION, {
         surveyId: this.survey.id,
         questionGroupId,
@@ -505,10 +508,14 @@ export default {
       const isString = typeof this.questions[questionIndex][field] === "string";
 
       if (isString) {
+        console.log('addSurveyQuestionOption() isString yes')
+
         this.questions[questionIndex][field] = JSON.parse(
           this.questions[questionIndex][field].options.push(new Option())
         );
       } else {
+        console.log('addSurveyQuestionOption() not isString')
+
         this.questions[questionIndex][field].options.push(new Option());
       }
     },
