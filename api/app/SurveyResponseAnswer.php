@@ -38,6 +38,8 @@ class SurveyResponseAnswer extends BaseModel
      */
     protected $appends = [
         // 'validations',
+        'answer_a',
+        'answer_b',
         'option_group_a',
         'option_group_b',
         'created_today',
@@ -104,4 +106,44 @@ class SurveyResponseAnswer extends BaseModel
     // {
     //     return json_decode($this->attributes['validations']);
     // }
+
+    /**
+     * Get the attribute option_group_a parsed into json.
+     *
+     * @return string
+     */
+    public function getAnswerAAttribute()
+    {
+        return json_decode($this->attributes['answer_a']);
+    }
+
+    /**
+     * Get the attribute option_group_a parsed into json.
+     *
+     * @return string
+     */
+    public function setAnswerAAttribute($value)
+    {
+        $this->attributes['answer_a'] = json_encode($value);
+    }
+
+    /**
+     * Get the attribute option_group_a parsed into json.
+     *
+     * @return string
+     */
+    public function getAnswerBAttribute()
+    {
+        return json_decode($this->attributes['answer_b']);
+    }
+
+    /**
+     * Get the attribute option_group_a parsed into json.
+     *
+     * @return string
+     */
+    public function setAnswerBAttribute($value)
+    {
+        $this->attributes['answer_b'] = json_encode($value);
+    }
 }

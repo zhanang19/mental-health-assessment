@@ -9,17 +9,17 @@
             v-for="(answerItem, answerIndex) in answers"
             :key="answerIndex"
           >
-            <v-card-title class="headline">
+            <div class="headline pa-3">
               <span v-text="answerItem.question"></span>
-              <v-tooltip bottom>
+              <v-tooltip v-if="answerItem.required" bottom>
                 <template #activator="{ on, attrs }">
-                  <span v-on="on" v-bind="attrs" class="error--text ml-3"
+                  <span v-on="on" v-bind="attrs" class="error--text"
                     >*</span
                   >
                 </template>
                 <span>This field is required.</span>
               </v-tooltip>
-            </v-card-title>
+            </div>
             <v-card-text>
               <!-- form options -->
               <v-row>
@@ -33,7 +33,7 @@
                       :rules="
                         answerItem.required
                           ? [v => !!v || 'This field is required.']
-                          : true
+                          : [v => true]
                       "
                     ></v-text-field>
                   </section>
@@ -45,6 +45,11 @@
                     <v-textarea
                       v-model="answerItem.answer_a"
                       label="Your answer here"
+                      :rules="
+                        answerItem.required
+                          ? [v => !!v || 'This field is required.']
+                          : [v => true]
+                      "
                     ></v-textarea>
                   </section>
                   <section
@@ -59,7 +64,15 @@
                           class="headline"
                           v-text="answerItem.option_group_a.label"
                         ></div>
-                        <v-radio-group v-model="answerItem.answer_a" column>
+                        <v-radio-group
+                          v-model="answerItem.answer_a"
+                          :rules="
+                            answerItem.required
+                              ? [v => !!v || 'This field is required.']
+                              : [v => true]
+                          "
+                          column
+                        >
                           <v-radio
                             :value="choiceA.text"
                             v-for="(choiceA, choiceIndex) in answerItem
@@ -81,7 +94,15 @@
                         "
                       >
                         <div v-text="answerItem.option_group_b.label"></div>
-                        <v-radio-group v-model="answerItem.answer_b" column>
+                        <v-radio-group
+                          v-model="answerItem.answer_b"
+                          :rules="
+                            answerItem.required
+                              ? [v => !!v || 'This field is required.']
+                              : [v => true]
+                          "
+                          column
+                        >
                           <v-radio
                             :value="choiceB.text"
                             v-for="(choiceB, choiceBIndex) in answerItem
@@ -116,6 +137,11 @@
                               ? choiceA.text
                               : `Option ${choiceIndex + 1}`
                           "
+                          :rules="
+                            answerItem.required
+                              ? [v => !!v || 'This field is required.']
+                              : [v => true]
+                          "
                           :key="choiceIndex"
                         ></v-checkbox>
                       </v-col>
@@ -137,6 +163,11 @@
                               ? choiceB.text
                               : `Option ${choiceIndex + 1}`
                           "
+                          :rules="
+                            answerItem.required
+                              ? [v => !!v || 'This field is required.']
+                              : [v => true]
+                          "
                           :key="choiceIndex"
                         ></v-checkbox>
                       </v-col>
@@ -154,6 +185,11 @@
                         item-text="text"
                         item-value="text"
                         v-model="answerItem.answer_a"
+                        :rules="
+                          answerItem.required
+                            ? [v => !!v || 'This field is required.']
+                            : [v => true]
+                        "
                         :label="
                           !!answerItem.option_group_a.label
                             ? answerItem.option_group_a.label
@@ -172,7 +208,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn type="submit">Next</v-btn>
+            <v-btn large min-width="125" type="submit">Submit</v-btn>
           </v-card-actions>
         </v-form>
       </v-col>

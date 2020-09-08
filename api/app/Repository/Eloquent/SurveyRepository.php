@@ -62,7 +62,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         $surveyResponse = auth()->user()->surveyResponses()
             ->whereSurveyId($surveyId)->first();
 
-        if($surveyResponse != null) {
+        if ($surveyResponse != null) {
             return $surveyResponse;
         }
 
@@ -80,7 +80,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             ]);
 
         // create survey response groups
-        foreach($survey->questionGroups as $questionGroup) {
+        foreach ($survey->questionGroups as $questionGroup) {
             $responseGroup = $surveyResponse->responseGroups()->create([
                 'status' => SurveyResponseStatuses::InProgress,
                 'questions_answered' => 0,
@@ -90,12 +90,12 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             ]);
 
             // create the response answers based on questions
-            foreach($questionGroup->questions as $question) {
+            foreach ($questionGroup->questions as $question) {
                 $responseGroup->answers()->create([
                     // choices will be taken from the question model
                     'survey_question_id' => $question->id,
-                    'answer_a' => null,
-                    'answer_b' => null,
+                    'answer_a' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? json_encode([]) : null,
+                    'answer_b' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? json_encode([]) : null,
                     'identifier' => $question->identifier,
                     'input_type' => $question->input_type,
                     'question' => $question->question,
@@ -203,12 +203,11 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         $survey = $this->findById($surveyId);
 
         $survey->update(Arr::only($payload->toArray(), [
-                'title',
-                'subtitle',
-                'description',
-                'color_theme',
-            ])
-        );
+            'title',
+            'subtitle',
+            'description',
+            'color_theme',
+        ]));
 
         $survey->update(['slug' => $survey->title]);
 
