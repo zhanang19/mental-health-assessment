@@ -12,11 +12,11 @@ class SurveyQuestion extends BaseModel
      *
      * @var array
      */
-    // protected $casts = [
-    //     'validations' => Json::class,
-    //     'option_group_a' => Json::class,
-    //     'option_group_b' => Json::class,
-    // ];
+    protected $casts = [
+        'required' => 'boolean',
+        // 'option_group_a' => Json::class,
+        // 'option_group_b' => Json::class,
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -24,7 +24,7 @@ class SurveyQuestion extends BaseModel
      * @var array
      */
     protected $appends = [
-        'validations',
+        // 'validations',
         'option_group_a',
         'option_group_b',
         'created_today',
@@ -82,13 +82,13 @@ class SurveyQuestion extends BaseModel
     //     $this->attributes['option_group_b'] = json_encode($value);
     // }
 
-    /**
-     * Get the attribute validations parsed into json.
-     *
-     * @return string
-     */
-    public function getValidationsAttribute()
-    {
-        return json_decode($this->attributes['validations']);
-    }
+    // /**
+    //  * Get the attribute validations parsed into json.
+    //  *
+    //  * @return string
+    //  */
+    // public function getValidationsAttribute()
+    // {
+    //     return json_decode($this->attributes['validations']);
+    // }
 }
