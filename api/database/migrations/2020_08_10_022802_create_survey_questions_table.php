@@ -27,7 +27,7 @@ class CreateSurveyQuestionsTable extends Migration
             ]);
             $table->string('question');
             $table->string('hint')->nullable();
-            $table->json('validations')->nullable();
+            $table->boolean('required')->default(false);
             $table->json('option_group_a')->nullable();
             $table->json('option_group_b')->nullable();
             $table->timestamps();
