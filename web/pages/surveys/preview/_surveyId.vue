@@ -1,6 +1,13 @@
 <template>
   <v-main :class="survey.color_theme" app>
-    <app-base-app-bar :color="survey.color_theme" toolbar-title="Preview Mode"></app-base-app-bar>
+    <app-base-app-bar :color="survey.color_theme">
+      <template #leading>
+        <v-toolbar-title>
+          <v-icon left>mdi-eye-outline</v-icon>
+          <span>Preview Mode</span>
+        </v-toolbar-title>
+      </template>
+    </app-base-app-bar>
 
     <nuxt-child class="my-16"></nuxt-child>
 

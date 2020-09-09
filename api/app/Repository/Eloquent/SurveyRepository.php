@@ -373,6 +373,10 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     /**
      * Delete question by id.
      *
+     * @todo
+     * Cannot delete a question that is already
+     * being referenced by a survey response.
+     *
      * @param int $surveyId
      * @param int $questionGroupId
      * @param int $questionId
@@ -383,7 +387,10 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         int $questionGroupId,
         int $questionId
     ): bool {
-        return false;
+        $question = $this->findById($surveyId)->questionGroups()
+            ->findOrFail($questionGroupId)->questions()->findOrFail($questionId);
+
+        return $question->forceDelete();
     }
 
     /**

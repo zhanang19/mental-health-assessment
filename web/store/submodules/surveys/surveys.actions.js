@@ -39,6 +39,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -67,6 +69,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -95,6 +99,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -123,6 +129,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -142,8 +150,8 @@ export const actions = {
       // await commit("RESET_FORM");
 
       $nuxt.$router.push({
-        name: "surveys-edit-slug",
-        params: { slug: response.data.slug }
+        name: "surveys-edit-surveyId",
+        params: { surveyId: response.data.id }
       });
 
       await $nuxt.$helpers.notify({
@@ -155,6 +163,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
@@ -187,6 +197,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
@@ -219,6 +231,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
@@ -245,6 +259,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -272,6 +288,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
@@ -301,6 +319,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
@@ -331,6 +351,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -353,12 +375,14 @@ export const actions = {
         message: response?.message || "No message."
       });
 
-      dispatch("FETCH_ALL");
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -372,7 +396,7 @@ export const actions = {
     console.log("[SurveyStore] Delete Question By ID", payload);
 
     try {
-      const response = await $nuxt.$axios.$delete(
+      const response = await $nuxt.$axios.delete(
         `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/questions/${payload.questionId}`
       );
 
@@ -381,12 +405,14 @@ export const actions = {
         message: response?.message || "No message."
       });
 
-      dispatch("FETCH_ALL");
+      return response;
     } catch (error) {
       await $nuxt.$helpers.notify({
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -413,6 +439,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -439,6 +467,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     }
   },
 
@@ -463,6 +493,8 @@ export const actions = {
         type: "error",
         message: handleError(error)
       });
+
+      return error;
     } finally {
       $nuxt.$helpers.loader();
     }
