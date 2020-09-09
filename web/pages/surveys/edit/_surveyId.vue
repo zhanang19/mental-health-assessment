@@ -20,7 +20,7 @@
               v-bind="attrs"
               icon
             >
-              <v-icon>mdi-eye</v-icon>
+              <v-icon>mdi-eye-outline</v-icon>
             </v-btn>
           </template>
           <span>Preview</span>
