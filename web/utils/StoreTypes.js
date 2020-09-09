@@ -16,6 +16,7 @@ export const UserActions = Object.freeze({
 export const SurveyActions = Object.freeze({
   FETCH_ALL: "surveys/FETCH_ALL",
   FETCH: "surveys/FETCH",
+  FETCH_QUESTION_GROUP_BY_ID: "surveys/FETCH_QUESTION_GROUP_BY_ID",
   FETCH_BY_SLUG: "surveys/FETCH_BY_SLUG",
   CREATE: "surveys/CREATE",
   CREATE_QUESTION_GROUP: "surveys/CREATE_QUESTION_GROUP",

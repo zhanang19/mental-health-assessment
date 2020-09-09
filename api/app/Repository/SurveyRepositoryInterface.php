@@ -35,6 +35,19 @@ interface SurveyRepositoryInterface
     public function findBySlug(string $slug): ?Survey;
 
     /**
+     * Find question group by id.
+     *
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return SurveyQuestionGroup
+     */
+    public function findQuestionGroupById(
+        int $surveyId,
+        int $questionGroupId,
+        array $relations = ['questions']
+    ): ?SurveyQuestionGroup;
+
+    /**
      * Start the survey.
      *
      * @param int $surveyId

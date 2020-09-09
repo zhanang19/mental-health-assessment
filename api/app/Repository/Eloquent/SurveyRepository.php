@@ -39,6 +39,23 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     }
 
     /**
+     * Find question group by id.
+     *
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return SurveyQuestionGroup
+     */
+    public function findQuestionGroupById(
+        int $surveyId,
+        int $questionGroupId,
+        array $relations = ['questions']
+    ): ?SurveyQuestionGroup {
+        return $this->findById($surveyId)
+            ->questionGroups()->with($relations)
+            ->findOrFail($questionGroupId);
+    }
+
+    /**
      * @param string $slug
      * @return Survey
      */

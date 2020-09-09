@@ -39,6 +39,22 @@ class SurveyQuestionGroupController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $surveyId, int $questionGroupId)
+    {
+        return response()->json([
+            "data" => $this->surveyRepository->findQuestionGroupById(
+                $surveyId, $questionGroupId
+            )
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

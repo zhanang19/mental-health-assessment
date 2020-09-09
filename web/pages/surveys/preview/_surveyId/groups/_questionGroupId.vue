@@ -6,16 +6,14 @@
           <!-- START: Survey Question Group v-for questions -->
           <v-card
             class="rounded-lg mb-10"
-            v-for="(answerItem, answerIndex) in answers"
-            :key="answerIndex"
+            v-for="(questionItem, questionIndex) in questions"
+            :key="questionIndex"
           >
             <div class="headline pa-3">
-              <span v-text="answerItem.question"></span>
-              <v-tooltip v-if="answerItem.required" bottom>
+              <span v-text="questionItem.question"></span>
+              <v-tooltip v-if="questionItem.required" bottom>
                 <template #activator="{ on, attrs }">
-                  <span v-on="on" v-bind="attrs" class="error--text"
-                    >*</span
-                  >
+                  <span v-on="on" v-bind="attrs" class="error--text">*</span>
                 </template>
                 <span>This field is required.</span>
               </v-tooltip>
@@ -25,13 +23,15 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" xs="12">
                   <section
-                    v-if="inputTypesEnum.shortAnswer === answerItem.input_type"
+                    v-if="
+                      inputTypesEnum.shortAnswer === questionItem.input_type
+                    "
                   >
                     <v-text-field
-                      v-model="answerItem.answer_a"
+                      v-model="questionItem.answer_a"
                       label="Your answer here"
                       :rules="
-                        answerItem.required
+                        questionItem.required
                           ? [v => !!v || 'This field is required.']
                           : [v => true]
                       "
@@ -39,14 +39,14 @@
                   </section>
                   <section
                     v-else-if="
-                      inputTypesEnum.paragraph === answerItem.input_type
+                      inputTypesEnum.paragraph === questionItem.input_type
                     "
                   >
                     <v-textarea
-                      v-model="answerItem.answer_a"
+                      v-model="questionItem.answer_a"
                       label="Your answer here"
                       :rules="
-                        answerItem.required
+                        questionItem.required
                           ? [v => !!v || 'This field is required.']
                           : [v => true]
                       "
@@ -54,7 +54,7 @@
                   </section>
                   <section
                     v-else-if="
-                      inputTypesEnum.multipleChoice === answerItem.input_type
+                      inputTypesEnum.multipleChoice === questionItem.input_type
                     "
                   >
                     <v-row>
@@ -62,12 +62,12 @@
                       <v-col>
                         <div
                           class="headline"
-                          v-text="answerItem.option_group_a.label"
+                          v-text="questionItem.option_group_a.label"
                         ></div>
                         <v-radio-group
-                          v-model="answerItem.answer_a"
+                          v-model="questionItem.answer_a"
                           :rules="
-                            answerItem.required
+                            questionItem.required
                               ? [v => !!v || 'This field is required.']
                               : [v => true]
                           "
@@ -75,7 +75,7 @@
                         >
                           <v-radio
                             :value="choiceA.text"
-                            v-for="(choiceA, choiceIndex) in answerItem
+                            v-for="(choiceA, choiceIndex) in questionItem
                               .option_group_a.options"
                             :label="
                               !!choiceA.text
@@ -89,15 +89,15 @@
                       <!-- option group B -->
                       <v-col
                         v-if="
-                          !isObjectEmpty(answerItem.option_group_b) &&
-                            !Array.isArray(answerItem.option_group_b)
+                          !isObjectEmpty(questionItem.option_group_b) &&
+                            !Array.isArray(questionItem.option_group_b)
                         "
                       >
-                        <div v-text="answerItem.option_group_b.label"></div>
+                        <div v-text="questionItem.option_group_b.label"></div>
                         <v-radio-group
-                          v-model="answerItem.answer_b"
+                          v-model="questionItem.answer_b"
                           :rules="
-                            answerItem.required
+                            questionItem.required
                               ? [v => !!v || 'This field is required.']
                               : [v => true]
                           "
@@ -105,7 +105,7 @@
                         >
                           <v-radio
                             :value="choiceB.text"
-                            v-for="(choiceB, choiceBIndex) in answerItem
+                            v-for="(choiceB, choiceBIndex) in questionItem
                               .option_group_b.options"
                             :label="
                               !!choiceB.text
@@ -120,17 +120,17 @@
                   </section>
                   <section
                     v-else-if="
-                      inputTypesEnum.checkboxes === answerItem.input_type
+                      inputTypesEnum.checkboxes === questionItem.input_type
                     "
                   >
                     <v-row>
                       <!-- checkbox option group A -->
                       <v-col>
-                        <div v-text="answerItem.option_group_a.label"></div>
+                        <div v-text="questionItem.option_group_a.label"></div>
                         <v-checkbox
-                          v-model="answerItem.answer_a"
+                          v-model="questionItem.answer_a"
                           :value="choiceA.text"
-                          v-for="(choiceA, choiceIndex) in answerItem
+                          v-for="(choiceA, choiceIndex) in questionItem
                             .option_group_a.options"
                           :label="
                             !!choiceA.text
@@ -138,7 +138,7 @@
                               : `Option ${choiceIndex + 1}`
                           "
                           :rules="
-                            answerItem.required
+                            questionItem.required
                               ? [v => !!v || 'This field is required.']
                               : [v => true]
                           "
@@ -148,15 +148,15 @@
                       <!-- checkbox option group B -->
                       <v-col
                         v-if="
-                          !isObjectEmpty(answerItem.option_group_b) &&
-                            !Array.isArray(answerItem.option_group_b)
+                          !isObjectEmpty(questionItem.option_group_b) &&
+                            !Array.isArray(questionItem.option_group_b)
                         "
                       >
-                        <div v-text="answerItem.option_group_b.label"></div>
+                        <div v-text="questionItem.option_group_b.label"></div>
                         <v-checkbox
-                          v-model="answerItem.answer_b"
+                          v-model="questionItem.answer_b"
                           :value="choiceB.text"
-                          v-for="(choiceB, choiceIndex) in answerItem
+                          v-for="(choiceB, choiceIndex) in questionItem
                             .option_group_b.options"
                           :label="
                             !!choiceB.text
@@ -164,7 +164,7 @@
                               : `Option ${choiceIndex + 1}`
                           "
                           :rules="
-                            answerItem.required
+                            questionItem.required
                               ? [v => !!v || 'This field is required.']
                               : [v => true]
                           "
@@ -175,24 +175,24 @@
                   </section>
                   <section
                     v-else-if="
-                      inputTypesEnum.dropdown === answerItem.input_type
+                      inputTypesEnum.dropdown === questionItem.input_type
                     "
                   >
                     <!-- dropdown select options -->
                     <div>
                       <v-select
-                        :items="answerItem.option_group_a.options"
+                        :items="questionItem.option_group_a.options"
                         item-text="text"
                         item-value="text"
-                        v-model="answerItem.answer_a"
+                        v-model="questionItem.answer_a"
                         :rules="
-                          answerItem.required
+                          questionItem.required
                             ? [v => !!v || 'This field is required.']
                             : [v => true]
                         "
                         :label="
-                          !!answerItem.option_group_a.label
-                            ? answerItem.option_group_a.label
+                          !!questionItem.option_group_a.label
+                            ? questionItem.option_group_a.label
                             : `Option ${choiceIndex + 1}`
                         "
                       ></v-select>
@@ -218,13 +218,16 @@
 
 <script>
 import { inputTypesEnum } from "../../../../../models/SurveyQuestion";
-import { SurveyAcSurveyActions, SurveyActions } from "../../../../../utils/StoreTypes";
+import {
+  SurveyAcSurveyActions,
+  SurveyActions
+} from "../../../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
 
 export default {
   async fetch({ store, params }) {
-    await store.dispatch(SurveyActions.FETCH_SURVEY_GROUP_BY_ID, {
+    await store.dispatch(SurveyActions.FETCH_QUESTION_GROUP_BY_ID, {
       surveyId: params.surveyId,
       questionGroupId: params.questionGroupId
     });
@@ -235,17 +238,13 @@ export default {
       return this.survey;
     },
 
-    // answers() {
-    //   return this.surveyGroup.answers;
-    // },
-
     ...mapState("surveys", {
       survey: state => state.survey,
 
-      surveyGroup: state => state.survey_group
+      questionGroup: state => state.question_group
     }),
 
-    ...mapMultiRowFields("surveys", ["survey_group.answers"]),
+    ...mapMultiRowFields("surveys", ["question_group.questions"]),
 
     /**
      * Enum for input types.
@@ -269,13 +268,12 @@ export default {
     async save() {
       // if (this.$refs.form.validate()) {
       //   const survey = await this.$store.dispatch(
-      //     SurveyActions.UPDATE_survey_GROUP_BY_ID,
+      //     SurveyActions.question_group_BY_ID,
       //     {
       //       surveyId: this.$route.params.surveyId,
       //       questionGroupId: this.$route.params.questionGroupId
       //     }
       //   );
-
       //   console.log(survey);
       // } else {
       //   return this.$helpers.notify({

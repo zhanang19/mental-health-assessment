@@ -74,6 +74,7 @@ Route::group([
         // Survey Question Group
         Route::post('surveys/{surveyId}/question-groups', 'Survey\SurveyQuestionGroupController@store');
         Route::get('surveys/{surveyId}/question-groups/{questionGroupId}/duplicate', 'Survey\SurveyQuestionGroupController@duplicate');
+        Route::get('surveys/{surveyId}/question-groups/{questionGroupId}', 'Survey\SurveyQuestionGroupController@show');
         Route::delete('surveys/{surveyId}/question-groups/{questionGroupId}', 'Survey\SurveyQuestionGroupController@destroy');
 
         // Survey Question

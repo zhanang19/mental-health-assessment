@@ -3,5 +3,6 @@ import { Survey } from "~/models/Survey";
 export const state = () => ({
   surveys: [],
   survey: {},
-  form: new Survey
-})
+  question_group: {},
+  form: new Survey()
+});

@@ -76,6 +76,34 @@ export const actions = {
    * @param { Object } context
    * @param { Object } payload
    */
+  FETCH_QUESTION_GROUP_BY_ID: async ({ dispatch, state, commit }, payload) => {
+    console.log("[SurveyStore] Fetch Survey Question Group", payload);
+
+    try {
+      const response = await $nuxt.$axios.$get(
+        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}`
+      );
+
+      await commit("SET_STATE", {
+        field: "question_group",
+        data: response.data
+      });
+
+      return response;
+    } catch (error) {
+      await $nuxt.$helpers.notify({
+        type: "error",
+        message: handleError(error)
+      });
+    }
+  },
+
+  /**
+   * Fetch a single resource from an API.
+   *
+   * @param { Object } context
+   * @param { Object } payload
+   */
   FETCH_BY_SLUG: async ({ dispatch, state, commit }, payload) => {
     console.log("[SurveyStore] Fetch By Slug", payload);
 
