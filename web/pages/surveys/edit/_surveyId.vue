@@ -4,9 +4,28 @@
       <v-btn @click="$router.replace({ name: 'app-surveys' })" icon>
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-toolbar-title>{{ title || 'Untitled Survey Form' }}</v-toolbar-title>
+      <v-toolbar-title>{{ title || "Untitled Survey Form" }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <div>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              @click="
+                $router.push({
+                  name: 'surveys-preview-surveyId',
+                  params: { surveyId: $route.params.surveyId }
+                })
+              "
+              v-on="on"
+              v-bind="attrs"
+              icon
+            >
+              <v-icon>mdi-eye</v-icon>
+            </v-btn>
+          </template>
+          <span>Preview</span>
+        </v-tooltip>
+
         <v-menu transition="slide-y-transition" offset-y>
           <template #activator="{ on: menu, attrs }">
             <v-tooltip bottom>
@@ -25,13 +44,18 @@
               :key="index"
             >
               <v-list-item-action>
-                <v-sheet :class="`${color} pa-3 rounded-lg elevation-3`"></v-sheet>
+                <v-sheet
+                  :class="`${color} pa-3 rounded-lg elevation-3`"
+                ></v-sheet>
               </v-list-item-action>
               <v-list-item-content>{{ color }}</v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn @click="save({ notify: true })" color="primary">Save Changes</v-btn>
+
+        <v-btn @click="save({ notify: true })" color="primary"
+          >Save Changes</v-btn
+        >
       </div>
 
       <template #extension>
@@ -60,7 +84,12 @@
                 </span>
               </v-card-title>
               <v-card-subtitle>
-                <v-text-field hint="Optional" persistent-hint label="Subtitle" v-model="subtitle"></v-text-field>
+                <v-text-field
+                  hint="Optional"
+                  persistent-hint
+                  label="Subtitle"
+                  v-model="subtitle"
+                ></v-text-field>
               </v-card-subtitle>
               <v-card-text>
                 <v-textarea
@@ -85,7 +114,7 @@
                 <v-tooltip bottom>
                   <template #activator="{ on, attrs }">
                     <v-btn v-bind="attrs" v-on="on" fab top right absolute>
-                      <h3>{{ `G${ groupIndex + 1}` }}</h3>
+                      <h3>{{ `G${groupIndex + 1}` }}</h3>
                     </v-btn>
                   </template>
                   <span>The question group number</span>
@@ -110,7 +139,7 @@
                     outlined
                   ></v-textarea>
                 </v-card-text>
-                  <v-divider class="mx-5"></v-divider>
+                <v-divider class="mx-5"></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <div class="mx-3 py-3">
@@ -119,9 +148,11 @@
                         <v-btn
                           v-on="on"
                           v-bind="attrs"
-                          @click="duplicateSurveyQuestionGroup({
-                            questionGroupId: group.id
-                          })"
+                          @click="
+                            duplicateSurveyQuestionGroup({
+                              questionGroupId: group.id
+                            })
+                          "
                           elevation="3"
                           small
                           fab
@@ -136,9 +167,11 @@
                         <v-btn
                           v-on="on"
                           v-bind="attrs"
-                          @click="deleteSurveyQuestionGroup({
-                            questionGroupId: group.id
-                          })"
+                          @click="
+                            deleteSurveyQuestionGroup({
+                              questionGroupId: group.id
+                            })
+                          "
                           elevation="3"
                           small
                           fab
@@ -161,13 +194,19 @@
                 :question-group-index="groupIndex"
               ></app-survey-question>
               <div v-else>
-                <app-circular-progress-indicator :color-theme="color_theme"></app-circular-progress-indicator>
+                <app-circular-progress-indicator
+                  :color-theme="color_theme"
+                ></app-circular-progress-indicator>
               </div>
               <!-- END: Survey Question Group v-for questions -->
             </v-container>
             <!-- END: Question Groups v-for loop -->
             <div class="text-center">
-              <v-btn class="primary--text" x-large @click="addSurveyQuestionGroup()">
+              <v-btn
+                class="primary--text"
+                x-large
+                @click="addSurveyQuestionGroup()"
+              >
                 <span>Add Question Group</span>
                 <v-icon right>mdi-plus</v-icon>
               </v-btn>
@@ -191,7 +230,7 @@
 import { Survey, colorThemes, surveyValidations } from "../../../models/Survey";
 import {
   SurveyQuestionGroup,
-  surveyQuestionGroupValidations,
+  surveyQuestionGroupValidations
 } from "../../../models/SurveyQuestionGroup";
 import {
   SurveyQuestion,
@@ -199,7 +238,7 @@ import {
   surveyQuestionOptionValidations,
   inputTypes,
   inputTypesEnum,
-  Option,
+  Option
 } from "../../../models/SurveyQuestion";
 import { SurveyActions } from "../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
@@ -210,20 +249,20 @@ import AppCircularProgressIndicator from "@/components/AppCircularProgressIndica
 export default {
   head() {
     return {
-      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`,
+      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`
     };
   },
 
   components: {
     AppSurveyQuestion,
-    AppCircularProgressIndicator,
+    AppCircularProgressIndicator
   },
 
   layout: "empty",
 
   async fetch({ store, params }) {
-    await store.dispatch(SurveyActions.FETCH_BY_SLUG, {
-      slug: params.slug,
+    await store.dispatch(SurveyActions.FETCH, {
+      surveyId: params.surveyId
     });
   },
 
@@ -232,19 +271,19 @@ export default {
     form: {
       survey: new Survey({
         title: "Untitled Survey Form",
-        color_theme: "blue darken-2",
+        color_theme: "blue darken-2"
       }),
       groups: [
         new SurveyQuestionGroup({
-          label: "Untitled Question Group",
-        }),
-      ],
-    },
+          label: "Untitled Question Group"
+        })
+      ]
+    }
   }),
 
   computed: {
     ...mapState("surveys", {
-      survey: (state) => state.survey,
+      survey: state => state.survey
     }),
 
     ...mapFields("surveys", [
@@ -252,11 +291,11 @@ export default {
       "survey.subtitle",
       "survey.description",
       "survey.color_theme",
-      "survey.question_groups.questions",
+      "survey.question_groups.questions"
     ]),
 
     ...mapMultiRowFields("surveys", [
-      "survey.question_groups",
+      "survey.question_groups"
       // "survey.question_groups.questions",
     ]),
 
@@ -270,7 +309,7 @@ export default {
         survey: surveyValidations,
         group: surveyQuestionGroupValidations,
         question: surveyQuestionValidations,
-        option: surveyQuestionOptionValidations,
+        option: surveyQuestionOptionValidations
       };
     },
 
@@ -300,7 +339,7 @@ export default {
      */
     colorThemes() {
       return colorThemes;
-    },
+    }
   },
 
   methods: {
@@ -309,7 +348,7 @@ export default {
 
       return await this.$store
         .dispatch(SurveyActions.FETCH, {
-          surveyId: this.survey.id,
+          surveyId: this.survey.id
         })
         .finally(() => {
           setTimeout(() => {
@@ -322,26 +361,26 @@ export default {
       if (await this.$refs.form.validate()) {
         console.log("saved");
         const response = await this.$store.dispatch(SurveyActions.UPDATE, {
-          surveyId: this.survey.id,
+          surveyId: this.survey.id
         });
 
         if (notify) {
           await this.$helpers.notify({
             type: "success",
-            message: response?.message || "No message.",
+            message: response?.message || "No message."
           });
         }
 
         await this.$router.push({
-          name: "surveys-edit-slug",
+          name: "surveys-edit-surveyId",
           params: {
-            slug: response.data.slug,
-          },
+            surveyId: response.data.surveyId
+          }
         });
       } else {
         return await this.$helpers.notify({
           type: "error",
-          message: "Please fill in the required fields.",
+          message: "Please fill in the required fields."
         });
       }
     },
@@ -357,7 +396,7 @@ export default {
       const res = await this.$store.dispatch(
         SurveyActions.CREATE_QUESTION_GROUP,
         {
-          surveyId: this.survey.id,
+          surveyId: this.survey.id
         }
       );
 
@@ -374,7 +413,7 @@ export default {
         SurveyActions.DELETE_QUESTION_GROUP_BY_ID,
         {
           surveyId: this.survey.id,
-          questionGroupId,
+          questionGroupId
         }
       );
 
@@ -395,7 +434,7 @@ export default {
         SurveyActions.DUPLICATE_QUESTION_GROUP,
         {
           surveyId: this.survey.id,
-          questionGroupId,
+          questionGroupId
         }
       );
 
@@ -410,7 +449,7 @@ export default {
     async addSurveyQuestion({ questionGroupId }) {
       const res = await this.$store.dispatch(SurveyActions.CREATE_QUESTION, {
         surveyId: this.survey.id,
-        questionGroupId,
+        questionGroupId
       });
 
       await this.refresh();
@@ -447,7 +486,7 @@ export default {
      */
     duplicateSurveyQuestion(surveyQuestionGroupIndex, questionIndex) {
       this.form.groups[surveyQuestionGroupIndex].questions.push({
-        ...this.form.groups[surveyQuestionGroupIndex].questions[questionIndex],
+        ...this.form.groups[surveyQuestionGroupIndex].questions[questionIndex]
       });
     },
 
@@ -502,14 +541,14 @@ export default {
       if (field === "option_group_a") {
         return this.$helpers.notify({
           type: "info",
-          message: "Must have a set of options. Cannot delete option set A.",
+          message: "Must have a set of options. Cannot delete option set A."
         });
       } else {
         this.form.groups[surveyQuestionGroupIndex].questions[
           questionIndex
         ].option_group_b = {};
       }
-    },
-  },
+    }
+  }
 };
 </script>

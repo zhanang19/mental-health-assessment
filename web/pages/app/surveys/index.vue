@@ -21,7 +21,9 @@
               ></v-text-field>
               <v-toolbar-title></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn @click="createNewSurvey()" large color="primary">Create Form</v-btn>
+              <v-btn @click="createNewSurvey()" large color="primary"
+                >Create Form</v-btn
+              >
 
               <template v-if="false" v-slot:extension>
                 <v-row class="mt-10">
@@ -60,7 +62,12 @@
             >
               <template #item.actions="{ item }">
                 <app-base-action-buttons
-                  @click-view="$router.push({ name: 'surveys-edit-slug', params: { slug: item.slug } })"
+                  @click-view="
+                    $router.push({
+                      name: 'surveys-edit-surveyId',
+                      params: { surveyId: item.id }
+                    })
+                  "
                   :except="['edit']"
                   type="non-archive"
                   class="py-2"
@@ -83,13 +90,13 @@ import { mapState } from "vuex";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Survey Forms`,
+      title: `${process.env.appName} | Survey Forms`
     };
   },
 
   components: {
     AppBaseActionButtons,
-    AppConfirmationDialog,
+    AppConfirmationDialog
   },
 
   async fetch({ store }) {
@@ -98,7 +105,7 @@ export default {
 
   data: () => ({
     controller: {
-      dialog: false,
+      dialog: false
     },
     datatable: {
       search: "",
@@ -110,16 +117,16 @@ export default {
           text: "Actions",
           value: "actions",
           align: "center",
-          sortable: false,
-        },
-      ],
-    },
+          sortable: false
+        }
+      ]
+    }
   }),
 
   computed: {
     ...mapState("surveys", {
-      surveys: (state) => state.surveys,
-    }),
+      surveys: state => state.surveys
+    })
   },
 
   methods: {
@@ -135,8 +142,7 @@ export default {
       // const response = await surveyService.all();
 
       console.log(response);
-    },
-  },
+    }
+  }
 };
 </script>
-
