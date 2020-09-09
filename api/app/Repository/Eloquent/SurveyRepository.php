@@ -282,7 +282,43 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         int $surveyId,
         int $questionGroupId
     ): ?SurveyQuestionGroup {
-        return new SurveyQuestionGroup();
+        $survey = $this->findById($surveyId);
+
+        $questionGroup = $survey->questionGroups()
+            ->findOrFail($questionGroupId);
+
+        $replicated = $questionGroup->replicate()->toArray();
+
+        $questionGroup = $survey->questionGroups()->create(
+            Arr::only($replicated, [
+                'label',
+                'instructions',
+            ])
+        );
+
+        $questionGroup->fresh();
+
+        foreach($replicated['questions'] as $question) {
+            info('Replicated Questions > Question', $question);
+
+            $questionGroup->questions()->create([
+                'identifier' => $question['identifier'],
+                'input_type' => $question['input_type'],
+                'question' => $question['question'],
+                'hint' => $question['hint'],
+                'required' => $question['required'],
+                'option_group_a' => json_encode([
+                    'label' => $question['option_group_a']->label,
+                    'options' => $question['option_group_a']->options
+                ]),
+                'option_group_b' => json_encode([
+                    'label' => $question['option_group_b']->label,
+                    'options' => $question['option_group_b']->options
+                ]),
+            ]);
+        }
+
+        return $questionGroup;
     }
 
     /**
@@ -298,7 +334,28 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         int $questionGroupId,
         int $questionId
     ): ?SurveyQuestion {
-        return new SurveyQuestion();
+        $questionGroup = $this->findById($surveyId)->questionGroups()
+            ->findOrFail($questionGroupId);
+
+        $question = $questionGroup->questions()->findOrFail($questionId);
+
+        $replicated = $question->replicate()->toArray();
+
+        return $questionGroup->questions()->create([
+            'identifier' => $replicated['identifier'],
+            'input_type' => $replicated['input_type'],
+            'question' => $replicated['question'],
+            'hint' => $replicated['hint'],
+            'required' => $replicated['required'],
+            'option_group_a' => json_encode([
+                'label' => $replicated['option_group_a']->label,
+                'options' => $replicated['option_group_a']->options
+            ]),
+            'option_group_b' => json_encode([
+                'label' => $replicated['option_group_b']->label,
+                'options' => $replicated['option_group_b']->options
+            ]),
+        ]);
     }
 
     /**
@@ -367,7 +424,10 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): bool
     {
-        return false;
+        $questionGroup = $this->findById($surveyId)->questionGroups()
+            ->findOrFail($questionGroupId);
+
+        return $questionGroup->forceDelete();
     }
 
     /**

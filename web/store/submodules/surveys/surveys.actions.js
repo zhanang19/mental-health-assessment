@@ -276,7 +276,7 @@ export const actions = {
     try {
       $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$get(
-        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}`
+        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/duplicate`
       );
 
       await $nuxt.$helpers.notify({
@@ -306,8 +306,8 @@ export const actions = {
 
     try {
       $nuxt.$helpers.loader();
-      const response = await $nuxt.$axios.$put(
-        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/questions/${payload.questionId}`
+      const response = await $nuxt.$axios.$get(
+        `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/questions/${payload.questionId}/duplicate`
       );
 
       await $nuxt.$helpers.notify({

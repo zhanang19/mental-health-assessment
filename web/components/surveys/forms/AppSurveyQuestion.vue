@@ -341,7 +341,12 @@
                 <v-btn
                   v-on="on"
                   v-bind="attrs"
-                  @click="duplicateSurveyQuestion(groupIndex, questionIndex)"
+                  @click="
+                    duplicateSurveyQuestion({
+                      questionGroupId: questionGroup.id,
+                      questionId: questionItem.id
+                    })
+                  "
                   elevation="3"
                   small
                   fab
@@ -521,27 +526,6 @@ export default {
     },
 
     /**
-     * @todo
-     * needs a deep clone so it copies properties and
-     * values without referencing from the object source
-     *
-     * @param { Object } payload
-     */
-    async duplicateSurveyQuestionGroup({ questionGroupId }) {
-      const res = await this.$store.dispatch(
-        SurveyActions.DUPLICATE_QUESTION_GROUP,
-        {
-          surveyId: this.survey.id,
-          questionGroupId
-        }
-      );
-
-      await this.$emit("duplicated", res);
-
-      console.log("duplicateSurveyQuestionGroup()", res);
-    },
-
-    /**
      * @param { Object } payload
      */
     async addSurveyQuestion({ questionGroupId }) {
@@ -592,10 +576,18 @@ export default {
      * @param surveyQuestionGroupIndex survey question group index
      * @param questionIndex question index
      */
-    duplicateSurveyQuestion(surveyQuestionGroupIndex, questionIndex) {
-      this.form.groups[surveyQuestionGroupIndex].questions.push({
-        ...this.form.groups[surveyQuestionGroupIndex].questions[questionIndex]
+    async duplicateSurveyQuestion({ questionGroupId, questionId }) {
+      const res = await this.$store.dispatch(SurveyActions.DUPLICATE_QUESTION, {
+        surveyId: this.survey.id,
+        questionGroupId,
+        questionId
       });
+
+      const response = await this.$store.dispatch(SurveyActions.FETCH, {
+        surveyId: this.$route.params.surveyId
+      });
+
+      await this.setQuestionsState();
     },
 
     /**

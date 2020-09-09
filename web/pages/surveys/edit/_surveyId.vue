@@ -455,16 +455,6 @@ export default {
       await this.refresh();
 
       console.log("addSurveyQuestion()", res);
-
-      // const totalQuestions = this.form.groups[index].questions.length;
-
-      // this.form.groups[index].questions.push(
-      //   new SurveyQuestion({
-      //     identifier: totalQuestions + 1,
-      //     input_type: "short answer",
-      //     required: false,
-      //   })
-      // );
     },
 
     /**
@@ -478,16 +468,6 @@ export default {
         questionIndex,
         1
       );
-    },
-
-    /**
-     * @param surveyQuestionGroupIndex survey question group index
-     * @param questionIndex question index
-     */
-    duplicateSurveyQuestion(surveyQuestionGroupIndex, questionIndex) {
-      this.form.groups[surveyQuestionGroupIndex].questions.push({
-        ...this.form.groups[surveyQuestionGroupIndex].questions[questionIndex]
-      });
     },
 
     /**

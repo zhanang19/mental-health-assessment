@@ -79,7 +79,7 @@ class BaseModel extends Model
     public function getDateCreatedAttribute()
     {
         return formatDate(
-            setTimeZone($this->attributes['created_at'])
+            setTimeZone($this->created_at)
         );
     }
 
@@ -91,7 +91,7 @@ class BaseModel extends Model
     public function getDateUpdatedAttribute()
     {
         return formatDate(
-            setTimeZone($this->attributes['updated_at'])
+            setTimeZone($this->updated_at)
         );
     }
 
@@ -103,7 +103,7 @@ class BaseModel extends Model
     public function getDateDeletedAttribute()
     {
         return formatDate(
-            setTimeZone($this->attributes['deleted_at'])
+            setTimeZone($this->deleted_at)
         );
     }
 
@@ -115,7 +115,7 @@ class BaseModel extends Model
     public function getCreatedSinceAttribute()
     {
         return timeSince(
-            setTimeZone($this->attributes['created_at'])
+            setTimeZone($this->created_at)
         );
     }
 
@@ -127,7 +127,7 @@ class BaseModel extends Model
     public function getUpdatedSinceAttribute()
     {
         return timeSince(
-            setTimeZone($this->attributes['updated_at'])
+            setTimeZone($this->updated_at)
         );
     }
 
@@ -139,7 +139,7 @@ class BaseModel extends Model
     public function getDeletedSinceAttribute()
     {
         return timeSince(
-            setTimeZone($this->attributes['deleted_at'])
+            setTimeZone($this->deleted_at)
         );
     }
 }
