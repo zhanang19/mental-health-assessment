@@ -371,12 +371,12 @@ export default {
           });
         }
 
-        await this.$router.push({
-          name: "surveys-edit-surveyId",
-          params: {
-            surveyId: response.data.surveyId
-          }
-        });
+        // await this.$router.replace({
+        //   name: "surveys-edit-surveyId",
+        //   params: {
+        //     surveyId: response.data.surveyId
+        //   }
+        // });
       } else {
         return await this.$helpers.notify({
           type: "error",
