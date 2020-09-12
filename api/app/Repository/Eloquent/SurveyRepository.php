@@ -424,8 +424,12 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      */
     public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): bool
     {
-        $questionGroup = $this->findById($surveyId)->questionGroups()
+        $questionGroup = $this->findById($surveyId)->questionGroups()->with('questions')
             ->findOrFail($questionGroupId);
+
+        foreach($questionGroup->questions as $question) {
+            $question->forceDelete();
+        }
 
         return $questionGroup->forceDelete();
     }
