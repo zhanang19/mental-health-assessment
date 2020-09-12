@@ -70,13 +70,33 @@
         </v-tooltip>
       </v-card-title>
 
-      <v-list>
+      <v-list nav>
         <v-list-item
           v-for="(group, groupIndex) in survey.question_groups"
           :key="groupIndex"
-          v-text="group.label"
-          @click="redirectTo(group)"
-        ></v-list-item>
+          @click="[redirectTo(group), (currentGroup = group.id)]"
+          :color="currentGroup === group.id ? 'primary' : ''"
+          nav
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="group.label"></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-tooltip right>
+              <template #activator="{on, attrs}">
+                <v-chip
+                  v-on="on"
+                  v-bind="attrs"
+                  v-text="group.questions.length || 0"
+                ></v-chip>
+              </template>
+              <span
+                >There are {{ group.questions.length || 0 }} items in this
+                question group.</span
+              >
+            </v-tooltip>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -200,7 +220,8 @@ export default {
 
   data: () => ({
     refreshing: false,
-    leftDrawer: true
+    leftDrawer: true,
+    currentGroup: null
   }),
 
   computed: {
