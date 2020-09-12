@@ -16,7 +16,7 @@
               v-bind="attrs"
               icon
             >
-              <v-icon>mdi-arrow-left</v-icon>
+              <v-icon>mdi-arrow-collapse-left</v-icon>
             </v-btn>
           </template>
           <span>Close drawer</span>
@@ -55,6 +55,29 @@
           </v-card-text>
         </v-form>
       </v-container>
+
+      <v-card-title class="subtitle-2">
+        <span>Question Groups</span>
+        <v-spacer></v-spacer>
+        <v-tooltip top>
+          <template #activator="{on, attrs}">
+            <v-icon v-on="on" v-bind="attrs">mdi-information-outline</v-icon>
+          </template>
+          <span
+            >Click on a question group down below and it will redirect you to
+            its questions</span
+          >
+        </v-tooltip>
+      </v-card-title>
+
+      <v-list>
+        <v-list-item
+          v-for="(group, groupIndex) in survey.question_groups"
+          :key="groupIndex"
+          v-text="group.label"
+          @click="redirectTo(group)"
+        ></v-list-item>
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app extended>
@@ -123,28 +146,28 @@
       <v-toolbar-title></v-toolbar-title>
       <v-spacer></v-spacer>
       <div>
+        <v-btn
+          @click="$router.replace({ name: 'app-surveys' })"
+          class="primary--text"
+          >Back to Dashboard</v-btn
+        >
+
         <v-btn @click="save({ notify: true })" color="primary"
           >Save Changes</v-btn
         >
       </div>
-
-      <template #extension>
-        <v-tabs centered>
-          <v-tab>Questions Groups</v-tab>
-          <v-tab>Responses</v-tab>
-        </v-tabs>
-      </template>
     </v-app-bar>
 
     <v-container class="my-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
-          <nuxt-child :key="$route.params.surveyId"></nuxt-child>
+          <nuxt-child
+            :key="$route.params.surveyId"
+            :keep-alive="false"
+          ></nuxt-child>
         </v-col>
       </v-row>
     </v-container>
-
-    <app-floating-back-button></app-floating-back-button>
   </v-main>
 </template>
 
@@ -249,6 +272,33 @@ export default {
      */
     selectColorTheme(color) {
       this.color_theme = color;
+    },
+
+    redirectTo(group) {
+      if (this.$route.name === "surveys-edit-surveyId-groups-questionGroupId") {
+        this.$router
+          .replace({
+            name: "surveys-edit-surveyId",
+            params: { surveyId: this.$route.params.surveyId }
+          })
+          .then(() => {
+            this.$router.push({
+              name: "surveys-edit-surveyId-groups-questionGroupId",
+              params: {
+                surveyId: this.$route.params.surveyId,
+                questionGroupId: group.id
+              }
+            });
+          });
+      } else {
+        this.$router.push({
+          name: "surveys-edit-surveyId-groups-questionGroupId",
+          params: {
+            surveyId: this.$route.params.surveyId,
+            questionGroupId: group.id
+          }
+        });
+      }
     }
   }
 };

@@ -3,7 +3,7 @@
     <v-form ref="form" @submit.prevent="save()">
       <!-- START: Survey Question Group v-for questions -->
       <v-card
-        class="rounded-lg ml-5 mb-3"
+        class="rounded-lg mb-10"
         v-for="(questionItem, questionIndex) in questions"
         :key="questionIndex"
       >
