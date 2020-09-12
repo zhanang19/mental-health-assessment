@@ -11,32 +11,13 @@
 
     <nuxt-child class="my-16"></nuxt-child>
 
-    <v-tooltip top>
-      <template #activator="{ on, attrs }">
-        <v-btn
-          style="z-index: 999"
-          v-on="on"
-          v-bind="attrs"
-          @click="$router.back()"
-          class="primary--text"
-          elevation="10"
-          bottom
-          left
-          fixed
-          rounded
-          x-large
-        >
-          <v-icon left>mdi-arrow-left</v-icon>
-          <span>Back</span>
-        </v-btn>
-      </template>
-      <span>Go back</span>
-    </v-tooltip>
+    <app-floating-back-button></app-floating-back-button>
   </v-main>
 </template>
 
 <script>
 import AppBaseAppBar from "@/components/AppBaseAppBar";
+import AppFloatingBackButton from "@/components/AppFloatingBackButton";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { SurveyActions } from "../../../utils/StoreTypes";
 import { mapState } from "vuex";
@@ -51,7 +32,8 @@ export default {
   layout: "empty",
 
   components: {
-    AppBaseAppBar
+    AppBaseAppBar,
+    AppFloatingBackButton
   },
 
   async fetch({ store, params }) {

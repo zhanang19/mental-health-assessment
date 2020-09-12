@@ -1,29 +1,76 @@
 <template>
   <v-main :class="color_theme" app>
-    <v-app-bar app extended>
-      <v-btn @click="$router.replace({ name: 'app-surveys' })" icon>
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{ title || "Untitled Survey Form" }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <div>
+    <v-navigation-drawer
+      color="grey lighten-4"
+      v-model="leftDrawer"
+      :width="drawerWidth"
+      :permanent="leftDrawer && onDesktop"
+      app
+    >
+      <v-app-bar color="transparent" flat>
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">
             <v-btn
-              @click="
-                $router.push({
-                  name: 'surveys-preview-surveyId',
-                  params: { surveyId: $route.params.surveyId }
-                })
-              "
+              @click="leftDrawer = !leftDrawer"
               v-on="on"
               v-bind="attrs"
               icon
             >
-              <v-icon>mdi-eye-outline</v-icon>
+              <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </template>
-          <span>Preview</span>
+          <span>Close drawer</span>
+        </v-tooltip>
+
+        <v-toolbar-title>{{ title || "Untitled Survey Form" }}</v-toolbar-title>
+      </v-app-bar>
+
+      <v-container>
+        <v-form ref="form" @submit.prevent="save({ notify: true })">
+          <v-card-text>
+            <v-text-field
+              hint="Required"
+              persistent-hint
+              label="Form Title"
+              v-model="title"
+              :rules="rules.survey.title"
+              outlined
+            ></v-text-field>
+
+            <v-text-field
+              hint="Optional"
+              persistent-hint
+              label="Subtitle"
+              v-model="subtitle"
+              outlined
+            ></v-text-field>
+
+            <v-textarea
+              v-model="description"
+              label="Description"
+              hint="Optional"
+              outlined
+              persistent-hint
+            ></v-textarea>
+          </v-card-text>
+        </v-form>
+      </v-container>
+    </v-navigation-drawer>
+
+    <v-app-bar app extended>
+      <div>
+        <v-tooltip v-if="!leftDrawer" bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              @click="leftDrawer = !leftDrawer"
+              v-on="on"
+              v-bind="attrs"
+              icon
+            >
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <span>Toggle left drawer</span>
         </v-tooltip>
 
         <v-menu transition="slide-y-transition" offset-y>
@@ -53,6 +100,29 @@
           </v-list>
         </v-menu>
 
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              @click="
+                $router.push({
+                  name: 'surveys-preview-surveyId',
+                  params: { surveyId: $route.params.surveyId }
+                })
+              "
+              v-on="on"
+              v-bind="attrs"
+              icon
+            >
+              <v-icon>mdi-eye-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>Preview</span>
+        </v-tooltip>
+      </div>
+
+      <v-toolbar-title></v-toolbar-title>
+      <v-spacer></v-spacer>
+      <div>
         <v-btn @click="save({ notify: true })" color="primary"
           >Save Changes</v-btn
         >
@@ -60,191 +130,31 @@
 
       <template #extension>
         <v-tabs centered>
-          <v-tab>Questions</v-tab>
+          <v-tab>Questions Groups</v-tab>
           <v-tab>Responses</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
 
-    <v-container class="mb-16">
+    <v-container class="my-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
-          <v-form ref="form" @submit.prevent="save({ notify: true })">
-            <!-- START: Survey Details -->
-            <v-card class="rounded-lg" style="margin-bottom: 5rem">
-              <v-card-title>
-                <span class="display-1">
-                  <v-text-field
-                    hint="Required"
-                    persistent-hint
-                    label="Form Title"
-                    v-model="title"
-                    :rules="rules.survey.title"
-                  ></v-text-field>
-                </span>
-              </v-card-title>
-              <v-card-subtitle>
-                <v-text-field
-                  hint="Optional"
-                  persistent-hint
-                  label="Subtitle"
-                  v-model="subtitle"
-                ></v-text-field>
-              </v-card-subtitle>
-              <v-card-text>
-                <v-textarea
-                  v-model="description"
-                  label="Description"
-                  hint="Optional"
-                  outlined
-                  persistent-hint
-                ></v-textarea>
-              </v-card-text>
-            </v-card>
-            <!-- END: Survey Details -->
-
-            <!-- START: Question Groups v-for loop -->
-            <v-container
-              class="pa-0 mb-10"
-              v-for="(group, groupIndex) in question_groups"
-              :key="groupIndex"
-            >
-              <!-- survey question group header -->
-              <v-card class="rounded-lg mb-3">
-                <v-tooltip bottom>
-                  <template #activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" fab top right absolute>
-                      <h3>{{ `G${groupIndex + 1}` }}</h3>
-                    </v-btn>
-                  </template>
-                  <span>The question group number</span>
-                </v-tooltip>
-                <v-card-title class="headline pt-10">
-                  <v-text-field
-                    hint="Required"
-                    persistent-hint
-                    label="Group Label"
-                    v-model="group.label"
-                    :rules="rules.group.label"
-                    @blur="save({ notify: false })"
-                  ></v-text-field>
-                </v-card-title>
-                <v-card-text>
-                  <v-textarea
-                    label="Instructions"
-                    v-model="group.instructions"
-                    hint="Optional"
-                    persistent-hint
-                    @blur="save({ notify: false })"
-                    outlined
-                  ></v-textarea>
-                </v-card-text>
-                <v-divider class="mx-5"></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <div class="mx-3 py-3">
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
-                        <v-btn
-                          v-on="on"
-                          v-bind="attrs"
-                          @click="
-                            duplicateSurveyQuestionGroup({
-                              questionGroupId: group.id
-                            })
-                          "
-                          elevation="3"
-                          small
-                          fab
-                        >
-                          <v-icon>mdi-content-copy</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Duplicate this question group</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
-                        <v-btn
-                          v-on="on"
-                          v-bind="attrs"
-                          @click="
-                            deleteSurveyQuestionGroup({
-                              questionGroupId: group.id
-                            })
-                          "
-                          elevation="3"
-                          small
-                          fab
-                        >
-                          <v-icon>mdi-delete-outline</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Delete this question group</span>
-                    </v-tooltip>
-                  </div>
-                </v-card-actions>
-              </v-card>
-
-              <!-- START: Survey Question Group v-for questions -->
-              <app-survey-question
-                v-if="!refreshing"
-                @added="refresh()"
-                @duplicated="refresh()"
-                :question-group="group"
-                :question-group-index="groupIndex"
-              ></app-survey-question>
-              <div v-else>
-                <app-circular-progress-indicator
-                  :color-theme="color_theme"
-                ></app-circular-progress-indicator>
-              </div>
-              <!-- END: Survey Question Group v-for questions -->
-            </v-container>
-            <!-- END: Question Groups v-for loop -->
-            <div class="text-center">
-              <v-btn
-                class="primary--text"
-                x-large
-                @click="addSurveyQuestionGroup()"
-              >
-                <span>Add Question Group</span>
-                <v-icon right>mdi-plus</v-icon>
-              </v-btn>
-            </div>
-          </v-form>
+          <nuxt-child :key="$route.params.surveyId"></nuxt-child>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-card
-      v-if="false"
-      class="rounded-xl"
-      style="text-align: center; width: 50%; position: fixed; bottom: 0; left: 0; right: 0; margin-left: auto; margin-right: auto; margin-bottom: 1rem;"
-    >
-      <v-card-text>Test</v-card-text>
-    </v-card>
+    <app-floating-back-button></app-floating-back-button>
   </v-main>
 </template>
 
 <script>
-import { Survey, colorThemes, surveyValidations } from "../../../models/Survey";
-import {
-  SurveyQuestionGroup,
-  surveyQuestionGroupValidations
-} from "../../../models/SurveyQuestionGroup";
-import {
-  SurveyQuestion,
-  surveyQuestionValidations,
-  surveyQuestionOptionValidations,
-  inputTypes,
-  inputTypesEnum,
-  Option
-} from "../../../models/SurveyQuestion";
+import { colorThemes, surveyValidations } from "../../../models/Survey";
 import { SurveyActions } from "../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
-import AppSurveyQuestion from "@/components/surveys/forms/AppSurveyQuestion";
-import AppCircularProgressIndicator from "@/components/AppCircularProgressIndicator";
+
+import AppFloatingBackButton from "@/components/AppFloatingBackButton";
 
 export default {
   head() {
@@ -254,8 +164,7 @@ export default {
   },
 
   components: {
-    AppSurveyQuestion,
-    AppCircularProgressIndicator
+    AppFloatingBackButton
   },
 
   layout: "empty",
@@ -268,17 +177,7 @@ export default {
 
   data: () => ({
     refreshing: false,
-    form: {
-      survey: new Survey({
-        title: "Untitled Survey Form",
-        color_theme: "blue darken-2"
-      }),
-      groups: [
-        new SurveyQuestionGroup({
-          label: "Untitled Question Group"
-        })
-      ]
-    }
+    leftDrawer: true
   }),
 
   computed: {
@@ -294,11 +193,6 @@ export default {
       "survey.question_groups.questions"
     ]),
 
-    ...mapMultiRowFields("surveys", [
-      "survey.question_groups"
-      // "survey.question_groups.questions",
-    ]),
-
     /**
      * Validation rules in form.
      *
@@ -306,30 +200,8 @@ export default {
      */
     rules() {
       return {
-        survey: surveyValidations,
-        group: surveyQuestionGroupValidations,
-        question: surveyQuestionValidations,
-        option: surveyQuestionOptionValidations
+        survey: surveyValidations
       };
-    },
-
-    /**
-     * Input types,
-     * e.g. short answer, paragraph, checkboxes
-     *
-     * @returns { Array }
-     */
-    inputTypes() {
-      return inputTypes;
-    },
-
-    /**
-     * Enum for input types.
-     *
-     * @returns { Object }
-     */
-    inputTypesEnum() {
-      return inputTypesEnum;
     },
 
     /**
@@ -339,48 +211,35 @@ export default {
      */
     colorThemes() {
       return colorThemes;
+    },
+
+    drawerWidth() {
+      const breakpoint = this.$vuetify.breakpoint;
+
+      if (breakpoint.xl) return "500";
+      if (breakpoint.lg) return "425";
+      if (breakpoint.md) return "400";
+      if (breakpoint.sm) return "100%";
+      if (breakpoint.xs) return "100%";
+    },
+
+    onDesktop() {
+      const breakpoint = this.$vuetify.breakpoint;
+
+      return breakpoint.xl || breakpoint.lg;
     }
   },
 
   methods: {
-    async refresh() {
-      this.refreshing = true;
-
-      return await this.$store
-        .dispatch(SurveyActions.FETCH, {
-          surveyId: this.survey.id
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.refreshing = false;
-          }, 1000);
-        });
-    },
-
     async save({ notify = true }) {
-      if (await this.$refs.form.validate()) {
-        console.log("saved");
-        const response = await this.$store.dispatch(SurveyActions.UPDATE, {
-          surveyId: this.survey.id
-        });
+      const response = await this.$store.dispatch(SurveyActions.UPDATE, {
+        surveyId: this.survey.id
+      });
 
-        if (notify) {
-          await this.$helpers.notify({
-            type: "success",
-            message: response?.message || "No message."
-          });
-        }
-
-        // await this.$router.replace({
-        //   name: "surveys-edit-surveyId",
-        //   params: {
-        //     surveyId: response.data.surveyId
-        //   }
-        // });
-      } else {
-        return await this.$helpers.notify({
-          type: "error",
-          message: "Please fill in the required fields."
+      if (notify) {
+        await this.$helpers.notify({
+          type: "success",
+          message: response?.message || "No message."
         });
       }
     },
@@ -390,144 +249,6 @@ export default {
      */
     selectColorTheme(color) {
       this.color_theme = color;
-    },
-
-    async addSurveyQuestionGroup() {
-      const res = await this.$store.dispatch(
-        SurveyActions.CREATE_QUESTION_GROUP,
-        {
-          surveyId: this.survey.id
-        }
-      );
-
-      await this.refresh();
-
-      console.log(`addSurveyQuestionGroup()`, res);
-    },
-
-    /**
-     * @param { Object } Payload
-     */
-    async deleteSurveyQuestionGroup({ questionGroupId }) {
-      const res = await this.$store.dispatch(
-        SurveyActions.DELETE_QUESTION_GROUP_BY_ID,
-        {
-          surveyId: this.survey.id,
-          questionGroupId
-        }
-      );
-
-      await this.refresh();
-
-      console.log("deleteSurveyQuestionGroup()", res);
-    },
-
-    /**
-     * @todo
-     * needs a deep clone so it copies properties and
-     * values without referencing from the object source
-     *
-     * @param { Object } payload
-     */
-    async duplicateSurveyQuestionGroup({ questionGroupId }) {
-      const res = await this.$store.dispatch(
-        SurveyActions.DUPLICATE_QUESTION_GROUP,
-        {
-          surveyId: this.survey.id,
-          questionGroupId
-        }
-      );
-
-      await this.refresh();
-
-      console.log("duplicateSurveyQuestionGroup()", res);
-    },
-
-    /**
-     * @param { Object } payload
-     */
-    async addSurveyQuestion({ questionGroupId }) {
-      const res = await this.$store.dispatch(SurveyActions.CREATE_QUESTION, {
-        surveyId: this.survey.id,
-        questionGroupId
-      });
-
-      await this.refresh();
-
-      console.log("addSurveyQuestion()", res);
-    },
-
-    /**
-     * Remove survey question from group.
-     *
-     * @param surveyQuestionGroupIndex survey question group index
-     * @param questionIndex question index
-     */
-    deleteSurveyQuestion(surveyQuestionGroupIndex, questionIndex) {
-      this.form.groups[surveyQuestionGroupIndex].questions.splice(
-        questionIndex,
-        1
-      );
-    },
-
-    /**
-     * @param surveyQuestionGroupIndex survey question group index
-     * @param questionIndex question index
-     */
-    addSurveyQuestionOption(surveyQuestionGroupIndex, questionIndex, field) {
-      if (field === "option_group_a") {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_a.options.push(new Option());
-      } else {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_b.options.push(new Option());
-      }
-    },
-
-    /**
-     * @param surveyQuestionGroupIndex survey question group index
-     * @param questionIndex question index
-     * @param choiceAIndex question index
-     */
-    deleteSurveyQuestionChoice(
-      surveyQuestionGroupIndex,
-      questionIndex,
-      choiceAIndex,
-      field
-    ) {
-      if (field === "option_group_a") {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_a.options.splice(choiceAIndex, 1);
-      } else {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_b.options.splice(choiceAIndex, 1);
-      }
-    },
-
-    /**
-     * @param surveyQuestionGroupIndex survey question group index
-     * @param questionIndex question index
-     * @param choiceAIndex question index
-     */
-    deleteSurveyQuestionOptionGroup(
-      surveyQuestionGroupIndex,
-      questionIndex,
-      field
-    ) {
-      if (field === "option_group_a") {
-        return this.$helpers.notify({
-          type: "info",
-          message: "Must have a set of options. Cannot delete option set A."
-        });
-      } else {
-        this.form.groups[surveyQuestionGroupIndex].questions[
-          questionIndex
-        ].option_group_b = {};
-      }
     }
   }
 };
