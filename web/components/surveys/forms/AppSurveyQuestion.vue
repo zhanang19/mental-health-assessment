@@ -519,7 +519,7 @@ export default {
     setQuestionsState() {
       this.questions = JSON.parse(
         JSON.stringify(
-          this.survey.question_groups[this.questionGroupIndex].questions
+          this.survey?.question_groups[this.questionGroupIndex]?.questions || []
         )
       );
 

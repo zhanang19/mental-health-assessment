@@ -34,12 +34,7 @@
         <v-btn
           v-on="on"
           v-bind="attrs"
-          @click="
-            $router.replace({
-              name: 'surveys-edit-surveyId',
-              params: { surveyId: $route.params.surveyId }
-            })
-          "
+          @click="$router.back()"
           large
           rounded
           absolute

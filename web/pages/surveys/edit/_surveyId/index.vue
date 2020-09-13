@@ -41,13 +41,7 @@
                     v-on="on"
                     v-bind="attrs"
                     @click="
-                      $router.push({
-                        name: 'surveys-edit-surveyId-groups-questionGroupId',
-                        params: {
-                          surveyId: $route.params.surveyId,
-                          questionGroupId: group.id
-                        }
-                      })
+                      redirectTo(group)
                     "
                     elevation="3"
                     small
@@ -290,18 +284,18 @@ export default {
 
     async refresh() {
       await this.$emit("refresh");
+    },
 
-      // this.isLoading = true;
-
-      // return await this.$store
-      //   .dispatch(SurveyActions.FETCH, {
-      //     surveyId: this.survey.id
-      //   })
-      //   .finally(() => {
-      //     setTimeout(() => {
-      //       this.isLoading = false;
-      //     }, 1000);
-      //   });
+    async redirectTo(group) {
+      await this.$emit("is-loading", true);
+      await this.$router.push({
+        name: "surveys-edit-surveyId-groups-questionGroupId",
+        params: {
+          surveyId: this.$route.params.surveyId,
+          questionGroupId: group.id
+        }
+      });
+      await this.$emit("is-loading", false);
     },
 
     async save({ notify = true }) {
