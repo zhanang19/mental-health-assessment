@@ -89,7 +89,7 @@
 
       <v-list v-if="!isLoading" nav>
         <v-menu
-          offset-y
+          offset-x
           v-for="(group, groupIndex) in survey.question_groups"
           :key="groupIndex"
         >
@@ -381,15 +381,9 @@ export default {
 
   methods: {
     async goTo(id) {
-      if (
-        this.$route.name.includes(
-          "surveys-edit-surveyId-groups-questionGroupId"
-        )
-      ) {
-        return;
+      if (this.$route.name === "surveys-edit-surveyId") {
+        await this.$vuetify.goTo(id);
       }
-
-      await this.$vuetify.goTo(id);
     },
 
     async confirmDestroy(item) {
