@@ -22,6 +22,7 @@ class CreateSurveyResponseGroupsTable extends Migration
             $table->string('status');
             $table->integer('questions_answered')->default(0);
             $table->integer('total_questions')->default(0);
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

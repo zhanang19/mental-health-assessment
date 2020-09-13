@@ -23,12 +23,13 @@ class CreateSurveyResponsesTable extends Migration
             $table->longText('description')->nullable();
             $table->string('color_theme')->default('indigo')->nullable();
             $table->string('status');
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
             $table->softDeletes();
-            $table->unique([
-                'student_id',
-                'survey_id'
-            ]);
+            // $table->unique([
+            //     'student_id',
+            //     'survey_id'
+            // ]);
         });
 
         Schema::table('survey_responses', function (Blueprint $table) {
