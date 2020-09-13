@@ -1,6 +1,6 @@
 <template>
   <v-main :class="survey.color_theme" app>
-    <nuxt-child class="my-16"></nuxt-child>
+    <nuxt-child :color-theme="survey.color_theme" class="my-16"></nuxt-child>
 
     <v-tooltip top>
       <template #activator="{ on, attrs }">
@@ -34,17 +34,17 @@ import { mapState } from "vuex";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`,
+      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`
     };
   },
 
   layout: "empty",
 
   async fetch({ store, params }) {
-    console.log(SurveyResponseActions.FETCH)
+    console.log(SurveyResponseActions.FETCH);
 
     await store.dispatch(SurveyResponseActions.FETCH, {
-      responseId: params.responseId,
+      responseId: params.responseId
     });
   },
 
@@ -54,8 +54,8 @@ export default {
     },
 
     ...mapState("responses", {
-      response: (state) => state.response,
-    }),
-  },
+      response: state => state.response
+    })
+  }
 };
 </script>

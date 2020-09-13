@@ -83,9 +83,9 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
         $responseGroup = $this->findResponseGroupById($responseId, $responseGroupId);
         $answers = $payload['answers'];
 
-        // $responseGroup->update(
-        //     Arr::except($payload, ['answers'])
-        // );
+        $responseGroup->update([
+            'is_completed' => true
+        ]);
 
         $responseGroup->fresh();
 

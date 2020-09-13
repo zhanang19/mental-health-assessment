@@ -5,6 +5,7 @@
       @input="onChange($event)"
       :value="value"
       :max-width="maxWidth"
+      :min-height="minHeight"
       ref="dialog"
       persistent
       scrollable
@@ -17,15 +18,8 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text class="text-center">
-          <div>
-            <slot v-if="!action.confirmed" name="confirmation-text">
-              Please confirm before we proceed dispatching your action.
-            </slot>
-            <slot v-else name="confirmed-text">
-              You have confirmed your action! Dispatching...
-            </slot>
-          </div>
+        <v-card-text>
+          <slot name="text"></slot>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -77,7 +71,12 @@ export default {
 
     maxWidth: {
       type: [Number, String],
-      default: 400
+      default: 600
+    },
+
+    minHeight: {
+      type: [Number, String],
+      default: 500
     },
 
     loading: {

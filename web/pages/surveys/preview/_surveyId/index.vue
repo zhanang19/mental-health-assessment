@@ -20,14 +20,6 @@
         >
           <!-- survey question group header -->
           <v-card class="rounded-lg mb-3">
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on" fab top right absolute>
-                  <h3>{{ `G${groupIndex + 1}` }}</h3>
-                </v-btn>
-              </template>
-              <span>The question group number</span>
-            </v-tooltip>
             <v-card-title
               class="headline pt-10"
               v-text="group.label"
@@ -38,8 +30,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   :to="{
-                    name:
-                      'surveys-preview-surveyId-groups-questionGroupId',
+                    name: 'surveys-preview-surveyId-groups-questionGroupId',
                     params: {
                       surveyId: $route.params.surveyId,
                       questionGroupId: group.id
@@ -101,6 +92,6 @@ export default {
 <style scoped>
 img {
   width: 100%;
-  height: auto
+  height: auto;
 }
 </style>

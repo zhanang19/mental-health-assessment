@@ -20,27 +20,30 @@
         >
           <!-- survey question group header -->
           <v-card class="rounded-lg mb-3">
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on" fab top right absolute>
-                  <h3>{{ `G${ groupIndex + 1}` }}</h3>
-                </v-btn>
-              </template>
-              <span>The question group number</span>
-            </v-tooltip>
-            <v-card-title class="headline pt-10" v-text="group.label"></v-card-title>
+            <v-card-title class="headline pt-10">
+              <v-tooltip v-if="group.is_completed" top>
+                <template #activator="{ on, attrs }">
+                  <v-icon v-on="on" v-bind="attrs" class="mr-3" color="success"
+                    >mdi-check</v-icon
+                  >
+                </template>
+                <span>You have already answered this sub-scale.</span>
+              </v-tooltip>
+              <span v-text="group.label"></span>
+              <v-spacer></v-spacer>
+            </v-card-title>
             <v-card-text v-html="group.instructions"></v-card-text>
             <v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
                   :to="{
-                      name: 'surveys-responses-responseId-groups-responseGroupId',
-                      params: {
-                        responseId: $route.params.responseId,
-                        responseGroupId: group.id,
-                      }
-                    }"
+                    name: 'surveys-responses-responseId-groups-responseGroupId',
+                    params: {
+                      responseId: $route.params.responseId,
+                      responseGroupId: group.id
+                    }
+                  }"
                   large
                   color="primary"
                   text
@@ -65,14 +68,18 @@ import { SurveyResponseActions } from "../../../../utils/StoreTypes";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`,
+      title: `${process.env.appName} | ${this.title || "Untitled Survey Form"}`
     };
+  },
+
+  props: {
+    colorTheme: String
   },
 
   layout: "empty",
 
   data: () => ({
-    isLoading: false,
+    isLoading: false
   }),
 
   computed: {
@@ -85,8 +92,8 @@ export default {
     },
 
     ...mapState("responses", {
-      response: (state) => state.response,
-    }),
-  },
+      response: state => state.response
+    })
+  }
 };
 </script>

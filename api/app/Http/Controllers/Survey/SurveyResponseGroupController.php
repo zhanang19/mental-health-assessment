@@ -36,7 +36,7 @@ class SurveyResponseGroupController extends Controller
         return response()->json([
             "data" => $this->surveyResponseRepository->findResponseGroupById(
                 $responseId, $responseGroupId
-            )
+            ),
         ]);
     }
 
@@ -55,7 +55,7 @@ class SurveyResponseGroupController extends Controller
     ): JsonResponse {
         return response()->json([
             'data' => $request->persist($responseId, $responseGroupId),
-            'message' => 'A survey response group has been updated.'
-        ], 204);
+            'message' => 'Hooray! You have completed this sub-scale.'
+        ], 200);
     }
 }
