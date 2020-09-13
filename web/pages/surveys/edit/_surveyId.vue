@@ -293,7 +293,7 @@
 
 <script>
 import { colorThemes, surveyValidations } from "../../../models/Survey";
-import { SurveyActions } from "../../../utils/StoreTypes";
+import { SurveyActions, SurveyMutations } from "../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
 
@@ -387,11 +387,12 @@ export default {
     },
 
     async confirmDestroy(item) {
-      await this.deleteSurveyQuestionGroup({
+      const res = await this.deleteSurveyQuestionGroup({
         questionGroupId: item.id
       });
 
-      await this.getSurveyById({ refresh: false });
+      // await this.getSurveyById({ refresh: false });
+      await this.$store.commit(SurveyMutations.REMOVE_QUESTION_GROUP, res.data);
 
       this.dialogController.destroy = !this.dialogController.destroy;
     },
@@ -480,9 +481,11 @@ export default {
         }
       );
 
-      await this.getSurveyById({ refresh: false });
+      // await this.getSurveyById({ refresh: false });
 
       console.log("deleteSurveyQuestionGroup()", res);
+
+      return res;
     },
 
     /**
@@ -497,7 +500,9 @@ export default {
         }
       );
 
-      await this.getSurveyById({ refresh: false });
+      await this.$store.commit(SurveyMutations.APPEND_QUESTION_GROUP, res.data);
+
+      // await this.getSurveyById({ refresh: false });
 
       console.log("duplicateSurveyQuestionGroup()", res);
     }

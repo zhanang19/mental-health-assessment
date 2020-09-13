@@ -318,7 +318,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             ]);
         }
 
-        return $questionGroup;
+        return $this->findQuestionGroupById($surveyId, $questionGroup->id);
     }
 
     /**
@@ -420,9 +420,9 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
      *
      * @param int $surveyId
      * @param int $questionGroupId
-     * @return bool
+     * @return \App\SurveyQuestionGroup
      */
-    public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): bool
+    public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): ?SurveyQuestionGroup
     {
         $questionGroup = $this->findById($surveyId)->questionGroups()->with('questions')
             ->findOrFail($questionGroupId);
@@ -431,7 +431,9 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             $question->forceDelete();
         }
 
-        return $questionGroup->forceDelete();
+        $questionGroup->forceDelete();
+
+        return $questionGroup;
     }
 
     /**

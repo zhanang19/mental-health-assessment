@@ -2,14 +2,14 @@
   <div>
     <v-form v-if="!isLoading" ref="form">
       <!-- START: Question Groups v-for loop -->
-      <v-container
-        class="pa-0 mb-10"
-        v-for="(group, groupIndex) in question_groups"
-        :key="groupIndex"
-        :id="`question-group-${group.id}`"
-      >
+      <v-container>
         <!-- survey question group header -->
-        <v-card class="rounded-lg mb-3">
+        <v-card
+          class="rounded-lg mb-10"
+          v-for="(group, groupIndex) in question_groups"
+          :id="`question-group-${group.id}`"
+          :key="groupIndex"
+        >
           <v-card-title class="headline pt-10">
             <v-text-field
               hint="Required"
@@ -40,9 +40,7 @@
                   <v-btn
                     v-on="on"
                     v-bind="attrs"
-                    @click="
-                      redirectTo(group)
-                    "
+                    @click="redirectTo(group)"
                     elevation="3"
                     small
                     fab
@@ -97,13 +95,13 @@
       <!-- END: Question Groups v-for loop -->
     </v-form>
     <div v-else>
-      <v-container
-        class="pa-0 mb-10"
-        v-for="(group, groupIndex) in 10"
-        :key="groupIndex"
-      >
+      <v-container>
         <!-- survey question group header -->
-        <v-card class="rounded-lg mb-3">
+        <v-card
+          class="rounded-lg mb-10"
+          v-for="(group, groupIndex) in 10"
+          :key="groupIndex"
+        >
           <v-card-title class="headline pt-10">
             <v-text-field
               label="Group Label"
@@ -177,7 +175,7 @@ import {
   inputTypesEnum,
   Option
 } from "../../../../models/SurveyQuestion";
-import { SurveyActions } from "../../../../utils/StoreTypes";
+import { SurveyActions, SurveyMutations } from "../../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
 
@@ -266,12 +264,11 @@ export default {
 
   methods: {
     async confirmDestroy(item) {
-      await this.deleteSurveyQuestionGroup({
+      const res = await this.deleteSurveyQuestionGroup({
         questionGroupId: item.id
       });
 
-      await this.$emit("confirm-destroy");
-      await this.refresh();
+      await this.$store.commit(SurveyMutations.REMOVE_QUESTION_GROUP, res.data);
 
       this.dialogController.destroy = !this.dialogController.destroy;
     },
@@ -312,12 +309,12 @@ export default {
           });
         }
 
-        // await this.$router.replace({
+        // await `this.$router.replace({
         //   name: "surveys-edit-surveyId",
         //   params: {
         //     surveyId: response.data.surveyId
         //   }
-        // });
+        // });`
       } else {
         return await this.$helpers.notify({
           type: "error",
@@ -341,7 +338,9 @@ export default {
         }
       );
 
-      await this.refresh();
+      await this.$store.commit(SurveyMutations.APPEND_QUESTION_GROUP, res.data);
+
+      await this.$vuetify.goTo(`#question-group-${res.data.id}`);
 
       console.log(`addSurveyQuestionGroup()`, res);
     },
@@ -358,9 +357,9 @@ export default {
         }
       );
 
-      await this.refresh();
-
       console.log("deleteSurveyQuestionGroup()", res);
+
+      return res;
     },
 
     /**
@@ -375,7 +374,11 @@ export default {
         }
       );
 
-      await this.refresh();
+      console.log(res);
+
+      await this.$store.commit(SurveyMutations.APPEND_QUESTION_GROUP, res.data);
+
+      await this.$vuetify.goTo(`#question-group-${res.data.id}`);
 
       console.log("duplicateSurveyQuestionGroup()", res);
     },

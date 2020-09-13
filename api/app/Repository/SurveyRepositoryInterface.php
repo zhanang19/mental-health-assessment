@@ -128,9 +128,9 @@ interface SurveyRepositoryInterface
      *
      * @param int $surveyId
      * @param int $questionGroupId
-     * @return bool
+     * @return \App\SurveyQuestionGroup
      */
-    public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): bool;
+    public function deleteQuestionGroupById(int $surveyId, int $questionGroupId): ?SurveyQuestionGroup;
 
     /**
      * Delete question by id.
