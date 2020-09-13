@@ -1,114 +1,167 @@
 <template>
-  <v-form ref="form">
-    <!-- START: Question Groups v-for loop -->
-    <v-container
-      class="pa-0 mb-10"
-      v-for="(group, groupIndex) in question_groups"
-      :key="groupIndex"
-    >
-      <!-- survey question group header -->
-      <v-card class="rounded-lg mb-3">
-        <v-card-title class="headline pt-10">
-          <v-text-field
-            hint="Required"
-            persistent-hint
-            label="Group Label"
-            v-model="group.label"
-            :rules="rules.group.label"
-            @change="save({ notify: false })"
-            outlined
-          ></v-text-field>
-        </v-card-title>
-        <v-card-text>
-          <v-textarea
-            label="Instructions"
-            v-model="group.instructions"
-            hint="Optional"
-            persistent-hint
-            @change="save({ notify: false })"
-            outlined
-          ></v-textarea>
-        </v-card-text>
-        <v-divider class="mx-5"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <div class="mx-3 py-3">
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="
-                    $router.push({
-                      name: 'surveys-edit-surveyId-groups-questionGroupId',
-                      params: {
-                        surveyId: $route.params.surveyId,
+  <div>
+    <v-form v-if="!isLoading" ref="form">
+      <!-- START: Question Groups v-for loop -->
+      <v-container
+        class="pa-0 mb-10"
+        v-for="(group, groupIndex) in question_groups"
+        :key="groupIndex"
+      >
+        <!-- survey question group header -->
+        <v-card class="rounded-lg mb-3">
+          <v-card-title class="headline pt-10">
+            <v-text-field
+              hint="Required"
+              persistent-hint
+              label="Group Label"
+              v-model="group.label"
+              :rules="rules.group.label"
+              @change="save({ notify: false })"
+              outlined
+            ></v-text-field>
+          </v-card-title>
+          <v-card-text>
+            <v-textarea
+              label="Instructions"
+              v-model="group.instructions"
+              hint="Optional"
+              persistent-hint
+              @change="save({ notify: false })"
+              outlined
+            ></v-textarea>
+          </v-card-text>
+          <v-divider class="mx-5"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <div class="mx-3 py-3">
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    v-on="on"
+                    v-bind="attrs"
+                    @click="
+                      $router.push({
+                        name: 'surveys-edit-surveyId-groups-questionGroupId',
+                        params: {
+                          surveyId: $route.params.surveyId,
+                          questionGroupId: group.id
+                        }
+                      })
+                    "
+                    elevation="3"
+                    small
+                    fab
+                  >
+                    <v-icon>mdi-eye-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span
+                  >View all questions that belong to this question group</span
+                >
+              </v-tooltip>
+
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    v-on="on"
+                    v-bind="attrs"
+                    @click="
+                      duplicateSurveyQuestionGroup({
                         questionGroupId: group.id
-                      }
-                    })
-                  "
-                  elevation="3"
-                  small
-                  fab
-                >
-                  <v-icon>mdi-eye-outline</v-icon>
-                </v-btn>
-              </template>
-              <span>View all questions that belong to this question group</span>
-            </v-tooltip>
+                      })
+                    "
+                    elevation="3"
+                    small
+                    fab
+                  >
+                    <v-icon>mdi-content-copy</v-icon>
+                  </v-btn>
+                </template>
+                <span>Duplicate this question group</span>
+              </v-tooltip>
 
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="
-                    duplicateSurveyQuestionGroup({
-                      questionGroupId: group.id
-                    })
-                  "
-                  elevation="3"
-                  small
-                  fab
-                >
-                  <v-icon>mdi-content-copy</v-icon>
-                </v-btn>
-              </template>
-              <span>Duplicate this question group</span>
-            </v-tooltip>
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    v-on="on"
+                    v-bind="attrs"
+                    @click="destroy(group)"
+                    elevation="3"
+                    small
+                    fab
+                  >
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Delete this question group</span>
+              </v-tooltip>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-container>
+      <!-- END: Question Groups v-for loop -->
+    </v-form>
+    <div v-else>
+      <v-container
+        class="pa-0 mb-10"
+        v-for="(group, groupIndex) in 10"
+        :key="groupIndex"
+      >
+        <!-- survey question group header -->
+        <v-card class="rounded-lg mb-3">
+          <v-card-title class="headline pt-10">
+            <v-text-field
+              label="Group Label"
+              placeholder="..."
+              outlined
+              disabled
+            ></v-text-field>
+          </v-card-title>
+          <v-card-text>
+            <v-skeleton-loader type="image"></v-skeleton-loader>
+          </v-card-text>
+          <v-divider class="mx-5"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <div class="mx-3 py-3">
+              <v-btn disabled elevation="3" small fab>
+                <v-icon>mdi-eye-outline</v-icon>
+              </v-btn>
 
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="
-                    deleteSurveyQuestionGroup({
-                      questionGroupId: group.id
-                    })
-                  "
-                  elevation="3"
-                  small
-                  fab
-                >
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-              </template>
-              <span>Delete this question group</span>
-            </v-tooltip>
-          </div>
-        </v-card-actions>
-      </v-card>
-    </v-container>
-    <!-- END: Question Groups v-for loop -->
+              <v-btn disabled elevation="3" small fab>
+                <v-icon>mdi-content-copy</v-icon>
+              </v-btn>
 
-    <div class="text-center">
-      <v-btn class="primary--text" x-large @click="addSurveyQuestionGroup()">
-        <span>Add Question Group</span>
-        <v-icon right>mdi-plus</v-icon>
-      </v-btn>
+              <v-btn disabled elevation="3" small fab>
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-container>
     </div>
-  </v-form>
+
+    <!-- delete confirmation dialog -->
+    <app-confirmation-dialog
+      v-model="dialogController.destroy"
+      @confirmed="confirmDestroy(questionGroup)"
+    ></app-confirmation-dialog>
+
+    <!-- floating action button -->
+    <v-btn
+      class="primary--text"
+      x-large
+      @click="addSurveyQuestionGroup()"
+      :loading="isLoading"
+      rounded
+      bottom
+      right
+      fixed
+    >
+      <span>Add Question Group</span>
+      <v-icon right>mdi-plus</v-icon>
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -132,19 +185,30 @@ import {
 import { SurveyActions } from "../../../../utils/StoreTypes";
 import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
+
+import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
 import AppSurveyQuestion from "@/components/surveys/forms/AppSurveyQuestion";
 import AppCircularProgressIndicator from "@/components/AppCircularProgressIndicator";
 
 export default {
   components: {
     AppSurveyQuestion,
-    AppCircularProgressIndicator
+    AppCircularProgressIndicator,
+    AppConfirmationDialog
   },
 
   layout: "empty",
 
+  props: {
+    isLoading: Boolean
+  },
+
   data: () => ({
-    refreshing: false
+    // isLoading: false,
+    questionGroup: {},
+    dialogController: {
+      destroy: false
+    }
   }),
 
   computed: {
@@ -206,18 +270,37 @@ export default {
   },
 
   methods: {
-    async refresh() {
-      this.refreshing = true;
+    async confirmDestroy(item) {
+      await this.deleteSurveyQuestionGroup({
+        questionGroupId: item.id
+      });
 
-      return await this.$store
-        .dispatch(SurveyActions.FETCH, {
-          surveyId: this.survey.id
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.refreshing = false;
-          }, 1000);
-        });
+      await this.$emit("confirm-destroy");
+      await this.refresh();
+
+      this.dialogController.destroy = !this.dialogController.destroy;
+    },
+
+    destroy(item) {
+      this.questionGroup = item;
+
+      this.dialogController.destroy = !this.dialogController.destroy;
+    },
+
+    async refresh() {
+      await this.$emit("refresh");
+
+      // this.isLoading = true;
+
+      // return await this.$store
+      //   .dispatch(SurveyActions.FETCH, {
+      //     surveyId: this.survey.id
+      //   })
+      //   .finally(() => {
+      //     setTimeout(() => {
+      //       this.isLoading = false;
+      //     }, 1000);
+      //   });
     },
 
     async save({ notify = true }) {
@@ -286,10 +369,6 @@ export default {
     },
 
     /**
-     * @todo
-     * needs a deep clone so it copies properties and
-     * values without referencing from the object source
-     *
      * @param { Object } payload
      */
     async duplicateSurveyQuestionGroup({ questionGroupId }) {

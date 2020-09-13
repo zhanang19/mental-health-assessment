@@ -1,42 +1,23 @@
 <template>
   <div>
-    <v-dialog 
+    <v-dialog
       transition="scroll-y-transition"
       @input="onChange($event)"
       :value="value"
       :max-width="maxWidth"
       ref="dialog"
       persistent
-      scrollable>
+      scrollable
+    >
       <v-card>
         <v-toolbar color="transparent" flat>
           <v-toolbar-title v-text="title"></v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn 
-            elevation="1"
-            @click="toggle()"
-            small
-            fab>
+          <v-btn @click="toggle()" icon>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-card-text class="text-center">
-          <slot name="illustration">
-            <v-slide-x-transition hide-on-leave>
-              <img 
-                v-if="!action.confirmed"
-                src="/illustrations/alerts/warning.svg" 
-                height="250" 
-                width="70%" 
-                alt="warning svg">
-              <img 
-                v-else
-                src="/illustrations/alerts/confirmed.svg" 
-                height="250" 
-                width="70%" 
-                alt="confirmed svg">
-            </v-slide-x-transition>
-          </slot>
           <div>
             <slot v-if="!action.confirmed" name="confirmation-text">
               Please confirm before we proceed dispatching your action.
@@ -48,22 +29,24 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn 
+          <v-btn
             @click="toggle()"
             width="125"
             :disabled="action.confirmed"
             class="primary--text"
             large
-            depressed>
+            depressed
+          >
             CANCEL
           </v-btn>
-          <v-btn 
+          <v-btn
             @click="confirmed()"
             width="125"
             :disabled="action.confirmed"
             :color="btnColor"
             large
-            depressed>
+            depressed
+          >
             CONFIRM
           </v-btn>
         </v-card-actions>
@@ -79,18 +62,18 @@ export default {
       confirmed: false
     }
   }),
-  
+
   props: {
     title: String,
-    
+
     value: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     maxWidth: {
       type: [Number, String],
-      default: 400,
+      default: 400
     },
 
     loading: {
@@ -100,31 +83,31 @@ export default {
 
     btnColor: {
       type: String,
-      default: () => 'primary'
+      default: () => "primary"
     }
   },
 
   methods: {
-    onUpdate () {
-      this.$emit('update-user', true)
-    },
-    
-    onChange (e) {
-      this.$emit('input', e)
+    onUpdate() {
+      this.$emit("update-user", true);
     },
 
-    toggle () {
-      this.$emit('input', !this.$refs.dialog.value)
+    onChange(e) {
+      this.$emit("input", e);
     },
 
-    async confirmed () {
-      this.action.confirmed = true
+    toggle() {
+      this.$emit("input", !this.$refs.dialog.value);
+    },
+
+    async confirmed() {
+      this.action.confirmed = true;
       await setTimeout(() => {
-        this.$emit('confirmed', true)
-        
-        setTimeout(() => this.action.confirmed = false, 1000)
-      }, 1000)
+        this.$emit("confirmed", true);
+
+        setTimeout(() => (this.action.confirmed = false), 1000);
+      }, 1000);
     }
-  },
-}
+  }
+};
 </script>

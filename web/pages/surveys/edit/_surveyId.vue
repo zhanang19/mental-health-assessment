@@ -1,7 +1,8 @@
 <template>
-  <v-main :class="color_theme" app>
+  <v-main :class="isLoading ? 'primary' : color_theme" app>
+    <!-- side bar -->
     <v-navigation-drawer
-      color="grey lighten-4"
+      color="white"
       v-model="leftDrawer"
       :width="drawerWidth"
       :permanent="leftDrawer && onDesktop"
@@ -26,7 +27,11 @@
       </v-app-bar>
 
       <v-container>
-        <v-form ref="form" @submit.prevent="save({ notify: true })">
+        <v-form
+          v-if="!isLoading"
+          ref="form"
+          @submit.prevent="save({ notify: true })"
+        >
           <v-card-text>
             <v-text-field
               hint="Required"
@@ -54,6 +59,13 @@
             ></v-textarea>
           </v-card-text>
         </v-form>
+        <div v-else>
+          <v-card-text>
+            <v-skeleton-loader type="list-item"></v-skeleton-loader>
+            <v-skeleton-loader type="list-item"></v-skeleton-loader>
+            <v-skeleton-loader type="image"></v-skeleton-loader>
+          </v-card-text>
+        </div>
       </v-container>
 
       <v-card-title class="subtitle-2">
@@ -70,38 +82,90 @@
         </v-tooltip>
       </v-card-title>
 
-      <v-list nav>
-        <v-list-item
+      <v-list v-if="!isLoading" nav>
+        <v-menu
+          offset-y
           v-for="(group, groupIndex) in survey.question_groups"
           :key="groupIndex"
-          @click="[redirectTo(group), (currentGroup = group.id)]"
-          :color="currentGroup === group.id ? 'primary' : ''"
-          nav
         >
-          <v-list-item-content>
-            <v-list-item-title v-text="group.label"></v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-tooltip right>
-              <template #activator="{on, attrs}">
-                <v-chip
-                  v-on="on"
-                  v-bind="attrs"
-                  v-text="group.questions.length || 0"
-                ></v-chip>
-              </template>
-              <span
-                >There are {{ group.questions.length || 0 }} items in this
-                question group.</span
-              >
-            </v-tooltip>
-          </v-list-item-action>
-        </v-list-item>
+          <template #activator="{on, attrs}">
+            <v-list-item
+              v-on="on"
+              v-bind="attrs"
+              :color="currentGroup === group.id ? 'primary' : ''"
+              nav
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="group.label"></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-tooltip right>
+                  <template #activator="{on, attrs}">
+                    <v-chip
+                      v-on="on"
+                      v-bind="attrs"
+                      v-text="group.questions.length || 0"
+                    ></v-chip>
+                  </template>
+                  <span
+                    >There are {{ group.questions.length || 0 }} items in this
+                    question group.</span
+                  >
+                </v-tooltip>
+              </v-list-item-action>
+            </v-list-item>
+          </template>
+          <v-list dense>
+            <!-- view question group -->
+            <v-list-item @click="redirectTo(group)">
+              <v-list-item-content>
+                <v-list-item-title>View</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>mdi-eye-outline</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+
+            <!-- duplicate question group -->
+            <v-list-item
+              @click="
+                duplicateSurveyQuestionGroup({ questionGroupId: group.id })
+              "
+            >
+              <v-list-item-content>
+                <v-list-item-title>Duplicate</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>mdi-content-copy</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+
+            <!-- delete question group -->
+            <v-list-item @click="destroy(group)">
+              <v-list-item-content>
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-list>
+      <v-list v-else>
+        <v-skeleton-loader
+          v-for="(group, groupIndex) in 10"
+          :key="groupIndex"
+          type="list-item"
+        ></v-skeleton-loader>
       </v-list>
     </v-navigation-drawer>
+    <!-- end of side bar -->
 
-    <v-app-bar app extended>
+    <!-- content top nav bar -->
+    <v-app-bar color="white" app extended>
       <div>
+        <!-- toggle drawer button -->
         <v-tooltip v-if="!leftDrawer" bottom>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -116,6 +180,7 @@
           <span>Toggle left drawer</span>
         </v-tooltip>
 
+        <!-- color theme selector -->
         <v-menu transition="slide-y-transition" offset-y>
           <template #activator="{ on: menu, attrs }">
             <v-tooltip bottom>
@@ -143,6 +208,23 @@
           </v-list>
         </v-menu>
 
+        <!-- refresh button -->
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              :loading="isRefreshing"
+              @click="getSurveyById({ refresh: true })"
+              v-on="on"
+              v-bind="attrs"
+              icon
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Reload data</span>
+        </v-tooltip>
+
+        <!-- preview button -->
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -177,13 +259,24 @@
         >
       </div>
     </v-app-bar>
+    <!-- end of content top nav bar -->
 
+    <!-- delete confirmation dialog -->
+    <app-confirmation-dialog
+      v-model="dialogController.destroy"
+      @confirmed="confirmDestroy(questionGroup)"
+    ></app-confirmation-dialog>
+
+    <!-- content -->
     <v-container class="my-16">
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
           <nuxt-child
             :key="$route.params.surveyId"
             :keep-alive="false"
+            :is-loading="isLoading"
+            @confirm-destroy="getSurveyById({ refresh: false })"
+            @refresh="getSurveyById({ refresh: false })"
           ></nuxt-child>
         </v-col>
       </v-row>
@@ -198,6 +291,7 @@ import { mapFields, mapMultiRowFields } from "vuex-map-fields";
 import { mapState } from "vuex";
 
 import AppFloatingBackButton from "@/components/AppFloatingBackButton";
+import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
 
 export default {
   head() {
@@ -207,21 +301,25 @@ export default {
   },
 
   components: {
-    AppFloatingBackButton
+    AppFloatingBackButton,
+    AppConfirmationDialog
   },
 
   layout: "empty",
 
-  async fetch({ store, params }) {
-    await store.dispatch(SurveyActions.FETCH, {
-      surveyId: params.surveyId
-    });
+  async created() {
+    await this.getSurveyById({ refresh: false });
   },
 
   data: () => ({
-    refreshing: false,
+    isLoading: false,
+    isRefreshing: false,
     leftDrawer: true,
-    currentGroup: null
+    currentGroup: null,
+    questionGroup: {},
+    dialogController: {
+      destroy: false
+    }
   }),
 
   computed: {
@@ -275,6 +373,39 @@ export default {
   },
 
   methods: {
+    async confirmDestroy(item) {
+      await this.deleteSurveyQuestionGroup({
+        questionGroupId: item.id
+      });
+
+      await this.getSurveyById({ refresh: false });
+
+      this.dialogController.destroy = !this.dialogController.destroy;
+    },
+
+    destroy(item) {
+      this.questionGroup = item;
+
+      this.dialogController.destroy = !this.dialogController.destroy;
+    },
+
+    async getSurveyById({ refresh }) {
+      if (refresh) {
+        this.isRefreshing = true;
+      }
+
+      this.isLoading = true;
+
+      await this.$store.dispatch(SurveyActions.FETCH, {
+        surveyId: this.$route.params.surveyId
+      });
+
+      await setTimeout(() => {
+        this.isLoading = false;
+        this.isRefreshing = false;
+      }, 500);
+    },
+
     async save({ notify = true }) {
       const response = await this.$store.dispatch(SurveyActions.UPDATE, {
         surveyId: this.survey.id
@@ -320,6 +451,40 @@ export default {
           }
         });
       }
+    },
+
+    /**
+     * @param { Object } Payload
+     */
+    async deleteSurveyQuestionGroup({ questionGroupId }) {
+      const res = await this.$store.dispatch(
+        SurveyActions.DELETE_QUESTION_GROUP_BY_ID,
+        {
+          surveyId: this.survey.id,
+          questionGroupId
+        }
+      );
+
+      await this.getSurveyById({ refresh: false });
+
+      console.log("deleteSurveyQuestionGroup()", res);
+    },
+
+    /**
+     * @param { Object } payload
+     */
+    async duplicateSurveyQuestionGroup({ questionGroupId }) {
+      const res = await this.$store.dispatch(
+        SurveyActions.DUPLICATE_QUESTION_GROUP,
+        {
+          surveyId: this.survey.id,
+          questionGroupId
+        }
+      );
+
+      await this.getSurveyById({ refresh: false });
+
+      console.log("duplicateSurveyQuestionGroup()", res);
     }
   }
 };
