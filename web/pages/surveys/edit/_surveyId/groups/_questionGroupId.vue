@@ -53,23 +53,54 @@
       <span>Go back</span>
     </v-tooltip>
 
+    <!-- action bottom sheet activator -->
     <v-tooltip top>
-      <template #activator="{on,attrs}">
+      <template #activator="{on, attrs}">
         <v-btn
           v-on="on"
           v-bind="attrs"
-          @click="refresh()"
           :loading="isLoading"
-          fab
+          @click="bottomSheet = !bottomSheet"
+          large
+          rounded
           bottom
           right
           fixed
         >
-          <v-icon>mdi-refresh</v-icon>
+          <span>Actions</span>
         </v-btn>
       </template>
-      <span>Refresh questions</span>
+      <span>See more actions</span>
     </v-tooltip>
+
+    <!-- action bottom sheet -->
+    <v-bottom-sheet
+      v-model="bottomSheet"
+      scrollable
+      inset
+      width="500"
+      eager
+      class="rounded-t-lg"
+    >
+      <v-sheet min-height="200" class="rounded-t-lg">
+        <v-toolbar flat color="transparent">
+          <v-toolbar-title></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn @click="bottomSheet = !bottomSheet" text>Close</v-btn>
+        </v-toolbar>
+        <v-list class="rounded-t-lg">
+          <v-list-item
+            @click="
+              addSurveyQuestion({
+                questionGroupId: $route.params.questionGroupId
+              })
+            "
+            >Add Question</v-list-item
+          >
+          <v-list-item @click="refresh()">Refresh</v-list-item>
+        </v-list>
+      </v-sheet>
+    </v-bottom-sheet>
   </v-container>
 </template>
 
@@ -88,6 +119,8 @@ export default {
   async created() {
     await this.getQuestionGroupById();
   },
+
+  data: () => ({ bottomSheet: false }),
 
   components: {
     AppSurveyQuestion
@@ -136,6 +169,24 @@ export default {
       await setTimeout(async () => {
         await this.$emit("is-loading", false);
       }, 500);
+    },
+
+    /**
+     * @param { Object } payload
+     */
+    async addSurveyQuestion({ questionGroupId }) {
+      await this.$store.dispatch(SurveyActions.UPDATE, {
+        surveyId: this.survey.id
+      });
+
+      const res = await this.$store.dispatch(SurveyActions.CREATE_QUESTION, {
+        surveyId: this.survey.id,
+        questionGroupId
+      });
+
+      await this.$store.dispatch(SurveyActions.FETCH, {
+        surveyId: this.$route.params.surveyId
+      });
     }
   }
 };

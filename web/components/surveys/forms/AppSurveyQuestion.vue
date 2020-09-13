@@ -6,6 +6,7 @@
         class="rounded-lg mb-10"
         v-for="(questionItem, questionIndex) in questions"
         :key="questionIndex"
+        :id="`question-${questionItem.id}`"
       >
         <v-card-title class="headline">
           <v-row>
