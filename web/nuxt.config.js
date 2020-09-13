@@ -77,7 +77,8 @@ export default {
   plugins: [
     { src: "@/plugins/mdi" },
     { src: "@/plugins/main" },
-    { src: "@/plugins/helpers" }
+    { src: "@/plugins/helpers" },
+    { src: "@/plugins/vue-quill-editor" }
   ],
   /*
    ** Auto import components
