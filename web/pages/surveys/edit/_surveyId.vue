@@ -23,7 +23,12 @@
           <span>Close drawer</span>
         </v-tooltip>
 
-        <v-toolbar-title>{{ title || "Untitled Survey Form" }}</v-toolbar-title>
+        <v-toolbar-title v-if="!isLoading">{{
+          title || "Untitled Survey Form"
+        }}</v-toolbar-title>
+        <v-toolbar-title v-else>
+          ...
+        </v-toolbar-title>
       </v-app-bar>
 
       <v-container>
