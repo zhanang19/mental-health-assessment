@@ -432,24 +432,26 @@ export default {
       this.color_theme = color;
     },
 
-    redirectTo(group) {
+    async redirectTo(group) {
       if (this.$route.name === "surveys-edit-surveyId-groups-questionGroupId") {
-        this.$router
-          .replace({
-            name: "surveys-edit-surveyId",
-            params: { surveyId: this.$route.params.surveyId }
-          })
-          .then(() => {
-            this.$router.push({
-              name: "surveys-edit-surveyId-groups-questionGroupId",
-              params: {
-                surveyId: this.$route.params.surveyId,
-                questionGroupId: group.id
-              }
-            });
-          });
+        this.isLoading = true;
+
+        await this.$router.replace({
+          name: "surveys-edit-surveyId",
+          params: { surveyId: this.$route.params.surveyId }
+        });
+
+        await this.$router.push({
+          name: "surveys-edit-surveyId-groups-questionGroupId",
+          params: {
+            surveyId: this.$route.params.surveyId,
+            questionGroupId: group.id
+          }
+        });
+
+        this.isLoading = false;
       } else {
-        this.$router.push({
+        await this.$router.push({
           name: "surveys-edit-surveyId-groups-questionGroupId",
           params: {
             surveyId: this.$route.params.surveyId,

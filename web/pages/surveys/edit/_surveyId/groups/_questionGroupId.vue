@@ -59,6 +59,7 @@
           v-on="on"
           v-bind="attrs"
           @click="refresh()"
+          :loading="isLoading"
           fab
           bottom
           right
