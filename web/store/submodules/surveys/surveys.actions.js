@@ -180,7 +180,6 @@ export const actions = {
     console.log("[SurveyStore] Create Survey Question Group", payload);
 
     try {
-      $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$post(
         `/api/surveys/${payload.surveyId}/question-groups`,
         {}
@@ -199,8 +198,6 @@ export const actions = {
       });
 
       return error;
-    } finally {
-      $nuxt.$helpers.loader();
     }
   },
 
@@ -214,7 +211,6 @@ export const actions = {
     console.log("[SurveyStore] Create Question", payload);
 
     try {
-      $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$post(
         `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}`,
         {}
@@ -233,8 +229,6 @@ export const actions = {
       });
 
       return error;
-    } finally {
-      $nuxt.$helpers.loader();
     }
   },
 
@@ -274,7 +268,6 @@ export const actions = {
     console.log("[SurveyStore] Duplicate Question Group", payload);
 
     try {
-      $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$get(
         `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/duplicate`
       );
@@ -290,8 +283,6 @@ export const actions = {
       });
 
       return error;
-    } finally {
-      $nuxt.$helpers.loader();
     }
   },
 
@@ -305,7 +296,6 @@ export const actions = {
     console.log("[SurveyStore] Duplicate Question", payload);
 
     try {
-      $nuxt.$helpers.loader();
       const response = await $nuxt.$axios.$get(
         `/api/surveys/${payload.surveyId}/question-groups/${payload.questionGroupId}/questions/${payload.questionId}/duplicate`
       );
@@ -321,8 +311,6 @@ export const actions = {
       });
 
       return error;
-    } finally {
-      $nuxt.$helpers.loader();
     }
   },
 

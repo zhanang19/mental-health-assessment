@@ -538,9 +538,11 @@ export default {
         questionGroupId
       });
 
-      await this.$emit("added", res);
+       await this.$store.dispatch(SurveyActions.FETCH, {
+        surveyId: this.$route.params.surveyId
+      });
 
-      console.log("addSurveyQuestion()", res);
+      await this.setQuestionsState();
     },
 
     /**

@@ -17,16 +17,15 @@
     </div>
 
     <app-survey-question
-      v-if="!isRefreshing"
+      v-if="!isLoading"
       ref="appSurveyQuestionComponent"
-      @added="getQuestionGroupById().then(() => refresh())"
       @duplicated="getQuestionGroupById().then(() => refresh())"
       :question-group="group"
       :question-group-index="groupIndex"
     ></app-survey-question>
     <div v-else>
       <app-circular-progress-indicator
-        :color-theme="survey.color_theme"
+        :color-theme="survey.color_theme || 'white'"
       ></app-circular-progress-indicator>
     </div>
 
@@ -81,14 +80,12 @@ import { mapState } from "vuex";
 import AppSurveyQuestion from "@/components/surveys/forms/AppSurveyQuestion";
 
 export default {
+  props: {
+    isLoading: Boolean
+  },
+
   async created() {
-    this.isRefreshing = true;
-
     await this.getQuestionGroupById();
-
-    await setTimeout(() => {
-      this.isRefreshing = false;
-    }, 500);
   },
 
   components: {
@@ -117,24 +114,18 @@ export default {
     })
   },
 
-  data: () => ({
-    isLoading: false,
-    isRefreshing: false
-  }),
-
   methods: {
     async refresh() {
-      await this.$refs.appSurveyQuestionComponent.setQuestionsState();
+      await this.$emit("is-loading", true);
+      await setTimeout(async () => {
+        await this.$emit("is-loading", false);
 
-      this.isRefreshing = true;
-
-      await setTimeout(() => {
-        this.isRefreshing = false;
+        await this.$refs.appSurveyQuestionComponent.setQuestionsState();
       }, 500);
     },
 
     async getQuestionGroupById() {
-      this.isLoading = true;
+      await this.$emit("is-loading", true);
 
       await this.$store.dispatch(SurveyActions.FETCH_QUESTION_GROUP_BY_ID, {
         surveyId: this.$route.params.surveyId,
@@ -142,7 +133,7 @@ export default {
       });
 
       await setTimeout(async () => {
-        this.isLoading = false;
+        await this.$emit("is-loading", false);
       }, 500);
     }
   }

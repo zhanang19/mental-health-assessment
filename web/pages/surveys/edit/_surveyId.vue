@@ -280,6 +280,7 @@
             :key="$route.params.surveyId"
             :keep-alive="false"
             :is-loading="isLoading"
+            @is-loading="isLoading = $event"
             @confirm-destroy="getSurveyById({ refresh: false })"
             @refresh="getSurveyById({ refresh: false })"
           ></nuxt-child>
