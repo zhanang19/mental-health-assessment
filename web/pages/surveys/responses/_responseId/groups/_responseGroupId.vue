@@ -232,8 +232,6 @@
       "
     >
       <template #confirmation-text>
-        {{ responseGroup.id }}
-
         You have completed answering this sub-scale. Do you wish to continue to
         the next sub-scale test?
       </template>
@@ -251,7 +249,11 @@
       "
     >
       <template #text>
-        <div v-html="responseGroup.instructions || `There aren't any instructions.`"></div>
+        <div
+          v-html="
+            responseGroup.instructions || `There aren't any instructions.`
+          "
+        ></div>
       </template>
     </app-dialog>
   </div>
