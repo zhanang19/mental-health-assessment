@@ -56,7 +56,7 @@
           v-bind="attrs"
           :loading="isLoading"
           @click="bottomSheet = !bottomSheet"
-          large
+          x-large
           rounded
           bottom
           right
@@ -170,6 +170,8 @@ export default {
      * @param { Object } payload
      */
     async addSurveyQuestion({ questionGroupId }) {
+      await this.$emit("is-loading", true);
+
       await this.$store.dispatch(SurveyActions.UPDATE, {
         surveyId: this.survey.id
       });
@@ -182,6 +184,11 @@ export default {
       await this.$store.dispatch(SurveyActions.FETCH, {
         surveyId: this.$route.params.surveyId
       });
+
+      await this.$emit("is-loading", false);
+
+      // the question tag comes from AppSurveyQuestion component
+      await this.$vuetify.goTo(`#question-${res.data.id}`);
     }
   }
 };
