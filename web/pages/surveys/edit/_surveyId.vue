@@ -97,6 +97,7 @@
             <v-list-item
               v-on="on"
               v-bind="attrs"
+              @click="goTo(`#question-group-${group.id}`)"
               :color="currentGroup === group.id ? 'primary' : ''"
               nav
             >
@@ -379,6 +380,18 @@ export default {
   },
 
   methods: {
+    async goTo(id) {
+      if (
+        this.$route.name.includes(
+          "surveys-edit-surveyId-groups-questionGroupId"
+        )
+      ) {
+        return;
+      }
+
+      await this.$vuetify.goTo(id);
+    },
+
     async confirmDestroy(item) {
       await this.deleteSurveyQuestionGroup({
         questionGroupId: item.id

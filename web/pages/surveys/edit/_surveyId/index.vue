@@ -6,6 +6,7 @@
         class="pa-0 mb-10"
         v-for="(group, groupIndex) in question_groups"
         :key="groupIndex"
+        :id="`question-group-${group.id}`"
       >
         <!-- survey question group header -->
         <v-card class="rounded-lg mb-3">
