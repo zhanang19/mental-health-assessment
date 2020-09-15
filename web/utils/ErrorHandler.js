@@ -16,9 +16,12 @@ export const handleError = error => {
       case 401:
         errorMessage = "You are not authenticated.";
         // $nuxt.$router.push({ name: "index" });
+        $nuxt.$auth.logout();
+
         break;
       case 403:
         errorMessage = "You are not authorized.";
+
         break;
       case 422:
         errorMessage = "The data provided is not valid.";
