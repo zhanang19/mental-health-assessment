@@ -1,27 +1,39 @@
 <template>
   <v-container class="px-10">
-    <div v-if="!isLoading && hasFilteredSurveys">
+    <div v-if="!isLoading && hasSurveys">
       <v-card
         :color="item.color_theme"
         :dark="!item.color_theme.includes(['white'])"
         class="my-3"
         outlined
         min-height="150"
-        v-for="(item, index) in filteredSurveys"
+        v-for="(item, index) in surveys"
         :key="index"
       >
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-3" v-text="item.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+              <v-list-item-title
+                class="headline mb-3"
+                v-text="item.title"
+              ></v-list-item-title>
+              <v-list-item-subtitle
+                v-text="item.subtitle"
+              ></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card-text>
         <v-card-actions class="pa-5">
           <v-spacer></v-spacer>
 
-          <v-btn class="rounded-lg" @click="takeSurvey(item)" light large bottom right>
+          <v-btn
+            class="rounded-lg"
+            @click="takeSurvey(item)"
+            light
+            large
+            bottom
+            right
+          >
             <span>Start</span>
           </v-btn>
         </v-card-actions>
@@ -29,7 +41,7 @@
     </div>
 
     <!-- if responses are available but filtered surveys are not -->
-    <div v-else-if="!isLoading && hasSurveys && !hasFilteredSurveys">
+    <!-- <div v-else-if="!isLoading && hasSurveys && !hasFilteredSurveys">
       <v-card-text>
         <div class="text-center">
           <img src="/illustrations/survey.svg" class="mb-3" height="300" alt srcset />
@@ -46,21 +58,35 @@
           >Proceed</v-btn>
         </div>
       </v-card-text>
-    </div>
+    </div> -->
 
     <!-- if responses are empty -->
     <div v-else-if="!isLoading && !hasSurveys">
       <v-card-text>
         <div class="text-center">
-          <img src="/illustrations/survey-empty.svg" class="mb-3" height="300" alt srcset />
-          <div class="py-3 subtitle-2">There are no survey forms available yet.</div>
+          <img
+            src="/illustrations/survey-empty.svg"
+            class="mb-3"
+            height="300"
+            alt
+            srcset
+          />
+          <div class="py-3 subtitle-2">
+            There are no survey forms available yet.
+          </div>
         </div>
       </v-card-text>
     </div>
 
     <!-- loading skeleton placeholder -->
     <div v-else>
-      <v-card v-for="(item, index) in 5" outlined min-height="150" :key="index" class="my-3">
+      <v-card
+        v-for="(item, index) in 5"
+        outlined
+        min-height="150"
+        :key="index"
+        class="my-3"
+      >
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
@@ -93,12 +119,12 @@ import { SurveyActions } from "../../utils/StoreTypes";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Home`,
+      title: `${process.env.appName} | Home`
     };
   },
 
   components: {
-    AppConfirmationDialog,
+    AppConfirmationDialog
   },
 
   async created() {
@@ -112,7 +138,7 @@ export default {
   },
 
   data: () => ({
-    isLoading: false,
+    isLoading: false
   }),
 
   computed: {
@@ -122,9 +148,9 @@ export default {
 
     filteredSurveys() {
       return this.surveys.filter(
-        (item) =>
+        item =>
           !this.$auth.user.responses
-            .map((response) => response.survey_id)
+            .map(response => response.survey_id)
             .includes(item.id)
       );
     },
@@ -134,25 +160,24 @@ export default {
     },
 
     ...mapState("surveys", {
-      surveys: (state) => state.surveys,
-    }),
+      surveys: state => state.surveys
+    })
   },
 
   methods: {
     async takeSurvey(item) {
       const response = await this.$store.dispatch(SurveyActions.TAKE_SURVEY, {
         surveyId: item.id,
-        slug: item.slug,
+        slug: item.slug
       });
 
       await this.$auth.fetchUser();
 
       await this.$router.push({
-        name: "surveys-slug",
-        params: { slug: item.slug },
+        name: "surveys-responses-responseId",
+        params: { responseId: response.data.id }
       });
-    },
-  },
+    }
+  }
 };
 </script>
-
