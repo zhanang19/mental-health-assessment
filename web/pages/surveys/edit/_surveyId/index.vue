@@ -14,12 +14,21 @@
             <v-text-field
               hint="Required"
               persistent-hint
-              label="Group Label"
+              label="Scale Label"
               v-model="group.label"
               :rules="rules.group.label"
               @change="save({ notify: false })"
               outlined
             ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-select
+              v-model="group.type"
+              hint="Optional"
+              persistent-hint
+              label="Type"
+              outlined
+              :items="scaleTypes"
+            ></v-select>
           </v-card-title>
           <v-card-text>
             <quill-editor
@@ -210,6 +219,10 @@ export default {
   }),
 
   computed: {
+    scaleTypes() {
+      return this.$store.getters.getScaleTypes;
+    },
+
     ...mapState("surveys", {
       survey: state => state.survey
     }),

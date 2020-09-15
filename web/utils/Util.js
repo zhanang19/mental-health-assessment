@@ -66,6 +66,10 @@ export const validations = {
  * @return { Boolean }
  */
 export const isObjectEmpty = obj => {
+  if (obj === null) {
+    return true;
+  }
+
   return Object.keys(obj).length === 0 && obj.constructor === Object;
 };
 

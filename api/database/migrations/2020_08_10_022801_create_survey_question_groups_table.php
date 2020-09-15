@@ -20,7 +20,7 @@ class CreateSurveyQuestionGroupsTable extends Migration
             // $table->unsignedBigInteger('survey_question_id');
             $table->string('label');
             $table->mediumText('instructions')->nullable();
-            $table->string('scale_type')->nullable()->default(ScaleTypes::NONE);
+            $table->string('type')->nullable()->default(ScaleTypes::NONE);
             $table->timestamps();
             $table->softDeletes();
         });

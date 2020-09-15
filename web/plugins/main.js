@@ -1,6 +1,12 @@
 import Vue from "vue";
 import VuePageTransition from "vue-page-transition";
-import { capitalize, exportToCSV, toBase64, isObject } from "../utils/Util";
+import {
+  capitalize,
+  exportToCSV,
+  toBase64,
+  isObject,
+  isObjectEmpty
+} from "../utils/Util";
 import moment from "moment";
 
 Vue.use(VuePageTransition);
@@ -11,7 +17,7 @@ Vue.mixin({
     },
 
     isObjectEmpty(obj) {
-      return Object.keys(obj).length === 0 && obj.constructor === Object;
+      return isObjectEmpty(obj);
     },
 
     toMonth(value) {

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Util;
+
 use App\Enums\ScaleTypes;
 
 class ScaleTypeChoices
@@ -178,33 +180,33 @@ class ScaleTypeChoices
      * Get scale type choices based on type.
      *
      * @param string $type
-     * @return array
+     * @return object
      */
-    public function getType(string $type): array
+    public function getType(string $type): object
     {
         switch ($type) {
             case ScaleTypes::MHP:
-                return $this->MHP;
+                return (object) $this->MHP;
             case ScaleTypes::PCL5:
-                return $this->PCL5;
+                return (object) $this->PCL5;
             case ScaleTypes::WHODAS:
-                return $this->WHODAS;
+                return (object) $this->WHODAS;
             case ScaleTypes::GAD:
-                return $this->GAD;
+                return (object) $this->GAD;
             case ScaleTypes::PHQ9:
-                return $this->PHQ9;
+                return (object) $this->PHQ9;
             default:
-                return [
+                return (object) [
                     "option_group_a" => json_encode([
                         "label" => "Choices A",
                         "options" => [
-                            ["text" => "Undefined Option"],
+                            ["text" => "Undefined Option", "value" => null],
                         ]
                     ]),
                     "option_group_b" => json_encode([
                         "label" => "Choices B",
                         "options" => [
-                            ["text" => "Undefined Option"],
+                            ["text" => "Undefined Option", "value" => null],
                         ]
                     ]),
                 ];

@@ -1,4 +1,5 @@
-import { validations } from "../utils/Util";
+import { validations } from "~/utils/Util";
+import { ScaleTypes } from "~/enums/ScaleTypes";
 
 export class SurveyQuestion {
   constructor({
@@ -21,17 +22,20 @@ export class SurveyQuestion {
 }
 
 export class Option {
-  constructor({ text = null } = {}) {
+  constructor({ text = null, value = null } = {}) {
     this.text = text;
+    this.value = value;
   }
 }
 
 export class OptionGroup {
   constructor({
-    label = "Untitled Option Group",
+    label = "Untitled Scale",
+    type = ScaleTypes.NONE,
     options = [new Option()]
   } = {}) {
     this.label = label;
+    this.type = type;
     this.options = options;
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Enums\ScaleTypes;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionGroup;
@@ -13,17 +14,22 @@ use Illuminate\Support\Str;
 use App\Enums\SurveyQuestionInputTypes;
 use App\Enums\SurveyResponseStatuses;
 use App\Repository\SurveyRepositoryInterface;
+use App\Util\ScaleTypeChoices;
 
 class SurveyRepository extends BaseRepository implements SurveyRepositoryInterface
 {
+    private $scaleTypeChoices;
+
     /**
      * SurveyRepository constructor.
      *
      * @param Survey $model
      */
-    public function __construct(Survey $model)
+    public function __construct(Survey $model, ScaleTypeChoices $scaleTypeChoices)
     {
         parent::__construct($model);
+
+        $this->scaleTypeChoices = $scaleTypeChoices;
     }
 
     /**
@@ -146,7 +152,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
 
         // add 1 question group by default
         $survey->questionGroups()->create([
-            "label" => "Unlabeled Question Group"
+            "label" => "Untitled Scale",
+            "type" => ScaleTypes::NONE
         ]);
 
         return $survey->fresh();
@@ -163,7 +170,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         $survey = $this->findSurveyById($surveyId);
 
         $surveyQuestionGroup = $survey->questionGroups()->create([
-            "label" => "Untitled Question Group"
+            "label" => "Untitled Scale",
+            "type" => ScaleTypes::NONE,
         ]);
 
         return $surveyQuestionGroup->fresh();
@@ -180,8 +188,9 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
     {
         $survey = $this->findSurveyById($surveyId);
 
-        $questionsCount = $survey->questionGroups()->findOrFail($questionGroupId)
-            ->questions()->count();
+        $questionGroup = $survey->questionGroups()->findOrFail($questionGroupId);
+
+        $questionsCount = $questionGroup->questions()->count();
 
         $question = $survey->questionGroups()
             ->findOrFail($questionGroupId)
@@ -191,18 +200,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 "question" => "Question Undefined",
                 "hint" => "Question's hint text",
                 "required" => false,
-                "option_group_a" => json_encode([
-                    "label" => "Untitled Option Group",
-                    "options" => [
-                        ["text" => "Undefined Option"],
-                    ]
-                ]),
-                "option_group_b" => json_encode([
-                    "label" => "Untitled Option Group",
-                    "options" => [
-                        ["text" => "Undefined Option"],
-                    ]
-                ]),
+                "option_group_a" => $this->scaleTypeChoices->getType($questionGroup->type)->option_group_a,
+                "option_group_b" => $this->scaleTypeChoices->getType($questionGroup->type)->option_group_b,
             ]);
 
         return $question->fresh();
@@ -239,6 +238,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 Arr::only($questionGroup, [
                     'label',
                     'instructions',
+                    'type'
                 ])
             );
 
@@ -293,6 +293,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             Arr::only($replicated, [
                 'label',
                 'instructions',
+                'type'
             ])
         );
 
