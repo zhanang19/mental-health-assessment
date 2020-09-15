@@ -13,15 +13,32 @@
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-3" v-text="item.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+              <v-list-item-title
+                class="headline mb-3"
+                v-text="item.title"
+              ></v-list-item-title>
+              <v-list-item-subtitle
+                v-text="item.subtitle"
+              ></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card-text>
         <v-card-actions class="pa-5">
+          <span
+            >Taken at {{ item.date_created }}
+            <small class="grey--text text--lighten-2">({{ item.updated_since }})</small></span
+          >
+
           <v-spacer></v-spacer>
 
-          <v-btn class="rounded-lg" @click="continueSurveyResponse(item)" light large bottom right>
+          <v-btn
+            class="rounded-lg"
+            @click="continueSurveyResponse(item)"
+            light
+            large
+            bottom
+            right
+          >
             <span>Continue</span>
           </v-btn>
         </v-card-actions>
@@ -32,10 +49,17 @@
     <div v-else-if="!isLoading && hasSurveys && !hasFilteredSurveys">
       <v-card-text>
         <div class="text-center">
-          <img src="/illustrations/survey.svg" class="mb-3" height="300" alt srcset />
-          <div
-            class="py-3 subtitle-2"
-          >You have not started any survey forms yet. Click the button to select.</div>
+          <img
+            src="/illustrations/survey.svg"
+            class="mb-3"
+            height="300"
+            alt
+            srcset
+          />
+          <div class="py-3 subtitle-2">
+            You have not started any survey forms yet. Click the button to
+            select.
+          </div>
           <v-btn
             :to="{ name: 'home' }"
             replace
@@ -44,7 +68,8 @@
             width="125"
             large
             depressed
-          >Proceed</v-btn>
+            >Proceed</v-btn
+          >
         </div>
       </v-card-text>
     </div>
@@ -53,15 +78,29 @@
     <div v-else-if="!isLoading && !hasSurveys">
       <v-card-text>
         <div class="text-center">
-          <img src="/illustrations/survey-empty.svg" class="mb-3" height="300" alt srcset />
-          <div class="py-3 subtitle-2">You have not started any survey yet.</div>
+          <img
+            src="/illustrations/survey-empty.svg"
+            class="mb-3"
+            height="300"
+            alt
+            srcset
+          />
+          <div class="py-3 subtitle-2">
+            You have not started any survey yet.
+          </div>
         </div>
       </v-card-text>
     </div>
 
     <!-- loading skeleton placeholder -->
     <div v-else>
-      <v-card v-for="(item, index) in 5" outlined min-height="150" :key="index" class="my-3">
+      <v-card
+        v-for="(item, index) in 5"
+        outlined
+        min-height="150"
+        :key="index"
+        class="my-3"
+      >
         <v-card-text>
           <v-list-item>
             <v-list-item-content>
@@ -94,12 +133,12 @@ import { SurveyActions, SurveyResponseActions } from "../../utils/StoreTypes";
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Home`,
+      title: `${process.env.appName} | Home`
     };
   },
 
   components: {
-    AppConfirmationDialog,
+    AppConfirmationDialog
   },
 
   async created() {
@@ -113,7 +152,7 @@ export default {
   },
 
   data: () => ({
-    isLoading: false,
+    isLoading: false
   }),
 
   computed: {
@@ -131,7 +170,7 @@ export default {
 
     surveys() {
       return this.$auth.user.responses;
-    },
+    }
     // ...mapState("surveys", {
     //   surveys: (state) => state.surveys,
     // }),
@@ -145,10 +184,9 @@ export default {
 
       await this.$router.push({
         name: "surveys-responses-responseId",
-        params: { responseId: item.id },
+        params: { responseId: item.id }
       });
-    },
-  },
+    }
+  }
 };
 </script>
-
