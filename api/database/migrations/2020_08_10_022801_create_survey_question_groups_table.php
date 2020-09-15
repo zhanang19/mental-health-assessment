@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ScaleTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,7 @@ class CreateSurveyQuestionGroupsTable extends Migration
             // $table->unsignedBigInteger('survey_question_id');
             $table->string('label');
             $table->mediumText('instructions')->nullable();
+            $table->string('scale_type')->nullable()->default(ScaleTypes::NONE);
             $table->timestamps();
             $table->softDeletes();
         });

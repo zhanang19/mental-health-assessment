@@ -3,6 +3,7 @@ import { getYearList } from "../utils/Util";
 import { UserRoles } from "~/utils/UserRoles";
 import { handleError } from "~/utils/ErrorHandler";
 import moment from "moment";
+import { ScaleTypes } from "~/enums/ScaleTypes";
 
 export const state = () => ({
   type: "",
@@ -39,6 +40,8 @@ export const getters = {
         value: item
       })),
   years: () => getYearList(2020 - 20).sort((a, b) => b - a),
+
+  getScaleTypes: () => [...Object.values(ScaleTypes)],
 
   getField
 };
