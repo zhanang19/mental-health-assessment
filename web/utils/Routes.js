@@ -20,13 +20,13 @@ export const pages = [
     color: "blue darken-4",
     roles: ["super-admin", "admin"]
   },
-  // {
-  //   icon: "mdi-account-multiple-outline",
-  //   title: "Students",
-  //   route: "app-students",
-  //   color: "indigo",
-  //   roles: ["super-admin", "admin"]
-  // },
+  {
+    icon: "mdi-account-multiple-outline",
+    title: "Students",
+    route: "app-students",
+    color: "indigo",
+    roles: ["super-admin", "admin"]
+  },
   // {
   //   icon: "mdi-chart-bar",
   //   title: "Reports",
