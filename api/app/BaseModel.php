@@ -37,10 +37,10 @@ class BaseModel extends Model
         'created_today',
         'date_created',
         'date_updated',
-        // 'date_deleted',
+        'date_deleted',
         'created_since',
         'updated_since',
-        // 'deleted_since'
+        'deleted_since'
     ];
 
     /**
