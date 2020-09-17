@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\User\StudentExportController;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/exports/students', [StudentExportController::class, 'export']);
+
+Route::get('/testing', function (UserRepositoryInterface $userRepository) {
+    return $userRepository->getStudents();
 });
