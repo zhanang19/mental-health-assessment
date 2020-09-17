@@ -2,6 +2,7 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Enums\UserRoles;
 use App\Repository\UserRepositoryInterface;
 use App\User;
 use Illuminate\Support\Arr;
@@ -138,5 +139,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
 
         return $file != null;
+    }
+
+    /**
+     * Get all user with role student.
+     *
+     * @return Collection
+     */
+    public function getStudents(): Collection
+    {
+        return $this->model->with('demographicProfile')->role(UserRoles::Student)->get();
     }
 }

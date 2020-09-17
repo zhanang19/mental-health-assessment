@@ -42,4 +42,11 @@ interface UserRepositoryInterface
      * @return User
      */
     public function findUserById(int $userId, $relations = ['activities']): ?User;
+
+    /**
+     * Get all user with role student.
+     *
+     * @return Collection
+     */
+    public function getStudents(): Collection;
 }
