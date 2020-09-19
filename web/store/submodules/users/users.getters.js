@@ -1,9 +1,11 @@
-import { getField } from 'vuex-map-fields'
+import { getField } from "vuex-map-fields";
+import { UserRoles } from "~/utils/UserRoles";
 
 export const getters = {
   activeUsers: state => state.users.filter(item => item.is_active),
 
-  test: state => state,
+  students: state =>
+    state.users.filter(item => item.role === UserRoles.Student),
 
   getField
-}
+};

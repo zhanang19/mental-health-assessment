@@ -2,8 +2,8 @@ import { getField, updateField } from "vuex-map-fields";
 import { getYearList } from "../utils/Util";
 import { UserRoles } from "~/utils/UserRoles";
 import { handleError } from "~/utils/ErrorHandler";
-import moment from "moment";
 import { ScaleTypes } from "~/enums/ScaleTypes";
+import moment from "moment";
 
 export const state = () => ({
   type: "",
@@ -16,6 +16,8 @@ export const state = () => ({
 });
 
 export const getters = {
+  apiBaseUrl: () => $nuxt.$axios.defaults.baseURL,
+
   isSuperAdmin: state => state.auth.user.role === UserRoles.SuperAdministrator,
 
   isAdmin: state =>

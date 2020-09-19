@@ -21,7 +21,17 @@
               ></v-text-field>
               <v-toolbar-title></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn @click="createNewSurvey()" large color="primary">Create Form</v-btn>
+
+              <div>
+                <v-btn :href="`${$store.getters.apiBaseUrl}/exports/students`" target="_blank" text large color="primary">
+                  <v-icon left>mdi-microsoft-excel</v-icon>
+                  <span>Export</span>
+                </v-btn>
+
+                <!-- <v-btn @click="createNewSurvey()" large color="primary"
+                  >Create Student</v-btn
+                > -->
+              </div>
 
               <template v-if="false" v-slot:extension>
                 <v-row class="mt-10">
@@ -52,7 +62,7 @@
             <v-divider></v-divider>
             <v-data-table
               :search="datatable.search"
-              :items="users"
+              :items="students"
               :headers="datatable.headers"
               item-class="pa-16"
               multi-sort
@@ -60,7 +70,12 @@
             >
               <template #item.actions="{ item }">
                 <app-base-action-buttons
-                  @click-view="$router.push({ name: 'users-edit-slug', params: { slug: item.slug } })"
+                  @click-view="
+                    $router.push({
+                      name: 'students-edit-slug',
+                      params: { slug: item.slug }
+                    })
+                  "
                   :except="['edit']"
                   type="non-archive"
                   class="py-2"
@@ -78,18 +93,18 @@
 import AppBaseActionButtons from "@/components/AppBaseActionButtons";
 import AppConfirmationDialog from "@/components/alerts/AppConfirmationDialog";
 import { UserActions } from "../../../utils/StoreTypes";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   head() {
     return {
-      title: `${process.env.appName} | Users`,
+      title: `${process.env.appName} | Students`
     };
   },
 
   components: {
     AppBaseActionButtons,
-    AppConfirmationDialog,
+    AppConfirmationDialog
   },
 
   async fetch({ store }) {
@@ -98,28 +113,27 @@ export default {
 
   data: () => ({
     controller: {
-      dialog: false,
+      dialog: false
     },
     datatable: {
       search: "",
       headers: [
         { text: "ID", value: "id" },
         { text: "Name", value: "full_name" },
+        { text: "Email", value: "email" },
         { text: "Date Created", value: "date_created" },
         {
           text: "Actions",
           value: "actions",
           align: "center",
-          sortable: false,
-        },
-      ],
-    },
+          sortable: false
+        }
+      ]
+    }
   }),
 
   computed: {
-    ...mapState("users", {
-      users: (state) => state.users,
-    }),
+    ...mapGetters("users", ["students"])
   },
 
   methods: {
@@ -131,12 +145,7 @@ export default {
       console.log(type);
     },
 
-    async onClick() {
-      // const response = await userservice.all();
-
-      console.log(response);
-    },
-  },
+    async onClick() {}
+  }
 };
 </script>
-
