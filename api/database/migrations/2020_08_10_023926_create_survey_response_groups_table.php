@@ -18,6 +18,7 @@ class CreateSurveyResponseGroupsTable extends Migration
             $table->unsignedBigInteger('survey_response_id');
             // $table->unsignedBigInteger('survey_response_answer_id');
             $table->string('label');
+            // $table->mediumText('description')->nullable();
             $table->mediumText('instructions')->nullable();
             $table->string('status');
             $table->integer('questions_answered')->default(0);

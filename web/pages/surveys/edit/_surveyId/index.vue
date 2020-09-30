@@ -31,19 +31,19 @@
             ></v-select>
           </v-card-title>
           <v-card-text>
+            <span class="subtitle-2">Description</span>
             <quill-editor
-              v-model="group.instructions"
+              v-model="group.description"
               :options="editorOptions"
             />
 
-            <!-- <v-textarea
+            <v-textarea
               label="Instructions"
+              class="mt-3"
               v-model="group.instructions"
-              hint="Optional"
-              persistent-hint
               @change="save({ notify: false })"
               outlined
-            ></v-textarea> -->
+            ></v-textarea>
           </v-card-text>
           <v-divider class="mx-5"></v-divider>
           <v-card-actions>

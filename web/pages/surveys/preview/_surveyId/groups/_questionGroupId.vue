@@ -16,7 +16,7 @@
               <v-card-text class="pa-5">
                 <div
                   style="text-decoration: none"
-                  v-html="
+                  v-text="
                     questionGroup.instructions ||
                       `There aren't any instructions.`
                   "
@@ -263,18 +263,18 @@
       </template>
     </app-confirmation-dialog>
 
-    <!-- app dialog response group instructions -->
+    <!-- app dialog response group description -->
     <app-dialog
-      v-model="dialogController.instructions"
+      v-model="dialogController.description"
       :color-theme="colorTheme"
       @confirmed="
-        dialogController.instructions = !dialogController.instructions
+        dialogController.description = !dialogController.description
       "
     >
       <template #text>
         <div
           v-html="
-            questionGroup.instructions || `There aren't any instructions.`
+            questionGroup.description || `No description.`
           "
         ></div>
       </template>
@@ -305,7 +305,7 @@ export default {
     nextQuestionGroup: {},
     dialogController: {
       next: false,
-      instructions: true
+      description: true
     }
   }),
 

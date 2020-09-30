@@ -262,20 +262,14 @@
       </template>
     </app-confirmation-dialog>
 
-    <!-- app dialog response group instructions -->
+    <!-- app dialog response group description -->
     <app-dialog
-      v-model="dialogController.instructions"
+      v-model="dialogController.description"
       :color-theme="colorTheme"
-      @confirmed="
-        dialogController.instructions = !dialogController.instructions
-      "
+      @confirmed="dialogController.description = !dialogController.description"
     >
       <template #text>
-        <div
-          v-html="
-            responseGroup.instructions || `There aren't any instructions.`
-          "
-        ></div>
+        <div v-html="responseGroup.description || `No description.`"></div>
       </template>
     </app-dialog>
   </div>
@@ -301,7 +295,7 @@ export default {
     nextResponseGroup: {},
     dialogController: {
       next: false,
-      instructions: true
+      description: true
     }
   }),
 

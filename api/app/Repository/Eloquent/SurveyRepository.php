@@ -109,6 +109,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 'questions_answered' => 0,
                 'label' => $questionGroup->label,
                 'instructions' => $questionGroup->instructions,
+                'description' => $questionGroup->description,
                 'total_questions' => $questionGroup->count(),
             ]);
 
@@ -237,6 +238,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
             $_questionGroup->update(
                 Arr::only($questionGroup, [
                     'label',
+                    'description',
                     'instructions',
                     'type'
                 ])
@@ -299,7 +301,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
 
         $questionGroup->fresh();
 
-        foreach($replicated['questions'] as $question) {
+        foreach ($replicated['questions'] as $question) {
             info('Replicated Questions > Question', $question);
 
             $questionGroup->questions()->create([
@@ -428,7 +430,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
         $questionGroup = $this->findById($surveyId)->questionGroups()->with('questions')
             ->findOrFail($questionGroupId);
 
-        foreach($questionGroup->questions as $question) {
+        foreach ($questionGroup->questions as $question) {
             $question->forceDelete();
         }
 
