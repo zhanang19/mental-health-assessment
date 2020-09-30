@@ -16,7 +16,7 @@
               <v-card-text class="pa-5">
                 <div
                   style="text-decoration: none"
-                  v-text="
+                  v-html="
                     questionGroup.instructions ||
                       `There aren't any instructions.`
                   "

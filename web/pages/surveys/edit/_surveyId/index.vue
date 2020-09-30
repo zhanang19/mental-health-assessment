@@ -37,13 +37,19 @@
               :options="editorOptions"
             />
 
-            <v-textarea
+            <span class="subtitle-2">Instructions</span>
+            <quill-editor
+              v-model="group.instructions"
+              :options="editorOptions"
+            />
+
+            <!-- <v-textarea
               label="Instructions"
               class="mt-3"
               v-model="group.instructions"
               @change="save({ notify: false })"
               outlined
-            ></v-textarea>
+            ></v-textarea> -->
           </v-card-text>
           <v-divider class="mx-5"></v-divider>
           <v-card-actions>
