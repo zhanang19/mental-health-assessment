@@ -32,7 +32,7 @@
               <span v-text="group.label"></span>
               <v-spacer></v-spacer>
             </v-card-title>
-            <v-card-text v-html="group.instructions"></v-card-text>
+            <v-card-text v-html="group.description"></v-card-text>
             <v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>

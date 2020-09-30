@@ -24,7 +24,7 @@
               class="headline pt-10"
               v-text="group.label"
             ></v-card-title>
-            <v-card-text v-html="group.instructions"></v-card-text>
+            <v-card-text v-html="group.description"></v-card-text>
             <v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
