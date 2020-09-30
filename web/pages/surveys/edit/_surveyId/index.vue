@@ -409,6 +409,8 @@ export default {
      * @param { Object } payload
      */
     async duplicateSurveyQuestionGroup({ questionGroupId }) {
+      await this.save();
+
       const res = await this.$store.dispatch(
         SurveyActions.DUPLICATE_QUESTION_GROUP,
         {

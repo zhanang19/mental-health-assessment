@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form ref="form" @submit.prevent="save()">
+    <v-form ref="form" @submit.prevent="save({ notify: false })">
       <!-- START: Survey Question Group v-for questions -->
       <v-card
         class="rounded-lg mb-10"
@@ -487,6 +487,27 @@ export default {
   },
 
   methods: {
+    async save({ notify = true }) {
+      if (await this.$refs.form.validate()) {
+        console.log("saved");
+        const response = await this.$store.dispatch(SurveyActions.UPDATE, {
+          surveyId: this.survey.id
+        });
+
+        if (notify) {
+          await this.$helpers.notify({
+            type: "success",
+            message: response?.message || "No message."
+          });
+        }
+      } else {
+        return await this.$helpers.notify({
+          type: "error",
+          message: "Please fill in the required fields."
+        });
+      }
+    },
+
     /**
      * Set the state data onBlur event.
      *
@@ -539,7 +560,7 @@ export default {
         questionGroupId
       });
 
-       await this.$store.dispatch(SurveyActions.FETCH, {
+      await this.$store.dispatch(SurveyActions.FETCH, {
         surveyId: this.$route.params.surveyId
       });
 
@@ -580,6 +601,8 @@ export default {
      * @param questionIndex question index
      */
     async duplicateSurveyQuestion({ questionGroupId, questionId }) {
+      await this.save({ notify: false });
+
       const res = await this.$store.dispatch(SurveyActions.DUPLICATE_QUESTION, {
         surveyId: this.survey.id,
         questionGroupId,
