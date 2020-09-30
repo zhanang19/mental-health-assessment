@@ -74,7 +74,7 @@
       </v-container>
 
       <v-card-title class="subtitle-2">
-        <span>Question Groups</span>
+        <span>Scales</span>
         <v-spacer></v-spacer>
         <v-tooltip top>
           <template #activator="{on, attrs}">
