@@ -37,6 +37,8 @@
               :options="editorOptions"
             />
 
+            <div class="my-5"></div>
+
             <span class="subtitle-2">Instructions</span>
             <quill-editor
               v-model="group.instructions"
