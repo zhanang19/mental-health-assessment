@@ -12,4 +12,5 @@ final class ScaleTypes extends Enum
     const WHODAS = "WHO-DAS";
     const GAD = "GAD";
     const PHQ9 = "PHQ-9";
+    const GHQ12 = "GHQ-12";
 }

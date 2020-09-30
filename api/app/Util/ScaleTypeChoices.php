@@ -174,6 +174,31 @@ class ScaleTypeChoices
             ]),
             "option_group_b" => json_encode(null),
         ];
+
+        $this->GHQ12 = [
+            "option_group_a" => json_encode([
+                "label" => "",
+                "options" => [
+                    [
+                        "text" => "Not at all",
+                        "value" => 0
+                    ],
+                    [
+                        "text" => "Seldom",
+                        "value" => 1
+                    ],
+                    [
+                        "text" => "Usual",
+                        "value" => 2
+                    ],
+                    [
+                        "text" => "More than usual",
+                        "value" => 3
+                    ],
+                ]
+            ]),
+            "option_group_b" => json_encode(null),
+        ];
     }
 
     /**
@@ -195,6 +220,8 @@ class ScaleTypeChoices
                 return (object) $this->GAD;
             case ScaleTypes::PHQ9:
                 return (object) $this->PHQ9;
+            case ScaleTypes::GHQ12:
+                return (object) $this->GHQ12;
             default:
                 return (object) [
                     "option_group_a" => json_encode([

@@ -4,5 +4,6 @@ export const ScaleTypes = Object.freeze({
   PCL5: "PCL-5",
   WHODAS: "WHO-DAS",
   GAD: "GAD",
-  PHQ9: "PHQ-9"
+  PHQ9: "PHQ-9",
+  GHQ12: "GHQ-12"
 });
