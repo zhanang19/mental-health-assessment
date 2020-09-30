@@ -40,12 +40,16 @@
           ></v-text-field>
 
           <v-btn color="primary" type="submit">Continue</v-btn>
-          <v-btn @click="$refs.accountInformationForm.reset()" text>Cancel</v-btn>
+          <v-btn @click="$refs.accountInformationForm.reset()" text
+            >Cancel</v-btn
+          >
         </v-card-text>
       </v-form>
     </v-stepper-content>
 
-    <v-stepper-step :complete="step > 2" step="2">Your personal information</v-stepper-step>
+    <v-stepper-step :complete="step > 2" step="2"
+      >Your personal information</v-stepper-step
+    >
 
     <v-stepper-content step="2">
       <v-form ref="personalInformationForm" @submit.prevent="next(2)">
@@ -115,7 +119,9 @@
       </v-form>
     </v-stepper-content>
 
-    <v-stepper-step :complete="step > 3" step="3">Your demographic profile</v-stepper-step>
+    <v-stepper-step :complete="step > 3" step="3"
+      >Your demographic profile</v-stepper-step
+    >
 
     <v-stepper-content step="3">
       <v-form ref="demographicProfileForm" @submit.prevent="next(3)">
@@ -187,30 +193,33 @@
     <v-stepper-content step="4">
       <v-form ref="moreInformationForm" @submit.prevent="next(4)">
         <v-card-text>
-          <v-text-field
+          <v-combobox
             v-model="scholarship_grant"
             :rules="rules.moreInformationFormRules.scholarship_grant"
             label="Scholarship Grant"
+            :items="['None']"
             hint="Required"
             persistent-hint
             outlined
-          ></v-text-field>
-          <v-text-field
+          ></v-combobox>
+          <v-combobox
             v-model="parents_marital_status"
             :rules="rules.moreInformationFormRules.parents_marital_status"
             label="Parents Marital Status"
+            :items="['None']"
             hint="Optional"
             outlined
-          ></v-text-field>
-          <v-text-field
+          ></v-combobox>
+          <v-combobox
             v-model="family_monthly_income"
             :rules="rules.moreInformationFormRules.family_monthly_income"
             label="Family Monthly Income"
-            type="number"
+            :items="['None']"
             hint="Required"
             persistent-hint
             outlined
-          ></v-text-field>
+          >
+          </v-combobox>
           <v-text-field
             v-model="school_last_attended"
             :rules="rules.moreInformationFormRules.school_last_attended"
@@ -229,16 +238,10 @@
             outlined
           ></v-text-field>
           <v-checkbox
-            v-model="is_scholar"
-            :rules="rules.moreInformationFormRules.is_scholar"
-            color="primary"
-            label="Scholar"
-          ></v-checkbox>
-          <v-checkbox
             v-model="is_affected_marawi_siege"
             :rules="rules.moreInformationFormRules.is_affected_marawi_siege"
             color="primary"
-            label="Affected by Marawi Siege"
+            label="Have you been affected by Marawi Siege?"
           ></v-checkbox>
 
           <v-btn color="primary" type="submit">Continue</v-btn>
@@ -257,7 +260,7 @@ import { UserActions, StoreActions } from "../../utils/StoreTypes";
 
 export default {
   data: () => ({
-    step: 1,
+    step: 4
   }),
 
   created() {
@@ -273,7 +276,7 @@ export default {
             "email",
             "password",
             "password_confirmation",
-            "identification_number",
+            "identification_number"
           ]
         ),
 
@@ -284,8 +287,8 @@ export default {
             "age",
             "gender",
             "date_of_birth",
-            "place_of_birth",
-          ]),
+            "place_of_birth"
+          ])
         },
 
         demographicProfileFormRules: only({ ...DemographicProfileRules }, [
@@ -295,7 +298,7 @@ export default {
           "currently_living_with",
           "gpa",
           "city_address",
-          "home_address",
+          "home_address"
         ]),
 
         moreInformationFormRules: only({ ...DemographicProfileRules }, [
@@ -305,8 +308,8 @@ export default {
           "school_last_attended",
           "school_address",
           "is_scholar",
-          "is_affected_marawi_siege",
-        ]),
+          "is_affected_marawi_siege"
+        ])
       };
     },
 
@@ -339,8 +342,8 @@ export default {
       "form.demographic_profile.parents_marital_status",
       "form.demographic_profile.family_monthly_income",
       "form.demographic_profile.school_last_attended",
-      "form.demographic_profile.school_address",
-    ]),
+      "form.demographic_profile.school_address"
+    ])
   },
 
   methods: {
@@ -349,7 +352,7 @@ export default {
         AccountInformation: "accountInformationForm",
         PersonalInformation: "personalInformationForm",
         DemographicProfile: "demographicProfileForm",
-        MoreInformation: "moreInformationForm",
+        MoreInformation: "moreInformationForm"
       });
 
       switch (currentStep) {
@@ -361,7 +364,7 @@ export default {
           } else {
             return this.$helpers.notify({
               type: "error",
-              message: "Please fill in the required fields.",
+              message: "Please fill in the required fields."
             });
           }
 
@@ -373,7 +376,7 @@ export default {
           } else {
             return this.$helpers.notify({
               type: "error",
-              message: "Please fill in the required fields.",
+              message: "Please fill in the required fields."
             });
           }
 
@@ -385,7 +388,7 @@ export default {
           } else {
             return this.$helpers.notify({
               type: "error",
-              message: "Please fill in the required fields.",
+              message: "Please fill in the required fields."
             });
           }
 
@@ -398,7 +401,7 @@ export default {
 
             await this.$helpers.notify({
               type: "success",
-              message: response?.message || "You have created an account.",
+              message: response?.message || "You have created an account."
             });
 
             console.log(response);
@@ -412,14 +415,14 @@ export default {
           } else {
             return this.$helpers.notify({
               type: "error",
-              message: "Please fill in the required fields.",
+              message: "Please fill in the required fields."
             });
           }
 
         default:
           break;
       }
-    },
-  },
+    }
+  }
 };
 </script>
