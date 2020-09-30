@@ -352,10 +352,10 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 'label' => $replicated['option_group_a']->label,
                 'options' => $replicated['option_group_a']->options
             ]),
-            'option_group_b' => json_encode([
+            'option_group_b' => $replicated['option_group_b'] != null ? json_encode([
                 'label' => $replicated['option_group_b']->label,
                 'options' => $replicated['option_group_b']->options
-            ]),
+            ]) : null,
         ]);
     }
 
