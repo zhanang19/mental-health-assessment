@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends EloquentRepositoryInterface
 {
     /**
      * Update user avatar.

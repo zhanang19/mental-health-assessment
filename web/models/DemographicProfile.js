@@ -18,7 +18,11 @@ export class DemographicProfile {
     parents_marital_status = null,
     family_monthly_income = null,
     school_last_attended = null,
-    school_address = null
+    school_address = null,
+    parents_ofw = null,
+    parents_work_location = null,
+    living_with = null,
+    parents_away = null
   } = {}) {
     this.identification_number = identification_number;
     this.age = age;
@@ -39,5 +43,9 @@ export class DemographicProfile {
     this.family_monthly_income = family_monthly_income;
     this.school_last_attended = school_last_attended;
     this.school_address = school_address;
+    this.parents_ofw = parents_ofw;
+    this.parents_work_location = parents_work_location;
+    this.living_with = living_with;
+    this.parents_away = parents_away;
   }
 }

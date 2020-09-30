@@ -9,7 +9,7 @@ use App\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-interface SurveyRepositoryInterface
+interface SurveyRepositoryInterface extends EloquentRepositoryInterface
 {
     /**
      * Get all survey forms.
