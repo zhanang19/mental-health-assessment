@@ -3,6 +3,28 @@
     <v-container>
       <v-row justify="center" align="center">
         <v-col lg="8" md="10" sm="11" xs="12">
+          <v-alert
+            class="rounded-lg mb-10"
+            type="info"
+            border="left"
+            colored-border
+            color="cyan"
+            elevation="2"
+          >
+            <div class="title">Instructions</div>
+            <v-card flat color="transparent" min-height="250">
+              <v-card-text class="pa-5">
+                <div
+                  style="text-decoration: none"
+                  v-html="
+                    responseGroup.instructions ||
+                      `There aren't any instructions.`
+                  "
+                ></div>
+              </v-card-text>
+            </v-card>
+          </v-alert>
+
           <v-form ref="form" @submit.prevent="save()">
             <!-- START: Survey Question Group v-for questions -->
             <v-card
