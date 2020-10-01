@@ -121,7 +121,7 @@ interface SurveyRepositoryInterface extends EloquentRepositoryInterface
      * @param int $surveyId
      * @return bool
      */
-    public function deleteById(int $surveyId);
+    public function deleteById(int $surveyId): bool;
 
     /**
      * Delete question group by id.
@@ -166,5 +166,5 @@ interface SurveyRepositoryInterface extends EloquentRepositoryInterface
      * @param int $surveyId
      * @return bool
      */
-    public function restoreById(int $surveyId);
+    public function restoreById(int $surveyId): bool;
 }
