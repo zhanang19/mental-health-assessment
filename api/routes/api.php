@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\RouteGuards;
+use App\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -93,3 +94,16 @@ Route::group([
     });
 });
 
+Route::get('download', function () {
+    $table = Survey::with(['questionGroups.questions'])->get();
+    $filename = "survey.json";
+    $handle = fopen($filename, 'w+');
+    fputs($handle, $table->toJson(JSON_PRETTY_PRINT));
+    fclose($handle);
+
+    $headers = [
+        'Content-type' => 'application/json'
+    ];
+
+    return response()->download($filename, 'survey.json', $headers);
+});
