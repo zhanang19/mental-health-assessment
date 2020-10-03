@@ -17,6 +17,18 @@ interface SurveyResponseRepositoryInterface extends EloquentRepositoryInterface
     // public function all(): Collection;
 
     /**
+     * Get all survey responses by survey ID.
+     *
+     * @param int $surveyId
+     * @return Collection
+     */
+    public function getSurveyResponsesById(
+        int $surveyId,
+        array $relations = ['survey'],
+        array $appends = ['response_groups']
+    ): Collection;
+
+    /**
      * Find survey by id.
      *
      * @param int $responseId

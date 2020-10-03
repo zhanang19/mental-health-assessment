@@ -108,6 +108,7 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 'status' => SurveyResponseStatuses::InProgress,
                 'questions_answered' => 0,
                 'label' => $questionGroup->label,
+                'type' => $questionGroup->type,
                 'instructions' => $questionGroup->instructions,
                 'description' => $questionGroup->description,
                 'total_questions' => $questionGroup->count(),

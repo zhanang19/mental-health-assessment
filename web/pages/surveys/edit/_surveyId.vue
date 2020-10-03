@@ -249,6 +249,22 @@
           </template>
           <span>Preview</span>
         </v-tooltip>
+
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              :href="
+                `${$axios.defaults.baseURL}exports/surveys/${$route.params.surveyId}/responses`
+              "
+              v-on="on"
+              v-bind="attrs"
+              icon
+            >
+              <v-icon>mdi-export</v-icon>
+            </v-btn>
+          </template>
+          <span>Export responses</span>
+        </v-tooltip>
       </div>
 
       <v-toolbar-title></v-toolbar-title>

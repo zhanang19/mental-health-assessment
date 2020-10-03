@@ -48,6 +48,17 @@ class SurveyResponse extends BaseModel
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
+    public function scopeSurveyId($query, int $surveyId)
+    {
+        return $query->where('survey_id', $surveyId);
+    }
+
+    /**
+     * Scope a query to only include unfinished surveys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeUnfinished($query)
     {
         return $query->where('status', SurveyResponseStatuses::InProgress);

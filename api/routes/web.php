@@ -1,5 +1,7 @@
 <?php
 
+use App\Exports\SurveyResponseExport;
+use App\Http\Controllers\Survey\SurveyResponseExportController;
 use App\Http\Controllers\User\StudentExportController;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +22,7 @@ Route::get('/', function () {
 });
 
 Route::get('/exports/students', [StudentExportController::class, 'export']);
+Route::get('/exports/surveys/{surveyId}/responses', [SurveyResponseExportController::class, 'export']);
 
 Route::get('/testing', function (UserRepositoryInterface $userRepository) {
     return $userRepository->getStudents();

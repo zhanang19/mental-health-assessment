@@ -21,15 +21,20 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
         parent::__construct($model);
     }
 
-    // /**
-    //  * Get all survey forms.
-    //  *
-    //  * @return Collection
-    //  */
-    // public function all(): Collection
-    // {
-    //     return collect([]);
-    // }
+    /**
+     * Get all survey responses by survey ID.
+     *
+     * @param int $surveyId
+     * @return Collection
+     */
+    public function getSurveyResponsesById(
+        int $surveyId,
+        array $relations = ['survey'],
+        array $appends = ['response_groups']
+    ): Collection {
+        return $this->model->surveyId($surveyId)
+            ->with($relations)->get()->append($appends);
+    }
 
     /**
      * Find survey response by id.
