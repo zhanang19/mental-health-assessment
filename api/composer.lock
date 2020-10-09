@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b4214bd7ebe816a081220d468cfa761",
+    "content-hash": "c0f5621291a1aa53005b555d9fd6f568",
     "packages": [
         {
             "name": "askedio/laravel-soft-cascade",
@@ -3046,6 +3046,62 @@
                 "enum"
             ],
             "time": "2020-02-14T08:15:52+00:00"
+        },
+        {
+            "name": "neelkanthk/laravel-surveillance",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neelkanthk/laravel-surveillance.git",
+                "reference": "d94195b282a11ac2f1543441413f5c9e954dfebe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neelkanthk/laravel-surveillance/zipball/d94195b282a11ac2f1543441413f5c9e954dfebe",
+                "reference": "d94195b282a11ac2f1543441413f5c9e954dfebe",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=6.0",
+                "php": ">=7.2"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Neelkanth\\Laravel\\Surveillance\\Providers\\SurveillanceServiceProvider"
+                    ],
+                    "aliases": {
+                        "Surveillance": "Neelkanth\\Laravel\\Surveillance\\Facades\\Surveillance"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Neelkanth\\Laravel\\Surveillance\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Neelkanth Kaushik",
+                    "email": "me.neelkanth@gmail.com"
+                }
+            ],
+            "description": "Put users, IP addresses and anonymous browser fingerprints on surveillance and block malicious ones.",
+            "keywords": [
+                "Laravel-Security",
+                "access-control",
+                "fingeprintjs2",
+                "fingerprintjs",
+                "laravel",
+                "laravel-package",
+                "php"
+            ],
+            "time": "2020-10-04T11:15:04+00:00"
         },
         {
             "name": "nesbot/carbon",
