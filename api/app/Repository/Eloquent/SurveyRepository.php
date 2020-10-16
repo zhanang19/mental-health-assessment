@@ -119,8 +119,8 @@ class SurveyRepository extends BaseRepository implements SurveyRepositoryInterfa
                 $responseGroup->answers()->create([
                     // choices will be taken from the question model
                     'survey_question_id' => $question->id,
-                    'answer_a' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? json_encode([]) : null,
-                    'answer_b' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? json_encode([]) : null,
+                    'answer_a' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? [] : null,
+                    'answer_b' => $question->input_type == SurveyQuestionInputTypes::Checkboxes ? [] : null,
                     'identifier' => $question->identifier,
                     'input_type' => $question->input_type,
                     'question' => $question->question,
