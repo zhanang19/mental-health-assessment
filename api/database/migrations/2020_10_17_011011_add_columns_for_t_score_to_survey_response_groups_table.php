@@ -30,7 +30,7 @@ class AddColumnsForTScoreToSurveyResponseGroupsTable extends Migration
             $table->double('standard_deviation_x')->default(0)->nullable();
 
             // degree of being bothered
-            $table->enum('interpretation_x', [
+            $table->enum('interpretation_y', [
                 ScaleInterpretationTypes::Mild,
                 ScaleInterpretationTypes::Moderate,
                 ScaleInterpretationTypes::NeedsCloseMonitoring,

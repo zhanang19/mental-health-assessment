@@ -138,6 +138,11 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
             // the item pushed is not necessary
             foreach ($answers as $answer) {
                 if (SurveyQuestionInputTypes::MultipleChoice) {
+
+                    /**
+                     * @todo gets illegal offset on 'text'
+                     * from `getValueFromType()`
+                     */
                     $numbersX->push(
                         $scaleTypeChoice->getValueFromType(
                             $responseGroup->type,
@@ -149,7 +154,7 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
                     $numbersY->push(
                         $scaleTypeChoice->getValueFromType(
                             $responseGroup->type,
-                            'option_group_a',
+                            'option_group_b',
                             $answer->answer_b
                         )
                     );
