@@ -72,41 +72,11 @@ interface SurveyResponseRepositoryInterface extends EloquentRepositoryInterface
         array $payload
     ): ?SurveyResponseGroup;
 
-    // /**
-    //  * Create new survey response.
-    //  *
-    //  * @return SurveyResponse
-    //  */
-    // public function create(): ?SurveyResponse;
-
-    // /**
-    //  * Update existing survey response.
-    //  *
-    //  * @param int $responseId
-    //  * @param \Illuminate\Http\Request $payload
-    //  * @return SurveyResponse
-    //  */
-    // public function update(int $responseId, Request $payload);
-
-    // /**
-    //  * Delete survey by id.
-    //  *
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function deleteById(int $responseId);
-
-    // /**
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function deletePermanentlyById(int $responseId);
-
-    // /**
-    //  * Restore survey by id.
-    //  *
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function restoreById(int $responseId);
+    /**
+     * Get the T-Score of each scale.
+     *
+     * @param int $responseId
+     * @return \App\SurveyResponse
+     */
+    public function interpret(int $responseId): ?SurveyResponse;
 }

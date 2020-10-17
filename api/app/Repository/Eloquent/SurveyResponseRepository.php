@@ -2,9 +2,12 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Enums\SurveyQuestionInputTypes;
 use App\Repository\SurveyResponseRepositoryInterface;
 use App\SurveyResponse;
 use App\SurveyResponseGroup;
+use App\Util\ScaleInterpretation;
+use App\Util\ScaleTypeChoices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -94,7 +97,7 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
 
         $responseGroup->fresh();
 
-        foreach($answers as $answer) {
+        foreach ($answers as $answer) {
             $responseGroupAnswer = $responseGroup->answers()->findOrFail($answer['id']);
 
             $responseGroupAnswer->update(
@@ -108,56 +111,97 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
         return $responseGroup;
     }
 
-    // /**
-    //  * Create new survey response.
-    //  *
-    //  * @return SurveyResponse
-    //  */
-    // public function create(): ?SurveyResponse
-    // {
-    //     return null;
-    // }
+    /**
+     * Calculate for the T-Score.
+     *
+     * @param int $responseId
+     * @return \App\SurveyResponse
+     */
+    public function interpret(int $responseId): ?SurveyResponse
+    {
+        $response = $this->findById($responseId);
 
-    // /**
-    //  * Update existing survey response.
-    //  *
-    //  * @param int $responseId
-    //  * @param \Illuminate\Http\Request $payload
-    //  * @return SurveyResponse
-    //  */
-    // public function update(int $responseId, Request $payload)
-    // {
-    //     return null;
-    // }
+        $scaleInterpretation = new ScaleInterpretation();
+        $scaleTypeChoice = new ScaleTypeChoices();
 
-    // /**
-    //  * Delete survey by id.
-    //  *
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function deleteById(int $responseId)
-    // {
-    //     return false;
-    // }
+        foreach ($response->responseGroups as $responseGroup) {
+            $answers = $responseGroup->answers;
 
-    // /**
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function deletePermanentlyById(int $responseId)
-    // {
-    //     return false;
-    // }
+            // an array of all numbers associated
+            // to the particular scale and get mean value
+            $numbersX = collect([]);
+            $numbersY = collect([]);
 
-    // /**
-    //  * Restore survey by id.
-    //  *
-    //  * @param int $responseId
-    //  * @return bool
-    //  */
-    // public function restoreById(int $responseId)
-    // {
-    //     return false;
-    // }
+            // loop through all answer and check
+            // if they are of type multiple choice
+            // else, do not push to array otherwise
+            // the item pushed is not necessary
+            foreach ($answers as $answer) {
+                if (SurveyQuestionInputTypes::MultipleChoice) {
+                    $numbersX->push(
+                        $scaleTypeChoice->getValueFromType(
+                            $responseGroup->type,
+                            'option_group_a',
+                            $answer->answer_a
+                        )
+                    );
+
+                    $numbersY->push(
+                        $scaleTypeChoice->getValueFromType(
+                            $responseGroup->type,
+                            'option_group_a',
+                            $answer->answer_b
+                        )
+                    );
+                }
+            }
+
+            // calculate for the `raw score`
+            $rawScoreX = $numbersX->sum();
+            $rawScoreY = $numbersY->sum();
+
+            // calculate for the `mean`
+            // ref [https://www.mathsisfun.com/mean.html#:~:text=How%20to%20Find%20the%20Mean,sum%20divided%20by%20the%20count.]
+            $meanX = $rawScoreX / $numbersX->count();
+            $meanY = $rawScoreY / $numbersY->count();
+
+            // calculating for the `standard deviation`
+            // ref [https://www.mathsisfun.com/data/standard-deviation-formulas.html]
+            $squaredSubtractedMeanX = $numbersX
+                ->map(function ($value) use ($meanX) {
+                    return sqrt($value - $meanX);
+                });
+            $squaredSubtractedMeanY = $numbersY
+                ->map(function ($value) use ($meanY) {
+                    return sqrt($value - $meanY);
+                });
+
+            $standardDeviationX = sqrt($squaredSubtractedMeanX->sum() / $squaredSubtractedMeanX->count());
+            $standardDeviationY = sqrt($squaredSubtractedMeanY->sum() / $squaredSubtractedMeanY->count());
+
+            // calculating for the `t-score`
+            $tScoreX = ((($rawScoreX - $meanX) / $standardDeviationX) * 10) + 50;
+            $tScoreY = ((($rawScoreY - $meanY) / $standardDeviationY) * 10) + 50;
+
+            // update the values in DB based on results
+            // from the calculations above
+            $responseGroup->update([
+                // frequency
+                'interpretation_x' => $scaleInterpretation->getInterpretation($tScoreX),
+                't_score_x' => $tScoreX,
+                'raw_score_x' => $rawScoreX,
+                'mean_x' => $meanX,
+                'standard_deviation_x' => $standardDeviationX,
+
+                // degree of being bothered
+                'interpretation_y' => $scaleInterpretation->getInterpretation($tScoreY),
+                't_score_y' => $tScoreY,
+                'raw_score_y' => $rawScoreY,
+                'mean_y' => $meanY,
+                'standard_deviation_y' => $standardDeviationY,
+            ]);
+        }
+
+        return $response;
+    }
 }
