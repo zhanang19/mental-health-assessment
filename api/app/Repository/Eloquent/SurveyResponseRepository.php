@@ -11,17 +11,22 @@ use App\Util\ScaleTypeChoices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use App\Util\CalculationHelper;
 
 class SurveyResponseRepository extends BaseRepository implements SurveyResponseRepositoryInterface
 {
+    private $calculationHelper;
+
     /**
      * SurveyRepository constructor.
      *
      * @param SurveyResponse $model
      */
-    public function __construct(SurveyResponse $model)
+    public function __construct(SurveyResponse $model, CalculationHelper $calculationHelper)
     {
         parent::__construct($model);
+
+        $this->calculationHelper = $calculationHelper;
     }
 
     /**
@@ -167,26 +172,40 @@ class SurveyResponseRepository extends BaseRepository implements SurveyResponseR
 
             // calculate for the `mean`
             // ref [https://www.mathsisfun.com/mean.html#:~:text=How%20to%20Find%20the%20Mean,sum%20divided%20by%20the%20count.]
-            $meanX = $rawScoreX / $numbersX->count();
-            $meanY = $rawScoreY / $numbersY->count();
+            $meanX = $this->calculationHelper->findMean($numbersX->toArray());
+            $meanY = $this->calculationHelper->findMean($numbersY->toArray());
 
             // calculating for the `standard deviation`
             // ref [https://www.mathsisfun.com/data/standard-deviation-formulas.html]
-            $squaredSubtractedMeanX = $numbersX
-                ->map(function ($value) use ($meanX) {
-                    return sqrt($value - $meanX);
-                });
-            $squaredSubtractedMeanY = $numbersY
-                ->map(function ($value) use ($meanY) {
-                    return sqrt($value - $meanY);
-                });
+            $standardDeviationX = $this->calculationHelper->findStandardDeviation($numbersX->toArray());
+            $standardDeviationY = $this->calculationHelper->findStandardDeviation($numbersY->toArray());
 
-            $standardDeviationX = sqrt($squaredSubtractedMeanX->sum() / $squaredSubtractedMeanX->count());
-            $standardDeviationY = sqrt($squaredSubtractedMeanY->sum() / $squaredSubtractedMeanY->count());
+            if ($standardDeviationX != 0) {
+                $dividendX = ( ($rawScoreX - $meanX) / $standardDeviationX);
+            } else {
+                $dividendX = 0;
+            }
+
+            if ($standardDeviationY != 0) {
+                $dividendY = ( ($rawScoreY - $meanY) / $standardDeviationY);
+            } else {
+                $dividendY = 0;
+            }
 
             // calculating for the `t-score`
-            $tScoreX = ((($rawScoreX - $meanX) / $standardDeviationX) * 10) + 50;
-            $tScoreY = ((($rawScoreY - $meanY) / $standardDeviationY) * 10) + 50;
+            $tScoreX = ($dividendX * 10) + 50;
+            $tScoreY = ($dividendY * 10) + 50;
+
+            info('ALGORITHM', [
+                'numbersX' => $numbersX,
+                'numbersY' => $numbersY,
+                'meanX' => $meanX,
+                'meanY' => $meanY,
+                'standardDeviationX' => $standardDeviationX,
+                'standardDeviationY' => $standardDeviationY,
+                'tScoreX' => $tScoreX,
+                'tScoreY' => $tScoreY,
+            ]);
 
             // update the values in DB based on results
             // from the calculations above

@@ -250,41 +250,47 @@ class ScaleTypeChoices
      */
     public function getValueFromType(string $type, string $option, string $answer): ?int
     {
-        info('SCALE TYPE CHOICES', [
-            'type' => 'TESTESTESTESTES',
-        ]);
-
-        function getScaleChoice($choices, string $answer) {
-            $scaleChoice = [];
-
-            if ($answer == null) return null;
-
-            foreach ($choices as $key => $choice) {
-
-
-                if ($choice['text'] == $answer) {
-                    array_push($scaleChoice, $choice->value);
-                }
-            }
-
-            return array_pop($scaleChoice);
-        }
-
         switch ($type) {
-            case ScaleTypes::MHP:
-                return getScaleChoice(json_decode($this->MHP[$option]), $answer);
-            case ScaleTypes::PCL5:
-                return getScaleChoice(json_decode($this->PCL5[$option]), $answer);
-            case ScaleTypes::WHODAS:
-                return getScaleChoice(json_decode($this->WHODAS[$option]), $answer);
-            case ScaleTypes::GAD:
-                return getScaleChoice(json_decode($this->GAD[$option]), $answer);
-            case ScaleTypes::PHQ9:
-                return getScaleChoice(json_decode($this->PHQ9[$option]), $answer);
-            case ScaleTypes::GHQ12:
-                return getScaleChoice(json_decode($this->GHQ12[$option]), $answer);
+            case "MHP":
+                return $this->getScaleChoice(json_decode($this->MHP[$option]), $answer);
+            case "PCL-5":
+                return $this->getScaleChoice(json_decode($this->PCL5[$option]), $answer);
+            case "WHO-DAS":
+                return $this->getScaleChoice(json_decode($this->WHODAS[$option]), $answer);
+            case "GAD":
+                return $this->getScaleChoice(json_decode($this->GAD[$option]), $answer);
+            case "PHQ-9":
+                return $this->getScaleChoice(json_decode($this->PHQ9[$option]), $answer);
+            case "GHQ-12":
+                return $this->getScaleChoice(json_decode($this->GHQ12[$option]), $answer);
             default:
                 return null;
         }
+    }
+
+    private function getScaleChoice($choices, string $answer)
+    {
+        $scaleChoice = [];
+
+        if ($answer == null) return null;
+
+        // get all options
+        foreach ($choices->options as $key => $choice) {
+            if ($choice->text == $answer) {
+                array_push($scaleChoice, $choice->value);
+            }
+        }
+
+        $val = array_pop($scaleChoice);
+
+        // info('getScaleChoice($choices, string $answer)', [
+        //     'params' => [
+        //         'choices' => $choices,
+        //         'answer' => $answer
+        //     ],
+        //     'val' => $val
+        // ]);
+
+        return $val;
     }
 }

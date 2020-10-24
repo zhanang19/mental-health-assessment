@@ -79,24 +79,28 @@ class ScaleInterpretation
      * @param int|double $tScore
      * @return string
      */
-    public function getInterpretation($tScore): string
+    public function getInterpretation($tScore)
     {
+        info('T-SCORE', [
+            'T-SCORE' => $tScore
+        ]);
+
         // mild
-        if ($tScore >= $this->mild->min && $tScore <= $this->mild->max) return ScaleInterpretationTypes::Mild;
+        if ($tScore >= $this->mild->min && $tScore <= $this->mild->max) return "Mild";
 
         // moderate
-        if ($tScore >= $this->moderate->min && $tScore <= $this->moderate->max) return ScaleInterpretationTypes::Moderate;
+        if ($tScore >= $this->moderate->min && $tScore <= $this->moderate->max) return "Moderate";
 
         // serious / needs close monitoring
-        if ($tScore >= $this->needsCloseMonitoring->min && $tScore <= $this->needsCloseMonitoring->max) return ScaleInterpretationTypes::NeedsCloseMonitoring;
+        if ($tScore >= $this->needsCloseMonitoring->min && $tScore <= $this->needsCloseMonitoring->max) return "Serious/Needs Close Monitoring";
 
         // crtical / needs clinical attention
-        if ($tScore >= $this->needsClinicalAttention->min && $tScore <= $this->needsClinicalAttention->max) return ScaleInterpretationTypes::NeedsClinicalAttention;
+        if ($tScore >= $this->needsClinicalAttention->min && $tScore <= $this->needsClinicalAttention->max) return "Crtical/Needs Clinical Attention";
 
         // severe
-        if ($tScore >= $this->severe->min && $tScore <= $this->severe->max) return ScaleInterpretationTypes::Severe;
+        if ($tScore >= $this->severe->min && $tScore <= $this->severe->max) return "Severe";
 
         // requires medical assistance
-        if ($tScore >= $this->requiresMedicalAssitance->min) return ScaleInterpretationTypes::RequiresMedicalAssitance;
+        if ($tScore >= $this->requiresMedicalAssitance->min) return "Requires Medical Assitance";
     }
 }
